@@ -1,0 +1,48 @@
+services:
+  homehub.db:
+    image: postgres:17.5
+    restart: always
+    environment:
+      POSTGRES_USER: homehub
+      POSTGRES_PASSWORD: homehub
+      POSTGRES_DB: homehub
+    ports:
+      - 15432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - homehub_network
+
+  homehub.api:
+    image: ${DOCKER_REGISTRY:-}homehubapi
+    build: 
+      context: .
+      dockerfile: backend/HomeHub.Api/Dockerfile
+    depends_on:
+      - homehub.db
+    ports:
+      - 15000:8080
+      - 15001:8081
+    networks:
+      - homehub_network
+
+  homehub.ui:
+    image: node:24.0.2-slim
+    working_dir: /app
+    volumes:
+      - ./frontend/homehub-ui:/app
+    command: sh -c "npm install && npm run start"
+    ports:
+      - 15420:4200
+    networks:
+      - homehub_network
+    depends_on:
+      - homehub.api
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  homehub_network:
+    driver: bridge

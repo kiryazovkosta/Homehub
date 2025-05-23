@@ -399,3 +399,54 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+
+
+# Docker and Docker Compose
+.containers/
+
+
+# Angular specific
+/dist
+/.angular
+/.angular/cache
+/out-tsc
+/node_modules
+
+# Environment files
+/src/environments/environment*.ts
+
+# Compiled output
+*.js
+*.js.map
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode
+.idea
+
+# Logs
+*.log
+
+# OS generated files
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage reports
+/coverage
+
+# Angular CLI cache
+/.ngbuild
+/.npm
+
+# Optional: Ignore build artifacts
+/build

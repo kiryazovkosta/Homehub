@@ -1,0 +1,14 @@
+# Ignore frontend/node_modules to prevent esbuild errors
+frontend/homehub-ui/node_modules/
+
+# Optional: common exclusions
+**/bin/
+**/obj/
+**/.vs/
+**/node_modules/
+*.user
+*.suo
+*.lnk
+*.tmp
+.DS_Store
+Thumbs.db
