@@ -1,5 +1,5 @@
 # Use official Node.js 22 image as base
-FROM node:24.0.2-slim
+FROM node:24-alpine
 
 # Set working directory inside container
 WORKDIR /app

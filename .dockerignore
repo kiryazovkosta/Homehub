@@ -1,0 +1,54 @@
+# Node & Angular
+node_modules
+**/node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+frontend/homehub-ui/.npm
+frontend/homehub-ui/.cache
+frontend/homehub-ui/dist
+frontend/homehub-ui/.angular
+frontend/homehub-ui/coverage
+
+# .NET
+bin
+obj
+artifacts
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs
+*.tlog
+
+# OS & IDE
+.vscode
+.idea
+*.swp
+*.sln.iml
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Git
+.git
+.gitignore
+
+# Docker files themselves (optional)
+Dockerfile
+docker-compose.yml
+
+# Misc
+*.env
+.env.*
+*.bak
+*.tmp
+*.cache
+*.coverage
+*.nupkg
+*.snupkg

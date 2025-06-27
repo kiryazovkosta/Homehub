@@ -27,7 +27,7 @@ services:
       - homehub_network
 
   homehub.ui:
-    image: node:24.0.2-slim
+    image: node:24-alpine
     working_dir: /app
     volumes:
       - ./frontend/homehub-ui:/app

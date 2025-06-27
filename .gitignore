@@ -450,3 +450,11 @@ yarn-error.log*
 
 # Optional: Ignore build artifacts
 /build
+
+frontend/homehub-ui/node_modules
+frontend/homehub-ui/.npm
+frontend/homehub-ui/.cache
+**/node_modules
+.git
+Dockerfile
+docker-compose.yml
