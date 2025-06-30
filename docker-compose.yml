@@ -23,6 +23,8 @@ services:
     ports:
       - 15000:8080
       - 15001:8081
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - homehub_network
 
