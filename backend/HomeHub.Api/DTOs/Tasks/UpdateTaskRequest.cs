@@ -1,5 +1,7 @@
 using HomeHub.Api.Entities;
 
+namespace HomeHub.Api.DTOs.Tasks;
+
 public sealed record UpdateTaskRequest
 {
     public required string Title { get; init; }

@@ -1,6 +1,8 @@
 using HomeHub.Api.Entities;
 using Task = HomeHub.Api.Entities.Task;
 
+namespace HomeHub.Api.DTOs.Tasks;
+
 internal static class TaskMappings
 {
     public static Task ToEntity(this CreateTaskRequest request)

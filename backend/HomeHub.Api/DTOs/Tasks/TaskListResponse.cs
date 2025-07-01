@@ -1,8 +1,10 @@
 using HomeHub.Api.Entities;
 
+namespace HomeHub.Api.DTOs.Tasks;
+
 public sealed record TasksListCollectionResponse
 {
-    public required List<TaskListResponse> Items { get; set; }
+    public required List<TaskListResponse> Items { get; init; }
 }
 
 public sealed record TaskListResponse

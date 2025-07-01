@@ -1,0 +1,21 @@
+﻿namespace HomeHub.Api.Entities;
+
+public sealed class Finance
+{
+    public required string Id { get; set; }
+    public required string Title { get; set; }
+    public required string Description { get; set; }
+    public FinanceType Type { get; set; }
+    public required string CategoryId { get; set; }
+    public required Category Category { get; set; }
+    public decimal Amount { get; set; }
+    public DateOnly Date { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+}
+
+public enum FinanceType
+{
+    Income = 1,
+    Expense = 2
+}

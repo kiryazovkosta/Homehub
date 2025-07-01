@@ -1,6 +1,8 @@
 using System.Linq.Expressions;
 using Task = HomeHub.Api.Entities.Task;
 
+namespace HomeHub.Api.DTOs.Tasks;
+
 internal static class TaskQueries
 {
     public static Expression<Func<Task, TaskListResponse>> ToListResponse()

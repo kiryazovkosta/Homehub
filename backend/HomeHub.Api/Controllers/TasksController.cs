@@ -1,6 +1,9 @@
 using HomeHub.Api.Database;
+using HomeHub.Api.DTOs.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+namespace HomeHub.Api.Controllers;
 
 [ApiController]
 [Route("api/tasks")]
