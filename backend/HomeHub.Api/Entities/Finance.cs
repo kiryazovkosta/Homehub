@@ -13,9 +13,3 @@ public sealed class Finance
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 }
-
-public enum FinanceType
-{
-    Income = 1,
-    Expense = 2
-}

@@ -11,16 +11,3 @@ public sealed class Task
     public DateTime CreatedAt{ get; set; }
     public DateTime? UpdatedAt{ get; set; }
 }
-
-public enum Priority
-{
-    Low = 1, 
-    Medium = 2, 
-    High = 3
-}
-
-public enum Status
-{
-    Active = 1,
-    Completed = 2,
-}

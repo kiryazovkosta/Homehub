@@ -1,15 +1,15 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace HomeHub.Api.Entities;
 
-public enum CategoryType
+public enum Priority
 {
     [Description("In Progress")]
-    Finance = 1,
+    Low = 1,
 
     [Description("In Progress")]
-    Inventory = 2,
+    Medium = 2,
 
     [Description("In Progress")]
-    Bill = 3
+    High = 3
 }
