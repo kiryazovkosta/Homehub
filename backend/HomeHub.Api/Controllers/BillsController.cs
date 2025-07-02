@@ -1,4 +1,7 @@
-﻿namespace HomeHub.Api.Controllers;
+﻿using FluentValidation;
+using FluentValidation.Results;
+
+namespace HomeHub.Api.Controllers;
 
 using Database;
 using Microsoft.AspNetCore.Mvc;
@@ -46,8 +49,15 @@ public sealed class BillsController(ApplicationDbContext dbContext) : Controller
     [HttpPost]
     public async Task<ActionResult<BillResponse>> CreateBill(
         [FromBody] CreateBillRequest request,
+        IValidator<CreateBillRequest> validator,
         CancellationToken cancellationToken)
     {
+        ValidationResult validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.ToDictionary());
+        }
+        
         var category = await dbContext.Categories
             .FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
         if (category is null)

@@ -1,3 +1,4 @@
+using FluentValidation;
 using HomeHub.Api.Common;
 using HomeHub.Api.Common.Constants;
 using HomeHub.Api.Database;
@@ -15,6 +16,8 @@ builder.Services.AddControllers(options =>
     options.ReturnHttpNotAcceptable = true;
 })
 .AddXmlSerializerFormatters();
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>(includeInternalTypes: true);
 
 builder.Services.AddOpenApi();
 
