@@ -4,12 +4,12 @@ namespace HomeHub.Api.Entities;
 
 public enum CategoryType
 {
-    [Description("In Progress")]
+    [Description("Finance")]
     Finance = 1,
 
-    [Description("In Progress")]
+    [Description("Inventory")]
     Inventory = 2,
 
-    [Description("In Progress")]
+    [Description("Bill")]
     Bill = 3
 }

@@ -12,6 +12,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<Task> Tasks { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Finance> Finances { get; set; }
+    public DbSet<Location> Locations { get; set; }
+    public DbSet<Inventory> Inventories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

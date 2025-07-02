@@ -43,6 +43,20 @@ public sealed class FinancesController(ApplicationDbContext dbContext) : Control
         return Ok(finance);
     }
 
+    [HttpGet("summary")]
+    public ActionResult<FinancesSummaryResponse> GetFinancesSummary()
+    {
+        FinancesSummaryResponse financesSummary = new FinancesSummaryResponse()
+        {
+            StartDate = new DateOnly(2025, 7, 1),
+            EndDate = new DateOnly(2025, 7, 31),
+            TotalIncome = 10240.00M,
+            TotalExpense = 8450.30M
+        };
+
+        return Ok(financesSummary);
+    }
+
     [HttpPost]
     public async Task<ActionResult<FinanceResponse>> CreateFinance(
         [FromBody] CreateFinanceRequest request,
