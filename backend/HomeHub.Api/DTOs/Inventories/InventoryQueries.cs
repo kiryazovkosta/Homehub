@@ -1,5 +1,9 @@
 using System.Linq.Expressions;
 using HomeHub.Api.DTOs.Categories;
+using HomeHub.Api.DTOs.Locations;
+using HomeHub.Api.Entities;
+
+namespace HomeHub.Api.DTOs.Inventories;
 
 public static class InventoryQueries
 {

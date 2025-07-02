@@ -46,7 +46,7 @@ public sealed class FinancesController(ApplicationDbContext dbContext) : Control
     [HttpGet("summary")]
     public ActionResult<FinancesSummaryResponse> GetFinancesSummary()
     {
-        FinancesSummaryResponse financesSummary = new FinancesSummaryResponse()
+        FinancesSummaryResponse financesSummary = new()
         {
             StartDate = new DateOnly(2025, 7, 1),
             EndDate = new DateOnly(2025, 7, 31),

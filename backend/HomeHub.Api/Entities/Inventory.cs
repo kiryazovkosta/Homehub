@@ -1,4 +1,4 @@
-using HomeHub.Api.Entities;
+namespace HomeHub.Api.Entities;
 
 public sealed class Inventory
 {

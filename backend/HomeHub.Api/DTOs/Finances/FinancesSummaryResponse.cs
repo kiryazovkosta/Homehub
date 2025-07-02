@@ -1,3 +1,5 @@
+namespace HomeHub.Api.DTOs.Finances;
+
 public class FinancesSummaryResponse
 {
     public DateOnly StartDate { get; set; }

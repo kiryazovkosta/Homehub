@@ -1,3 +1,5 @@
+namespace HomeHub.Api.Common.Constants;
+
 public static class CategoryConstants
 {
     // Финанси – Приходи

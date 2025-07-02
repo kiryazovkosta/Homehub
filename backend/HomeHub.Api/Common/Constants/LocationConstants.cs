@@ -1,4 +1,4 @@
-using System.Reflection.Metadata;
+namespace HomeHub.Api.Common.Constants;
 
 public static class LocationConstants
 {

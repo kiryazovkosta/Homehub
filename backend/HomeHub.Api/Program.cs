@@ -1,4 +1,5 @@
 using HomeHub.Api.Common;
+using HomeHub.Api.Common.Constants;
 using HomeHub.Api.Database;
 using HomeHub.Api.Entities;
 using HomeHub.Api.Extensions;

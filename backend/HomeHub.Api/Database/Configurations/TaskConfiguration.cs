@@ -1,8 +1,8 @@
+namespace HomeHub.Api.Database.Configurations;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Task = HomeHub.Api.Entities.Task;
-
-namespace HomeHub.Api.Database.Configurations;
 
 public sealed class TaskConfiguration : IEntityTypeConfiguration<Task>
 {

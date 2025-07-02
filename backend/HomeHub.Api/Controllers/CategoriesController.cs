@@ -1,7 +1,10 @@
 using HomeHub.Api.Database;
 using HomeHub.Api.Entities;
+using HomeHub.Api.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+namespace HomeHub.Api.Controllers;
 
 [ApiController]
 [Route("api/categories")]
@@ -20,7 +23,7 @@ public sealed class CategoriesController(ApplicationDbContext dbContext) : Contr
         //    Items = finances
         //};
 
-        var items = EnumHelper.GetAllEnumItems<CategoryType>();
+        //var items = EnumHelper.GetAllEnumItems<CategoryType>();
 
         return Ok(categories);
     }

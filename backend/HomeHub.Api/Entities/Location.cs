@@ -1,3 +1,5 @@
+namespace HomeHub.Api.Entities;
+
 public sealed class Location
 {
     public required string Id { get; set; }

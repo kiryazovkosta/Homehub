@@ -1,6 +1,9 @@
 using HomeHub.Api.Database;
+using HomeHub.Api.DTOs.Inventories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+namespace HomeHub.Api.Controllers;
 
 [ApiController]
 [Route("api/inventories")]

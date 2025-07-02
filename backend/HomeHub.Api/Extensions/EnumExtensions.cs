@@ -1,6 +1,8 @@
 using System.ComponentModel;
 using System.Reflection;
 
+namespace HomeHub.Api.Extensions;
+
 public static class EnumExtensions
 {
     public static string GetDescription<TEnum>(this TEnum value) where TEnum : Enum

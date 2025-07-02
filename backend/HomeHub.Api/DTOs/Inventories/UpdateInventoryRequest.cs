@@ -1,3 +1,5 @@
+namespace HomeHub.Api.DTOs.Inventories;
+
 public sealed record UpdateInventoryRequest
 {
     public required string Name { get; init; }

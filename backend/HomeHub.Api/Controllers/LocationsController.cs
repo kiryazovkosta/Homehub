@@ -1,6 +1,9 @@
 using HomeHub.Api.Database;
+using HomeHub.Api.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+namespace HomeHub.Api.Controllers;
 
 [ApiController]
 [Route("api/locations")]

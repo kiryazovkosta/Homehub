@@ -1,6 +1,8 @@
 using HomeHub.Api.DTOs.Categories;
+using HomeHub.Api.DTOs.Locations;
 using HomeHub.Api.Entities;
-using Npgsql.Replication;
+
+namespace HomeHub.Api.DTOs.Inventories;
 
 internal static class InventoryMappings
 {

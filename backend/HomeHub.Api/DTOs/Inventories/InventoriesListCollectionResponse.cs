@@ -1,4 +1,7 @@
 using HomeHub.Api.DTOs.Categories;
+using HomeHub.Api.DTOs.Locations;
+
+namespace HomeHub.Api.DTOs.Inventories;
 
 public sealed record InventoriesListCollectionResponse
 {

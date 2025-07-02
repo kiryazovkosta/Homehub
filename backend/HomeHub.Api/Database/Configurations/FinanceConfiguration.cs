@@ -18,7 +18,7 @@ public sealed class FinanceConfiguration : IEntityTypeConfiguration<Finance>
 
         builder.Property(f => f.Type).IsRequired().HasConversion<int>();
 
-        builder.Property(f => f.CategoryId).IsRequired();
+        builder.Property(f => f.CategoryId).IsRequired().HasMaxLength(128); ;
 
         builder.Property(f => f.Amount).IsRequired().HasColumnType("decimal(18,2)");
 

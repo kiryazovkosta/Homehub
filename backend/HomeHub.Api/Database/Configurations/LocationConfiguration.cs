@@ -1,5 +1,8 @@
+using HomeHub.Api.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace HomeHub.Api.Database.Configurations;
 
 public sealed class LocationConfiguration : IEntityTypeConfiguration<Location>
 {

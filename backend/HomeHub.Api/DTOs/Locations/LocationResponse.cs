@@ -1,3 +1,5 @@
+namespace HomeHub.Api.DTOs.Locations;
+
 public sealed record LocationResponse
 {
     public required string Id { get; init; }
