@@ -7,6 +7,7 @@ using Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DTOs.Bills;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 [ApiController]
 [Route("api/bills")]
@@ -50,12 +51,17 @@ public sealed class BillsController(ApplicationDbContext dbContext) : Controller
     public async Task<ActionResult<BillResponse>> CreateBill(
         [FromBody] CreateBillRequest request,
         IValidator<CreateBillRequest> validator,
+        ProblemDetailsFactory problemDetailsFactory,
         CancellationToken cancellationToken)
     {
         ValidationResult validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
         {
-            return BadRequest(validationResult.ToDictionary());
+            var problem = problemDetailsFactory.CreateProblemDetails(
+                HttpContext,
+                StatusCodes.Status400BadRequest);
+            problem.Extensions.Add("error", validationResult.ToDictionary());
+            return BadRequest(problem);
         }
         
         var category = await dbContext.Categories
