@@ -1,5 +1,6 @@
 using FluentValidation;
-using HomeHub.Api.DTOs.Bills;
+
+namespace HomeHub.Api.DTOs.Bills.Validators;
 
 public class UpdateBillRequestValidator : AbstractValidator<UpdateBillRequest>
 {

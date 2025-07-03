@@ -1,3 +1,4 @@
+using FluentValidation;
 using HomeHub.Api.Database;
 using HomeHub.Api.DTOs.Finances;
 using Microsoft.AspNetCore.Mvc;
@@ -60,8 +61,11 @@ public sealed class FinancesController(ApplicationDbContext dbContext) : Control
     [HttpPost]
     public async Task<ActionResult<FinanceResponse>> CreateFinance(
         [FromBody] CreateFinanceRequest request,
+        IValidator<CreateFinanceRequest> validator,
         CancellationToken cancellationToken)
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        
         var category = await dbContext.Categories
             .FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
         if (category is null)
@@ -85,8 +89,11 @@ public sealed class FinancesController(ApplicationDbContext dbContext) : Control
     public async Task<ActionResult> UpdateFinance(
         string id,
         [FromBody] UpdateFinanceRequest request,
+        IValidator<UpdateFinanceRequest> validator,
         CancellationToken cancellationToken)
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        
         var finance = await dbContext.Finances.FirstOrDefaultAsync(f => f.Id == id, cancellationToken);
         if (finance is null)
         {

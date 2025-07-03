@@ -1,5 +1,6 @@
 using FluentValidation;
-using HomeHub.Api.DTOs.Tasks;
+
+namespace HomeHub.Api.DTOs.Tasks.Validators;
 
 public class CreateTaskRequestValidator : AbstractValidator<CreateTaskRequest>
 {

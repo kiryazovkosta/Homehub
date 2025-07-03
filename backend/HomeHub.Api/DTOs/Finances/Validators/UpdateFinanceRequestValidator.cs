@@ -1,5 +1,6 @@
 using FluentValidation;
-using HomeHub.Api.DTOs.Finances;
+
+namespace HomeHub.Api.DTOs.Finances.Validators;
 
 public class UpdateFinanceRequestValidator : AbstractValidator<UpdateFinanceRequest>
 {

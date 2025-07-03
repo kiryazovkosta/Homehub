@@ -1,3 +1,4 @@
+using FluentValidation;
 using HomeHub.Api.Database;
 using HomeHub.Api.DTOs.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -45,8 +46,10 @@ public sealed class TasksController(ApplicationDbContext dbContext) : Controller
     [HttpPost]
     public async Task<ActionResult<TaskResponse>> CreateTask(
         [FromBody] CreateTaskRequest request,
+        IValidator<CreateTaskRequest> validator,
         CancellationToken cancellationToken)
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
         var task = request.ToEntity();
         dbContext.Tasks.Add(task);
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -58,8 +61,11 @@ public sealed class TasksController(ApplicationDbContext dbContext) : Controller
     public async Task<ActionResult> UpdateTask(
         string id,
         [FromBody] UpdateTaskRequest request,
+        IValidator<UpdateTaskRequest> validator,
         CancellationToken cancellationToken)
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        
         var task = await dbContext.Tasks.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
         if (task is null)
         {

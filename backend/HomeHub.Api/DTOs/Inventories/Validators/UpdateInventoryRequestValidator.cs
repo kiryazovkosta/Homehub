@@ -1,5 +1,6 @@
 using FluentValidation;
-using HomeHub.Api.DTOs.Inventories;
+
+namespace HomeHub.Api.DTOs.Inventories.Validators;
 
 public class UpdateInventoryRequestValidator : AbstractValidator<UpdateInventoryRequest>
 {
@@ -8,8 +9,8 @@ public class UpdateInventoryRequestValidator : AbstractValidator<UpdateInventory
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("Name is required.")   
-                .MaximumLength(256)
-                .WithMessage("Name must not exceed 256 characters.");
+            .MaximumLength(256)
+            .WithMessage("Name must not exceed 256 characters.");
 
         RuleFor(x => x.Quantity)
             .GreaterThanOrEqualTo(0)

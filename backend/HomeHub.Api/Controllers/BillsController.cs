@@ -51,21 +51,11 @@ public sealed class BillsController(ApplicationDbContext dbContext) : Controller
     public async Task<ActionResult<BillResponse>> CreateBill(
         [FromBody] CreateBillRequest request,
         IValidator<CreateBillRequest> validator,
-        ProblemDetailsFactory problemDetailsFactory,
         CancellationToken cancellationToken)
     {
-        ValidationResult validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-        {
-            var problem = problemDetailsFactory.CreateProblemDetails(
-                HttpContext,
-                StatusCodes.Status400BadRequest);
-            problem.Extensions.Add("error", validationResult.ToDictionary());
-            return BadRequest(problem);
-        }
-        
-        var category = await dbContext.Categories
-            .FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+
+        var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
         if (category is null)
         {
             return NotFound();
@@ -95,8 +85,11 @@ public sealed class BillsController(ApplicationDbContext dbContext) : Controller
     public async Task<ActionResult> UpdateBill(
         string id,
         [FromBody] UpdateBillRequest request,
+        IValidator<UpdateBillRequest> validator,
         CancellationToken cancellationToken)
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+
         var bill = await dbContext.Bills.FirstOrDefaultAsync(f => f.Id == id, cancellationToken);
         if (bill is null)
         {

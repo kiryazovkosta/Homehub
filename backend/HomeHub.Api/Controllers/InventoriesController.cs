@@ -1,3 +1,4 @@
+using FluentValidation;
 using HomeHub.Api.Database;
 using HomeHub.Api.DTOs.Inventories;
 using Microsoft.AspNetCore.Mvc;
@@ -65,8 +66,11 @@ public sealed class InventoriesController(ApplicationDbContext dbContext) : Cont
     [HttpPost]
     public async Task<ActionResult<InventoryResponse>> CreateInventory(
         [FromBody] CreateInventoryRequest request,
+        IValidator<CreateInventoryRequest> validator,
         CancellationToken cancellationToken)
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        
         var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
         if (category is null)
         {
@@ -90,8 +94,11 @@ public sealed class InventoriesController(ApplicationDbContext dbContext) : Cont
     public async Task<ActionResult> UpdateInventory(
         string id,
         [FromBody] UpdateInventoryRequest request,
+        IValidator<UpdateInventoryRequest> validator,
         CancellationToken cancellationToken)
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        
         var inventory = await dbContext.Inventories.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
         if (inventory is null)
         {
