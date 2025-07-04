@@ -3,6 +3,7 @@
 using Entities;
 using HomeHub.Api.DTOs.Categories;
 using HomeHub.Api.DTOs.Finances;
+using HomeHub.Api.Extensions;
 using System.Linq.Expressions;
 
 internal sealed class BillQueries
@@ -35,6 +36,7 @@ internal sealed class BillQueries
                 Id = bill.Category.Id,
                 Name = bill.Category.Name,
                 Type = bill.Category.Type,
+                TypeValue = bill.Category.Type.GetDescription()
             }
         };
     }

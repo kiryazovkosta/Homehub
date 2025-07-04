@@ -1,6 +1,7 @@
 ﻿using HomeHub.Api.DTOs.Categories;
 using HomeHub.Api.DTOs.Finances;
 using HomeHub.Api.Entities;
+using HomeHub.Api.Extensions;
 
 namespace HomeHub.Api.DTOs.Bills;
 
@@ -38,6 +39,7 @@ internal static class BillMappings
                 Id = bill.Category.Id,
                 Name = bill.Category.Name,
                 Type = bill.Category.Type,
+                TypeValue = bill.Category.Type.GetDescription()
             }
         };
     }

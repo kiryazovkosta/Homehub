@@ -6,7 +6,7 @@ import { LocationsList } from './features/locations-list/locations-list';
   selector: 'app-root',
   imports: [RouterOutlet, LocationsList],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.scss'
 })
 export class App {
   protected title = 'homehub-ui';

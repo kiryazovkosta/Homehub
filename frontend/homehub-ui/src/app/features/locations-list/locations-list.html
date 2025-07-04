@@ -1,8 +1,12 @@
 <p>Locations-list works!</p>
 
-@for (location of this.locations$ | async; track location.id) {
-  <div class="location-item">
-    <h2>{{ location.name }}</h2>
-    <p>{{ location.description }}</p>
-  </div>
-}
+<div class="locations-grid">
+  @for (location of this.locations$ | async; track location.id) {
+    <mat-card class="location-item">
+      <mat-card-title>{{ location.name }}</mat-card-title>
+      <mat-card-content>
+        <p>{{ location.description }}</p>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

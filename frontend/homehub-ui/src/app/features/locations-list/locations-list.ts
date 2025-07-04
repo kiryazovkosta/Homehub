@@ -1,23 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '../../models';
+import { LocationResponse } from '../../models';
 import { Observable } from 'rxjs';
 import { LocationsService } from '../../core/services';
 import { CommonModule } from '@angular/common';
 
+import { MatCardModule } from '@angular/material/card';
+
 @Component({
   selector: 'app-locations-list',
-  imports: [CommonModule],
+  imports: [CommonModule, MatCardModule],
   templateUrl: './locations-list.html',
-  styleUrl: './locations-list.css'
+  styleUrl: './locations-list.scss'
 })
 export class LocationsList {
   locations: Location[] = [];
-  locations$: Observable<Location[]>;
+  locations$: Observable<LocationResponse[]>;
 
   constructor(private locationsService: LocationsService) {
     this.locations$ = this.locationsService.getLocations();
-
-    console.log(this.locations);
-    console.log(this.locations$);
   }
 }

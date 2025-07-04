@@ -1,4 +1,5 @@
 using HomeHub.Api.Entities;
+using HomeHub.Api.Extensions;
 using Task = HomeHub.Api.Entities.Task;
 
 namespace HomeHub.Api.DTOs.Tasks;
@@ -30,8 +31,10 @@ internal static class TaskMappings
             Title = task.Title,
             Description = task.Description,
             Priority = task.Priority,
+            PriorityValue = task.Priority.GetDescription(),
             DueDate = task.DueDate,
             Status = task.Status,
+            StatusValue = task.Status.GetDescription(),
             CreatedAt = task.CreatedAt,
             UpdatedAt = task.UpdatedAt
         };

@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using HomeHub.Api.DTOs.Categories;
-using HomeHub.Api.DTOs.Tasks;
 using HomeHub.Api.Entities;
+using HomeHub.Api.Extensions;
 
 namespace HomeHub.Api.DTOs.Finances;
 
@@ -15,6 +15,7 @@ internal static class FinanceQueries
             Title = f.Title.Length <= 50 ? f.Title : f.Title.Substring(0, 50),
             Description = f.Description.Length <= 100 ? f.Description : f.Description.Substring(0, 100),
             Type = f.Type,
+            TypeValue = f.Type.GetDescription(),
             Amount = f.Amount
         };
     }
@@ -27,11 +28,13 @@ internal static class FinanceQueries
             Title = f.Title,
             Description = f.Description,
             Type = f.Type,
+            TypeValue = f.Type.GetDescription(),
             Category = new CategoryResponse()
             {
                 Id = f.Category.Id,
                 Name = f.Category.Name,
                 Type = f.Category.Type,
+                TypeValue = f.Category.Type.GetDescription()
             },
             Amount = f.Amount,
             Date = f.Date,

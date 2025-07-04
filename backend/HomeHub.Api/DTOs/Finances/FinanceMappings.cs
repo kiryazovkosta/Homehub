@@ -1,5 +1,6 @@
 using HomeHub.Api.DTOs.Categories;
 using HomeHub.Api.Entities;
+using HomeHub.Api.Extensions;
 
 namespace HomeHub.Api.DTOs.Finances;
 
@@ -30,11 +31,13 @@ internal static class FinanceMappings
             Title = finance.Title,
             Description = finance.Description,
             Type = finance.Type,
+            TypeValue = finance.Type.GetDescription(),
             Category = new CategoryResponse
             {
                 Id = finance.Category.Id,
                 Name = finance.Category.Name,
-                Type = finance.Category.Type
+                Type = finance.Category.Type,
+                TypeValue = finance.Category.Type.ToString()
             },
             Amount = finance.Amount,
             Date = finance.Date,

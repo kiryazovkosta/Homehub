@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using HomeHub.Api.DTOs.Categories;
 using HomeHub.Api.DTOs.Locations;
 using HomeHub.Api.Entities;
+using HomeHub.Api.Extensions;
 
 namespace HomeHub.Api.DTOs.Inventories;
 
@@ -18,7 +19,8 @@ public static class InventoryQueries
             {
                 Id = i.Category.Id,
                 Name = i.Category.Name,
-                Type = i.Category.Type
+                Type = i.Category.Type,
+                TypeValue = i.Category.Type.GetDescription()
             },
             Threshold = i.Threshold
         };
@@ -35,7 +37,8 @@ public static class InventoryQueries
             {
                 Id = i.Category.Id,
                 Name = i.Category.Name,
-                Type = i.Category.Type
+                Type = i.Category.Type,
+                TypeValue = i.Category.Type.GetDescription()
             },
             Location = new LocationResponse
             {

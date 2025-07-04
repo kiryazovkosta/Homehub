@@ -1,6 +1,7 @@
 using HomeHub.Api.DTOs.Categories;
 using HomeHub.Api.DTOs.Locations;
 using HomeHub.Api.Entities;
+using HomeHub.Api.Extensions;
 
 namespace HomeHub.Api.DTOs.Inventories;
 
@@ -32,7 +33,8 @@ internal static class InventoryMappings
             {
                 Id = inventory.Category.Id,
                 Name = inventory.Category.Name,
-                Type = inventory.Category.Type
+                Type = inventory.Category.Type,
+                TypeValue = inventory.Category.Type.GetDescription()
             },
             Location = new LocationResponse
             {

@@ -1,0 +1,12 @@
+<p>tasks-list works!</p>
+
+<div class="locations-grid">
+  @for (task of this.tasks.items; track task.id) {
+    <mat-card class="location-item">
+      <mat-card-title>{{ task.title }}</mat-card-title>
+      <mat-card-content>
+        <p>{{ task.description }}</p>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

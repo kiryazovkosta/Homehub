@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using HomeHub.Api.Extensions;
 using Task = HomeHub.Api.Entities.Task;
 
 namespace HomeHub.Api.DTOs.Tasks;
@@ -13,6 +14,7 @@ internal static class TaskQueries
             Title = t.Title,
             Description = t.Description.Length <= 100 ? t.Description : t.Description.Substring(0, 100),
             Priority = t.Priority,
+            PriorityValue = t.Priority.GetDescription(),
             DueDate = t.DueDate
         };
     }
@@ -25,8 +27,10 @@ internal static class TaskQueries
             Title = t.Title,
             Description = t.Description,
             Priority = t.Priority,
+            PriorityValue = t.Priority.GetDescription(),
             DueDate = t.DueDate,
             Status = t.Status,
+            StatusValue = t.Status.GetDescription(),
             CreatedAt = t.CreatedAt,
             UpdatedAt = t.UpdatedAt
         };
