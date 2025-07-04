@@ -36,6 +36,7 @@ services:
       - "15420:4200"
     volumes:
       - ./frontend/homehub-ui:/app
+      - /app/node_modules
     networks:
       - homehub_network
     depends_on:

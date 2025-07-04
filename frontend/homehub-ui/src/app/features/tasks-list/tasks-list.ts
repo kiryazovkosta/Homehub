@@ -18,5 +18,6 @@ export class TasksList {
 
   constructor(private tasksService: TasksService) {
     this.tasks$ = this.tasksService.getTasks();
+    console.log(this.tasks$);
   }
 }
