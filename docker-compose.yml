@@ -29,13 +29,13 @@ services:
       - homehub_network
 
   homehub.ui:
-    image: node:24-alpine
-    working_dir: /app
+    build:
+      context: ./frontend/homehub-ui
+      dockerfile: Dockerfile
+    ports:
+      - "15420:4200"
     volumes:
       - ./frontend/homehub-ui:/app
-    command: sh -c "npm install && npm run start"
-    ports:
-      - 15420:4200
     networks:
       - homehub_network
     depends_on:

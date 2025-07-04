@@ -4,6 +4,7 @@ using HomeHub.Api.Database;
 using HomeHub.Api.Database.Seeds;
 using HomeHub.Api.Extensions;
 using HomeHub.Api.Middlewares;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Scalar.AspNetCore;
@@ -42,6 +43,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     .UseAsyncSeeding((context, _, cancellationToken) => Seeder.SeedDataAsync((ApplicationDbContext)context, cancellationToken))
     );
 
+CorsOptions corsOptions = builder.Configuration.GetSection(CorsOptions.SectionName).Get<CorsOptions>()!;
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(CorsOptions.PolicyName, policy =>
+    {
+        policy
+            .WithOrigins(corsOptions.AllowedOrigins)
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -63,6 +75,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseExceptionHandler();
+
+app.UseCors(CorsOptions.PolicyName);
 
 app.MapControllers();
 

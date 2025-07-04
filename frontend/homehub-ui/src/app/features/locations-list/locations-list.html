@@ -1,0 +1,8 @@
+<p>Locations-list works!</p>
+
+@for (location of this.locations$ | async; track location.id) {
+  <div class="location-item">
+    <h2>{{ location.name }}</h2>
+    <p>{{ location.description }}</p>
+  </div>
+}
