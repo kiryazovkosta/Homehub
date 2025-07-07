@@ -3,12 +3,13 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { TasksListCollectionResponse, TaskResponse } from "../../models";
+import { baseUrl, tasksUrl } from "../../constants/api-constants";
 
 @Injectable({
     providedIn: 'root'
 })
 export class TasksService {
-    private readonly apiUrl: string = 'http://localhost:15000/api/tasks';
+    private readonly apiUrl: string = `${baseUrl}${tasksUrl}`;
 
     constructor(private httpClient: HttpClient){}
 
@@ -17,6 +18,6 @@ export class TasksService {
     }
 
     getTask(id: string) : Observable<TaskResponse> {
-        return this.httpClient.get<TaskResponse>(`this.apiUrl/${id}`);
+        return this.httpClient.get<TaskResponse>(`${this.apiUrl}/${id}`);
     }
 }

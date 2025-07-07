@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationResponse } from '../../models';
+import { LocationResponse } from '../../../models';
 import { Observable } from 'rxjs';
-import { LocationsService } from '../../core/services';
+import { LocationsService } from '../../../core/services';
 import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';

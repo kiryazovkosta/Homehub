@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
+    padding: 0 10px;
 
     @media (max-width: 1200px) {
         grid-template-columns: repeat(2, 1fr);
@@ -10,8 +11,6 @@
     @media (max-width: 600px) {
         grid-template-columns: 1fr;
     }
-
-    padding: 0 10px;
 }
 
 .location-item {

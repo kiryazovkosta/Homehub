@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { TasksListCollectionResponse, TaskListResponse } from '../../models';
+import { TasksListCollectionResponse, TaskListResponse } from '../../../models';
 import { Observable } from 'rxjs';
-import { TasksService } from '../../core/services';
+import { TasksService } from '../../../core/services';
 import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
@@ -13,11 +13,9 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './tasks-list.scss'
 })
 export class TasksList {
-  tasks: TasksListCollectionResponse = null!
   tasks$: Observable<TasksListCollectionResponse>;
 
   constructor(private tasksService: TasksService) {
     this.tasks$ = this.tasksService.getTasks();
-    console.log(this.tasks$);
   }
 }

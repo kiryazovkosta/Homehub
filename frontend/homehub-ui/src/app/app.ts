@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LocationsList } from './features/locations-list/locations-list';
-import { TasksList } from './features/tasks-list/tasks-list';
+import { LocationsList } from './features/locations/locations-list/locations-list';
+import { TasksList } from './features/tasks/tasks-list/tasks-list';
 
 @Component({
   selector: 'app-root',
