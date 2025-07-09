@@ -1,0 +1,104 @@
+/* Footer styles */
+.footer {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: #ffffff;
+  padding: 4rem 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.02)"><circle cx="100" cy="50" r="20"/><circle cx="300" cy="30" r="15"/><circle cx="500" cy="70" r="25"/><circle cx="700" cy="20" r="18"/><circle cx="900" cy="60" r="22"/></svg>');
+  background-size: 200px 200px;
+  animation: float 30s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.footer .footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.footer .footer-section h4 {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+.footer .footer-section p {
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.footer .footer-section .social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer .footer-section .social-links a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer .footer-section .social-links a:hover {
+  color: #3498db;
+}
+
+.footer .footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.footer .footer-bottom p {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 2rem 0 1rem;
+  }
+
+  .footer .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer .footer-section .social-links {
+    justify-content: center;
+  }
+}
+
+.github-link {
+    color: wheat;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.github-link:hover {
+    color: whitesmoke;
+}

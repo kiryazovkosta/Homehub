@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { FinancesList } from "../../../features/finances/finances-list/finances-list";
-import { FinanceItem } from '../../../features/finances/finance-item/finance-item';
+import { AboutSection } from "../../../features/common";
 
 @Component({
   selector: 'app-main-section',
-  imports: [FinancesList, FinanceItem],
+  standalone: true,
   templateUrl: './main-section.html',
-  styleUrl: './main-section.css'
+  styleUrl: './main-section.scss',
+  imports: [AboutSection]
 })
 export class MainSection {
-
 }
