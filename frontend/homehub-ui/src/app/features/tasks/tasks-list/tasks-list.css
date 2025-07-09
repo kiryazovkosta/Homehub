@@ -1,0 +1,26 @@
+.locations-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 0 10px;
+}
+
+@media (max-width: 1024px) {
+  .locations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .locations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.location-item {
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+}

@@ -7,16 +7,16 @@ import { FinancesListCollectionResponse, FinanceResponse } from "../../models";
 @Injectable({
     providedIn: 'root'
 })
-export class LocationsService {
+export class FinancesService {
     private readonly apiUrl = 'http://localhost:15000/api/finances'
 
     constructor(private httpClient: HttpClient){}
 
-    getBills(): Observable<FinancesListCollectionResponse> {
+    getFinances(): Observable<FinancesListCollectionResponse> {
         return this.httpClient.get<FinancesListCollectionResponse>(this.apiUrl);
     }
 
-    getBill(id: string) : Observable<FinanceResponse> {
-        return this.httpClient.get<FinanceResponse>(`this.apiUrl/${id}`);
+    getFinance(id: string) : Observable<FinanceResponse> {
+        return this.httpClient.get<FinanceResponse>(`${this.apiUrl}/${id}`);
     }
 }

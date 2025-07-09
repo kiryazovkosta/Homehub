@@ -7,7 +7,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "css"
         }
       },
       "root": "",
@@ -27,7 +27,7 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "src/styles.scss"
+              "src/styles.css"
             ]
           },
           "configurations": {
@@ -81,7 +81,7 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "src/styles.scss"
+              "src/styles.css"
             ]
           }
         }

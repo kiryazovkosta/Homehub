@@ -1,0 +1,1 @@
+export { FooterSection } from './footer-section/footer-section';

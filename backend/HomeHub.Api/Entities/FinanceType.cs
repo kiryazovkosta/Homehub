@@ -4,9 +4,9 @@ namespace HomeHub.Api.Entities;
 
 public enum FinanceType
 {
-    [Description("Income")]
+    [Description("Приход")]
     Income = 1,
 
-    [Description("Expense")]
+    [Description("Разход")]
     Expense = 2
 }

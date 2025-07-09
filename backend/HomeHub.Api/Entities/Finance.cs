@@ -7,7 +7,7 @@ public sealed class Finance
     public required string Description { get; set; }
     public FinanceType Type { get; set; }
     public required string CategoryId { get; set; }
-    public required Category Category { get; set; }
+    public Category Category { get; set; } = null!;
     public decimal Amount { get; set; }
     public DateOnly Date { get; set; }
     public DateTime CreatedAt { get; set; }

@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-tasks-list',
   imports: [CommonModule, MatCardModule],
   templateUrl: './tasks-list.html',
-  styleUrl: './tasks-list.scss'
+  styleUrl: './tasks-list.css'
 })
 export class TasksList {
   tasks$: Observable<TasksListCollectionResponse>;

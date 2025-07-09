@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LocationsList } from './features/locations/locations-list/locations-list';
-import { TasksList } from './features/tasks/tasks-list/tasks-list';
+import { FooterSection } from './layout/footer';
+import { HeaderSection } from './layout/header';
+import { MainSection } from './layout/main';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LocationsList, TasksList],
+  imports: [RouterOutlet, HeaderSection, MainSection, FooterSection],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.css'
 })
 export class App {
-  protected title = 'homehub-ui';
+  protected title = 'Homehub application';
 }

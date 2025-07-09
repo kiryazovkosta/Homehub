@@ -8,6 +8,7 @@
     <script src="script.js" defer></script>
 </head>
 <body>
+    <!-- Header Section -->
     <header class="header">
         <div class="container">
             <nav class="nav">
@@ -35,6 +36,10 @@
                     <div class="nav-buttons">
                         <button class="btn btn-login">Вход</button>
                         <button class="btn btn-register">Регистрация</button>
+                        <!-- <div class="user-info">
+                            <img src="user-avatar.png" alt="User Avatar" class="user-avatar">
+                            <span class="username">Потребител: Иван</span>
+                        </div> -->
                         <button class="btn btn-logout">Изход</button>
                     </div>
                 </div>
@@ -42,7 +47,9 @@
         </div>
     </header>
 
+    <!-- Main Content Section -->
     <main class="main">
+        <!-- Info Section -->
         <section class="hero">
             <div class="container">
                 <h2>Добре дошли в нашия сайт</h2>
@@ -51,6 +58,7 @@
             </div>
         </section>
 
+        <!-- Services Section -->
         <section class="content">
             <div class="container">
                 <div class="grid">
@@ -157,7 +165,244 @@
             </div>
         </section>
 
-        <!-- Contact Section -->
+        <!-- Contact<section id="contact" class="form-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="gradient-text">Свържете се с нас</h2>
+      <p>Изпратете ни съобщение и ще се свържем с вас възможно най-скоро</p>
+    </div>
+    <div class="form-container">
+      <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+        <!-- Personal Information -->
+        <div class="form-section-title">
+          <h3>Лична информация</h3>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contact-name">Вашето име *</label>
+            <input 
+              type="text" 
+              id="contact-name" 
+              formControlName="name"
+              [class.error]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+          </div>
+          <div class="form-group">
+            <label for="contact-email">Имейл адрес *</label>
+            <input 
+              type="email" 
+              id="contact-email" 
+              formControlName="email"
+              [class.error]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contact-phone">Телефон</label>
+            <input 
+              type="tel" 
+              id="contact-phone" 
+              formControlName="phone" 
+              placeholder="+359 888 123 456"
+              (input)="formatPhoneNumber($event)">
+          </div>
+          <div class="form-group">
+            <label for="contact-company">Компания</label>
+            <input 
+              type="text" 
+              id="contact-company" 
+              formControlName="company" 
+              placeholder="Вашата компания">
+          </div>
+        </div>
+
+        <!-- Contact Details -->
+        <div class="form-section-title">
+          <h3>Детайли за контакт</h3>
+        </div>
+        <div class="form-group">
+          <label for="contact-subject">Тема *</label>
+          <select id="contact-subject" formControlName="subject"
+                  [class.error]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched">
+            <option value="">Избери тема</option>
+            <option value="general">Общи въпроси</option>
+            <option value="support">Техническа поддръжка</option>
+            <option value="sales">Продажби</option>
+            <option value="partnership">Партньорство</option>
+            <option value="complaint">Жалба</option>
+            <option value="suggestion">Предложение</option>
+            <option value="other">Друго</option>
+          </select>
+        </div>
+
+        <!-- Priority Selection -->
+        <div class="form-group">
+          <label>Приоритет на заявката</label>
+          <div class="radio-group">
+            <label class="radio-label" [class.active]="contactForm.get('priority')?.value === 'low'">
+              <input type="radio" formControlName="priority" value="low">
+              <span class="radio-custom"></span>
+              Нисък
+            </label>
+            <label class="radio-label" [class.active]="contactForm.get('priority')?.value === 'medium'">
+              <input type="radio" formControlName="priority" value="medium">
+              <span class="radio-custom"></span>
+              Среден
+            </label>
+            <label class="radio-label" [class.active]="contactForm.get('priority')?.value === 'high'">
+              <input type="radio" formControlName="priority" value="high">
+              <span class="radio-custom"></span>
+              Висок
+            </label>
+            <label class="radio-label" [class.active]="contactForm.get('priority')?.value === 'urgent'">
+              <input type="radio" formControlName="priority" value="urgent">
+              <span class="radio-custom"></span>
+              Спешен
+            </label>
+          </div>
+        </div>
+
+        <!-- Preferred Contact Method -->
+        <div class="form-group">
+          <label>Предпочитан начин за контакт</label>
+          <div class="checkbox-group" formGroupName="contactMethods">
+            <label class="checkbox-label">
+              <input type="checkbox" formControlName="email">
+              <span class="checkmark"></span>
+              Имейл
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" formControlName="phone">
+              <span class="checkmark"></span>
+              Телефон
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" formControlName="sms">
+              <span class="checkmark"></span>
+              SMS
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" formControlName="whatsapp">
+              <span class="checkmark"></span>
+              WhatsApp
+            </label>
+          </div>
+        </div>
+
+        <!-- Date and Time -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contact-date">Предпочитана дата за контакт</label>
+            <input 
+              type="date" 
+              id="contact-date" 
+              formControlName="preferredDate"
+              [min]="minDate">
+          </div>
+          <div class="form-group">
+            <label for="contact-time">Предпочитано време</label>
+            <select id="contact-time" formControlName="preferredTime">
+              <option value="">Избери време</option>
+              <option value="morning">Сутрешно време (9:00 - 12:00)</option>
+              <option value="afternoon">Следобедно време (12:00 - 17:00)</option>
+              <option value="evening">Вечерно време (17:00 - 20:00)</option>
+              <option value="anytime">Всякакво време</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="form-group">
+          <label for="contact-files">Прикачени файлове</label>
+          <div class="file-upload">
+            <input 
+              type="file" 
+              id="contact-files" 
+              multiple 
+              accept=".pdf,.doc,.docx,.jpg,.png,.zip"
+              (change)="onFilesChange($event)">
+            <label for="contact-files" class="file-label" [class.has-file]="selectedFiles.length > 0">
+              <span class="upload-icon">📎</span>
+              <span class="upload-text">{{ fileUploadText }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="form-group">
+          <label for="contact-message">Съобщение *</label>
+          <textarea 
+            id="contact-message" 
+            formControlName="message" 
+            rows="5" 
+            placeholder="Напишете вашето съобщение тук..."
+            [class.error]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"></textarea>
+        </div>
+
+        <!-- Additional Options -->
+        <div class="form-section-title">
+          <h3>Допълнителни опции</h3>
+        </div>
+        <div class="form-group">
+          <label for="contact-referral">Как научихте за нас?</label>
+          <select id="contact-referral" formControlName="referral">
+            <option value="">Избери опция</option>
+            <option value="google">Google търсене</option>
+            <option value="social">Социални мрежи</option>
+            <option value="friend">Приятел/колега</option>
+            <option value="advertisement">Реклама</option>
+            <option value="event">Събитие/конференция</option>
+            <option value="other">Друго</option>
+          </select>
+        </div>
+
+        <div class="form-group checkbox-group" formGroupName="additionalOptions">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="newsletter">
+            <span class="checkmark"></span>
+            Искам да получавам новини и актуализации
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="marketing">
+            <span class="checkmark"></span>
+            Съгласен съм да получа маркетингови съобщения
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="callback">
+            <span class="checkmark"></span>
+            Искам обратна връзка в рамките на 24 часа
+          </label>
+        </div>
+
+        <!-- Range Slider -->
+        <div class="form-group">
+          <label for="contact-budget">Бюджет за проекта (в лева)</label>
+          <div class="range-container">
+            <input 
+              type="range" 
+              id="contact-budget" 
+              formControlName="budget" 
+              min="1000" 
+              max="100000" 
+              step="1000">
+            <div class="range-value">
+              <span id="budget-value">{{ budgetValue }}</span> лв.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            {{ submitButtonText }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()">
+            Изчисти формата
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+ Section -->
         <section id="contact" class="form-section">
             <div class="container">
                 <div class="section-header">
@@ -886,6 +1131,7 @@
         </section>
     </main>
 
+    <!-- Footer Section -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">

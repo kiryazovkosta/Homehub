@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-header-section',
   imports: [],
   templateUrl: './header-section.html',
-  styleUrl: './header-section.scss'
+  styleUrl: './header-section.css'
 })
 export class HeaderSection {
-
+  protected isLogged: boolean = false;
 }

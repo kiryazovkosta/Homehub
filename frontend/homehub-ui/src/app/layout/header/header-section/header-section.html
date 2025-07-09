@@ -1,1 +1,43 @@
-<p>header-section works!</p>
+<!-- Header Section -->
+<header class="header">
+    <div class="container">
+        <nav class="nav">
+            <div class="logo">
+                <h1>Logo</h1>
+            </div>
+
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="nav-content">
+                <ul class="nav-menu">
+                    <li><a href="#home">Начало</a></li>
+                    <li><a href="#about">За нас</a></li>
+                    <li><a href="#services">Услуги</a></li>
+                    <li><a href="#products">Продукти</a></li>
+                    <li><a href="#blog">Блог</a></li>
+                    <li><a href="#finance">Финанси</a></li>
+                    <li><a href="#finance-detail">Детайли</a></li>
+                    <li><a href="#contact">Контакти</a></li>
+                </ul>
+                <div class="nav-buttons">
+                    @if (this.isLogged) {
+                        <div class="user-info">
+                            <img src="user-avatar.png" alt="User Avatar" class="user-avatar">
+                            <span class="username">Потребител: Иван</span>
+                        </div>
+                    <button class="btn btn-logout">Изход</button>
+                    } @else {
+                        <button class="btn btn-login">Вход</button>
+                        <button class="btn btn-register">Регистрация</button>
+                    }
+
+
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

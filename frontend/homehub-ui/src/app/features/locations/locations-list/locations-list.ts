@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-locations-list',
   imports: [CommonModule, MatCardModule],
   templateUrl: './locations-list.html',
-  styleUrl: './locations-list.scss'
+  styleUrl: './locations-list.css'
 })
 export class LocationsList {
   locations: Location[] = [];
