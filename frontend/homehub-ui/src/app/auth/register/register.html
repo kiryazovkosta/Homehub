@@ -1,0 +1,77 @@
+<section id="register" class="form-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="gradient-text">Регистрация</h2>
+      <p>Създайте нов акаунт за достъп до нашите услуги</p>
+    </div>
+    <div class="form-container">
+      <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="register-name">Пълно име</label>
+            <input 
+              type="text" 
+              id="register-name" 
+              formControlName="name"
+              [class.error]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          </div>
+          <div class="form-group">
+            <label for="register-email">Имейл адрес</label>
+            <input 
+              type="email" 
+              id="register-email" 
+              formControlName="email"
+              [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="register-password">Парола</label>
+            <input 
+              type="password" 
+              id="register-password" 
+              formControlName="password"
+              [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+              (input)="checkPasswordMatch()">
+          </div>
+          <div class="form-group">
+            <label for="register-confirm">Повтори парола</label>
+            <input 
+              type="password" 
+              id="register-confirm" 
+              formControlName="confirmPassword"
+              [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+              [class.success]="passwordsMatch && registerForm.get('confirmPassword')?.value"
+              (input)="checkPasswordMatch()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="profile-image">Профилна снимка</label>
+          <div class="file-upload">
+            <input 
+              type="file" 
+              id="profile-image" 
+              accept="image/*"
+              (change)="onFileChange($event)">
+            <label for="profile-image" class="file-label" [class.has-file]="fileName">
+              <span class="upload-icon">📷</span>
+              <span class="upload-text">{{ fileName || 'Избери снимка' }}</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="terms">
+            <span class="checkmark"></span>
+            Съгласен съм с <a href="#" class="link" (click)="$event.preventDefault()">условията за ползване</a>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            {{ buttonText }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

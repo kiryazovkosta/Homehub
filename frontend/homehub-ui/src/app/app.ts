@@ -2,10 +2,17 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { HeaderSection, FooterSection, MainSection } from './layout';
+import { BackToTop } from "./features/common";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderSection, FooterSection, MainSection],
+  imports: [
+    RouterOutlet,
+    HeaderSection,
+    FooterSection,
+    MainSection,
+    BackToTop
+],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

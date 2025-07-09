@@ -1,0 +1,35 @@
+<section id="login" class="form-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="gradient-text">Вход в системата</h2>
+            <p>Влезте в своя акаунт за достъп до всички функции</p>
+        </div>
+        <div class="form-container">
+            <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="login-email">Имейл адрес</label>
+                    <input type="email" id="login-email" formControlName="email"
+                        [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Парола</label>
+                    <input type="password" id="login-password" formControlName="password"
+                        [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                </div>
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" formControlName="remember">
+                        <span class="checkmark"></span>
+                        Запомни ме
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                        {{ buttonText }}
+                    </button>
+                    <a href="#" class="forgot-password">Забравена парола?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

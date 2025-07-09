@@ -1,0 +1,106 @@
+<section id="finance" class="finance-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="gradient-text">Финансови записи</h2>
+      <p>Управление на финансовите транзакции и отчети</p>
+    </div>
+
+    <div class="finance-grid">
+      <div class="finance-card" *ngFor="let record of paginatedRecords">
+        <div class="card-header">
+          <h3>{{ record.title }}</h3>
+          <span class="type-badge" [ngClass]="record.type">
+            {{ record.type === 'income' ? 'Приход' : 'Разход' }}
+          </span>
+        </div>
+        <div class="card-body">
+          <p class="description">{{ record.description }}</p>
+          <div class="finance-details">
+            <div class="detail-item">
+              <span class="label">Тип:</span>
+              <span class="value">{{ record.type === 'income' ? 'Приход' : 'Разход' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Сума:</span>
+              <span class="amount" [ngClass]="record.type === 'income' ? 'positive' : 'negative'">
+                {{ record.type === 'income' ? '+' : '-' }} {{ record.amount | number:'1.2-2' }} лв.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-view" [attr.data-id]="record.id" >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M1 12S5 4 12 4S23 12 23 12S19 20 12 20S1 12 1 12Z" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Преглед
+          </button>
+          <button class="btn btn-edit" [attr.data-id]="record.id">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M11 4H4A2 2 0 0 0 2 6V20A2 2 0 0 0 4 22H18A2 2 0 0 0 20 20V13" stroke="currentColor" stroke-width="2"/>
+              <path d="M18.5 2.5A2.121 2.121 0 0 1 21 5L11 15H8V12L18.5 2.5Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Редактиране
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+      <div class="pagination-info">
+        <span>Показване на {{ startItem }}-{{ endItem }} от {{ totalItems }} записа</span>
+      </div>
+      <div class="pagination">
+        <button class="pagination-btn first" 
+                [disabled]="currentPage === 1"
+                (click)="goToPage(1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M18 17L13 12L18 7M11 17L6 12L11 7" stroke="currentColor" stroke-width="2" 
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Първа
+        </button>
+        <button class="pagination-btn prev" 
+                [disabled]="currentPage === 1"
+                (click)="goToPage(currentPage - 1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" 
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Предишна
+        </button>
+
+        <div class="page-numbers">
+            <button *ngFor="let page of visiblePages" 
+                class="page-number"
+                [class.active]="page === currentPage"
+                (click)="page !== '...' && goToPage(page)"
+                [disabled]="page === '...'">
+            {{ page }}
+            </button>
+        </div>
+
+        <button class="pagination-btn next"
+                [disabled]="currentPage === totalPages"
+                (click)="goToPage(currentPage + 1)">
+          Следваща
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" 
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="pagination-btn last"
+                [disabled]="currentPage === totalPages"
+                (click)="goToPage(totalPages)">
+          Последна
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M6 17L11 12L6 7M13 17L18 12L13 7" stroke="currentColor" stroke-width="2" 
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

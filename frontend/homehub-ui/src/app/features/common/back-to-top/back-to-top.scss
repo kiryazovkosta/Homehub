@@ -1,0 +1,86 @@
+$primary-gradient: linear-gradient(135deg, #667eea, #764ba2);
+$hover-gradient: linear-gradient(135deg, #5a6fd8, #6a4190);
+$shadow-color: rgba(102, 126, 234, 0.3);
+$hover-shadow-color: rgba(102, 126, 234, 0.4);
+$pulse-glow: rgba(102, 126, 234, 0.1);
+
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: $primary-gradient;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 20px $shadow-color;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  &:hover {
+    background: $hover-gradient;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px $hover-shadow-color;
+
+    svg {
+      transform: translateY(-2px);
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  svg {
+    transition: transform 0.3s ease;
+  }
+
+  &.pulse {
+    animation: pulse 2s infinite;
+  }
+
+  @media (max-width: 768px) {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+
+  @media (max-width: 480px) {
+    bottom: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 20px $shadow-color;
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.6), 0 0 0 10px $pulse-glow;
+  }
+  100% {
+    box-shadow: 0 4px 20px $shadow-color;
+  }
+}
