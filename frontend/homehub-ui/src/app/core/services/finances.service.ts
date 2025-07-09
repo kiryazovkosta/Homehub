@@ -3,12 +3,13 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { FinancesListCollectionResponse, FinanceResponse } from "../../models";
+import { baseUrl, financesUrl } from "../../constants/api-constants";
 
 @Injectable({
     providedIn: 'root'
 })
 export class FinancesService {
-    private readonly apiUrl = 'http://localhost:15000/api/finances'
+    private readonly apiUrl = `${baseUrl}${financesUrl}`;
 
     constructor(private httpClient: HttpClient){}
 
