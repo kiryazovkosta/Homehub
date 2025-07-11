@@ -32,7 +32,7 @@ export class Family implements OnInit, OnDestroy {
       name: 'Мария Георгиева',
       position: 'Директор на дизайна',
       description: 'Креативен дизайнер, който превръща идеите в красиви реалности.',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face',
+      image: 'https://cao.bg/Images/News/Large/person.jpg',
       linkedin: '#',
       twitter: '#',
       email: 'maria@example.com'

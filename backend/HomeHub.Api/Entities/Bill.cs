@@ -1,6 +1,6 @@
 ﻿namespace HomeHub.Api.Entities;
 
-public class Bill
+public sealed class Bill
 {
     public required string Id { get; set; }
     public required string Title { get; set; }

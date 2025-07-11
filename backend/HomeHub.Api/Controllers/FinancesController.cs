@@ -1,6 +1,7 @@
 using FluentValidation;
 using HomeHub.Api.Database;
 using HomeHub.Api.DTOs.Finances;
+using HomeHub.Api.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,17 +12,23 @@ namespace HomeHub.Api.Controllers;
 public sealed class FinancesController(ApplicationDbContext dbContext) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<FinancesListCollectionResponse>> GetFinances()
+    public async Task<ActionResult<PaginationResponse<FinanceListResponse>>> GetFinances(
+        [FromQuery] FinancesQueryParameters query)
     {
-        List<FinanceListResponse> finances = await dbContext
-            .Finances
-            .Select(FinanceQueries.ToListResponse())
-            .ToListAsync();
+        query.Search ??= query.Search?.Trim().ToLower();
 
-        var response = new FinancesListCollectionResponse
-        {
-            Items = finances
-        };
+        IQueryable<FinanceListResponse> financesQuery = dbContext
+            .Finances
+            .Where(f => query.Search == null ||
+                f.Title.ToLower().Contains(query.Search) ||
+                f.Description.ToLower().Contains(query.Search))
+            .Where(f => query.Type == null || f.Type == query.Type)
+            .Where(f => query.CategoryId == null || f.CategoryId == query.CategoryId)
+            .Where(f => query.Amount == null || f.Amount >= query.Amount)
+            .Where(f => query.Date == null || f.Date >= query.Date)
+            .Select(FinanceQueries.ToListResponse());
+
+        var response = await PaginationResponse<FinanceListResponse>.CreateAsync(financesQuery, query.Page, query.PageSize);
 
         return Ok(response);
     }

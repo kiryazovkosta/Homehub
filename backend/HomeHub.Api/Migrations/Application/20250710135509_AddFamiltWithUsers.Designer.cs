@@ -3,6 +3,7 @@ using System;
 using HomeHub.Api.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeHub.Api.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250710135509_AddFamiltWithUsers")]
+    partial class AddFamiltWithUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,9 +120,9 @@ namespace HomeHub.Api.Migrations.Application
                         .HasColumnName("name");
 
                     b.HasKey("Id")
-                        .HasName("pk_families");
+                        .HasName("pk_family");
 
-                    b.ToTable("families", "home_hub");
+                    b.ToTable("family", "home_hub");
                 });
 
             modelBuilder.Entity("HomeHub.Api.Entities.Finance", b =>
@@ -303,15 +306,8 @@ namespace HomeHub.Api.Migrations.Application
                         .HasColumnType("character varying(128)")
                         .HasColumnName("description");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("email");
-
                     b.Property<string>("FamilyId")
                         .IsRequired()
-                        .HasMaxLength(128)
                         .HasColumnType("character varying(128)")
                         .HasColumnName("family_id");
 
@@ -325,18 +321,6 @@ namespace HomeHub.Api.Migrations.Application
                         .HasColumnType("character varying(64)")
                         .HasColumnName("first_name");
 
-                    b.Property<string>("IdentityId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("identity_id");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
-                        .HasColumnName("image_url");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -344,20 +328,12 @@ namespace HomeHub.Api.Migrations.Application
                         .HasColumnName("last_name");
 
                     b.HasKey("Id")
-                        .HasName("pk_users");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("ix_users_email");
+                        .HasName("pk_user");
 
                     b.HasIndex("FamilyId")
-                        .HasDatabaseName("ix_users_family_id");
+                        .HasDatabaseName("ix_user_family_id");
 
-                    b.HasIndex("IdentityId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_users_identity_id");
-
-                    b.ToTable("users", "home_hub");
+                    b.ToTable("user", "home_hub");
                 });
 
             modelBuilder.Entity("HomeHub.Api.Entities.Bill", b =>
@@ -412,7 +388,7 @@ namespace HomeHub.Api.Migrations.Application
                         .HasForeignKey("FamilyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_users_families_family_id");
+                        .HasConstraintName("fk_user_family_family_id");
 
                     b.Navigation("Family");
                 });

@@ -2,11 +2,6 @@ using HomeHub.Api.Entities;
 
 namespace HomeHub.Api.DTOs.Finances;
 
-public sealed record FinancesListCollectionResponse
-{
-    public required List<FinanceListResponse> Items { get; init; }
-}
-
 public sealed record FinanceListResponse
 {
     public required string Id { get; init; }

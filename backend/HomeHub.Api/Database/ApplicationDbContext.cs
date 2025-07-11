@@ -15,6 +15,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<Location> Locations { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<Bill> Bills { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Family> Families { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
