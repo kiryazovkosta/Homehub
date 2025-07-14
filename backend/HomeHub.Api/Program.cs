@@ -1,4 +1,5 @@
 using HomeHub.Api.Extensions;
+using HomeHub.Api.Settings;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseExceptionHandler();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseCors(CorsOptions.PolicyName);
 

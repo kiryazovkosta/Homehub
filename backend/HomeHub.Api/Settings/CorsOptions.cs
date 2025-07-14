@@ -1,6 +1,9 @@
-public sealed class CorsOptions
+namespace HomeHub.Api.Settings
 {
-    public const string SectionName = "Cors";
-    public const string PolicyName = "HomeHubCorsPolicy";
-    public required string[] AllowedOrigins { get; init; }
+    public sealed class CorsOptions
+    {
+        public const string SectionName = "Cors";
+        public const string PolicyName = "HomeHubCorsPolicy";
+        public required string[] AllowedOrigins { get; init; }
+    }
 }

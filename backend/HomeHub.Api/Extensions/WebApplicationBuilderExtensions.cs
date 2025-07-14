@@ -1,14 +1,19 @@
+using System.Text;
 using FluentValidation;
 using HomeHub.Api.Common;
 using HomeHub.Api.Database;
 using HomeHub.Api.Database.Seeds;
+using HomeHub.Api.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HomeHub.Api.Extensions;
 
 using HomeHub.Api.Middlewares;
+using HomeHub.Api.Settings;
 using Newtonsoft.Json.Serialization;
 
 public static class WebApplicationBuilderExtensions
@@ -89,6 +94,8 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddValidatorsFromAssemblyContaining<Program>(includeInternalTypes: true);
 
         //builder.Services.AddTransient<DataShapingService>();
+
+        builder.Services.AddTransient<TokenProvider>();
         
         return builder;
     }
@@ -98,6 +105,29 @@ public static class WebApplicationBuilderExtensions
         builder.Services
             .AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+        builder.Services.Configure<JwtAuthOptions>(builder.Configuration.GetSection("Jwt"));
+
+        JwtAuthOptions? jwtAuthOptions = builder.Configuration.GetSection("Jwt").Get<JwtAuthOptions>() ?? throw new Exception("Invalid or non exists jwt section!");
+        
+        
+        builder.Services
+            .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = jwtAuthOptions.Issuer,
+                    ValidAudience = jwtAuthOptions.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtAuthOptions.Key))
+                };
+            });
+
+        builder.Services.AddAuthorization();
 
         return builder;
     }

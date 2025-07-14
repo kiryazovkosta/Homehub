@@ -1,12 +1,13 @@
 using FluentValidation;
 using HomeHub.Api.Database;
 using HomeHub.Api.DTOs.Finances;
-using HomeHub.Api.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HomeHub.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/finances")]
 public sealed class FinancesController(ApplicationDbContext dbContext) : ControllerBase

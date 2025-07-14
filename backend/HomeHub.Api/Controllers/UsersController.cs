@@ -1,14 +1,14 @@
-﻿using HomeHub.Api.Database;
-using HomeHub.Api.DTOs.Users;
-using Microsoft.EntityFrameworkCore;
+﻿namespace HomeHub.Api.Controllers;
 
-namespace HomeHub.Api.Controllers;
-
+using Database;
+using DTOs.Users;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
+[Authorize]
 [ApiController]
 [Route("api/users")]
-
 public sealed class UsersController(ApplicationDbContext dbContext) : ControllerBase
 {
     [HttpGet("{id}")]
