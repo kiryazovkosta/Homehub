@@ -12,7 +12,7 @@ public sealed class ImagesController(IHttpClientFactory httpClientFactory) : Con
 {
     private readonly string _bucket = "images";
     private readonly string _users = "users";
-    private readonly string _key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRyZ2RqZnVlbGZrYm9raGhyem10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NDk3MzgsImV4cCI6MjA2ODIyNTczOH0.kWYnW0yZzu_vIHrp5jdn78axnbGfYE3No2DbRqN_PeI";
+    //private readonly string _key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRyZ2RqZnVlbGZrYm9raGhyem10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NDk3MzgsImV4cCI6MjA2ODIyNTczOH0.kWYnW0yZzu_vIHrp5jdn78axnbGfYE3No2DbRqN_PeI";
     private readonly Supabase.SupabaseOptions _options = new()
     {
         AutoConnectRealtime = true
@@ -93,7 +93,7 @@ public sealed class ImagesController(IHttpClientFactory httpClientFactory) : Con
     {
         HttpClient client = httpClientFactory.CreateClient("supabase");
         client.DefaultRequestHeaders.Clear();
-        client.DefaultRequestHeaders.Add("apikey", _key);
+        client.DefaultRequestHeaders.Add("apikey", Environment.GetEnvironmentVariable("SUPABASE_TOKEN") ?? throw new InvalidOperationException("Supabase token is not set in environment variables."));
         if (!string.IsNullOrWhiteSpace(accessToken))
         {
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);

@@ -25,6 +25,7 @@ services:
       - 15001:8081
     environment:
     - ASPNETCORE_ENVIRONMENT=Development
+    - SUPABASE_TOKEN=${SUPABASE_TOKEN}
     networks:
       - homehub_network
 
