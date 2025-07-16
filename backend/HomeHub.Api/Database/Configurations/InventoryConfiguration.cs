@@ -29,5 +29,13 @@ public sealed class InventoryConfiguration : IEntityTypeConfiguration<Inventory>
             .HasForeignKey(i => i.LocationId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
+
+
+        builder.Property(i => i.UserId).HasMaxLength(128);
+
+        builder.HasOne(i => i.User)
+            .WithMany(u => u.Inventories)
+            .HasForeignKey(i => i.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -16,7 +16,8 @@ internal static class FinanceQueries
             Description = f.Description.Length <= 100 ? f.Description : f.Description.Substring(0, 100),
             Type = f.Type,
             TypeValue = f.Type.GetDescription(),
-            Amount = f.Amount
+            Amount = f.Amount,
+            UserId = f.UserId,
         };
     }
 
@@ -39,7 +40,8 @@ internal static class FinanceQueries
             Amount = f.Amount,
             Date = f.Date,
             CreatedAt = f.CreatedAt,
-            UpdatedAt = f.UpdatedAt
+            UpdatedAt = f.UpdatedAt,
+            UserId = f.UserId,
         };
     }
 }

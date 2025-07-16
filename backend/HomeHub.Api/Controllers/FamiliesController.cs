@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using HomeHub.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HomeHub.Api.Controllers;
 
@@ -8,10 +10,13 @@ using DTOs.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+[Authorize]
 [ApiController]
 [Route("api/families")]
 
-public sealed class FamiliesController(ApplicationDbContext dbContext) : ControllerBase
+public sealed class FamiliesController(
+    ApplicationDbContext dbContext,
+    UserContext userContext) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<TasksListCollectionResponse>> GetFamilies()
@@ -29,12 +34,18 @@ public sealed class FamiliesController(ApplicationDbContext dbContext) : Control
         return Ok(response);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetFamily(string id)
+    [HttpGet("me")]
+    public async Task<IActionResult> GetFamily()
     {
+        string? familyId = await userContext.GetFamilyIdAsync();
+        if (string.IsNullOrWhiteSpace(familyId))
+        {
+            return Unauthorized();
+        }
+
         FamilyWithUsersResponse? family = await dbContext
             .Families
-            .Where(f => f.Id == id)
+            .Where(f => f.Id == familyId)
             .Select(FamilyQueries.ProjectToResponse())
             .FirstOrDefaultAsync()
             ;

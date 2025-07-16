@@ -1,25 +1,39 @@
 using FluentValidation;
 using HomeHub.Api.Database;
 using HomeHub.Api.DTOs.Finances;
+using HomeHub.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading;
+using HomeHub.Api.DTOs.Common;
 
 namespace HomeHub.Api.Controllers;
 
 [Authorize]
 [ApiController]
 [Route("api/finances")]
-public sealed class FinancesController(ApplicationDbContext dbContext) : ControllerBase
+public sealed class FinancesController(
+    ApplicationDbContext dbContext,
+    UserContext userContext
+    ) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<PaginationResponse<FinanceListResponse>>> GetFinances(
         [FromQuery] FinancesQueryParameters query)
     {
+        string? familyId = await userContext.GetFamilyIdAsync();
+        if (string.IsNullOrWhiteSpace(familyId))
+        {
+            return Unauthorized();
+        }
+        
         query.Search ??= query.Search?.Trim().ToLower();
 
         IQueryable<FinanceListResponse> financesQuery = dbContext
             .Finances
+            .Include(f => f.User)
+            .Where(f => f.User.FamilyId == familyId)
             .Where(f => query.Search == null ||
                 f.Title.ToLower().Contains(query.Search) ||
                 f.Description.ToLower().Contains(query.Search))
@@ -37,10 +51,17 @@ public sealed class FinancesController(ApplicationDbContext dbContext) : Control
     [HttpGet("{id}")]
     public async Task<ActionResult<FinanceResponse>> GetFinance(string id)
     {
+        string? familyId = await userContext.GetFamilyIdAsync();
+        if (string.IsNullOrWhiteSpace(familyId))
+        {
+            return Unauthorized();
+        }
+
         FinanceResponse? finance = await dbContext
             .Finances
             .Include(f => f.Category)
-            .Where(f => f.Id == id)
+            .Include(f => f.User)
+            .Where(f => f.Id == id && f.User.FamilyId == familyId)
             .Select(FinanceQueries.ToResponse())
             .FirstOrDefaultAsync();
 
@@ -72,6 +93,12 @@ public sealed class FinancesController(ApplicationDbContext dbContext) : Control
         IValidator<CreateFinanceRequest> validator,
         CancellationToken cancellationToken)
     {
+        string? userId = await userContext.GetUserIdAsync(cancellationToken);
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return Unauthorized();
+        }
+
         await validator.ValidateAndThrowAsync(request, cancellationToken);
         
         var category = await dbContext.Categories
@@ -81,7 +108,7 @@ public sealed class FinancesController(ApplicationDbContext dbContext) : Control
             return NotFound();
         }
         
-        var finance = request.ToEntity(category);
+        var finance = request.ToEntity(category, userId);
         if (finance.CategoryId != request.CategoryId || finance.Category.Id != request.CategoryId)
         {
             return BadRequest();
@@ -100,9 +127,15 @@ public sealed class FinancesController(ApplicationDbContext dbContext) : Control
         IValidator<UpdateFinanceRequest> validator,
         CancellationToken cancellationToken)
     {
+        string? userId = await userContext.GetUserIdAsync(cancellationToken);
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return Unauthorized();
+        }
+        
         await validator.ValidateAndThrowAsync(request, cancellationToken);
         
-        var finance = await dbContext.Finances.FirstOrDefaultAsync(f => f.Id == id, cancellationToken);
+        var finance = await dbContext.Finances.FirstOrDefaultAsync(f => f.Id == id && f.UserId == userId, cancellationToken);
         if (finance is null)
         {
             return NotFound();
@@ -116,7 +149,13 @@ public sealed class FinancesController(ApplicationDbContext dbContext) : Control
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteFinance(string id)
     {
-        var finance = await dbContext.Finances.FirstOrDefaultAsync(t => t.Id == id);
+        string? userId = await userContext.GetUserIdAsync();
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return Unauthorized();
+        }
+
+        var finance = await dbContext.Finances.FirstOrDefaultAsync(f => f.Id == id && f.UserId == userId);
         if (finance is null)
         {
             return NotFound();

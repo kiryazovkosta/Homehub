@@ -27,4 +27,17 @@ public static class UserQueries
             }
         };
     }
+
+    public static Expression<Func<User, UserSimplyResponse>> ProjectToListResponse()
+    {
+        return user => new UserSimplyResponse
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            FamilyRoleValue = user.FamilyRole.GetDescription(),
+            Description = user.Description,
+            ImageUrl = user.ImageUrl
+        };
+    }
 }

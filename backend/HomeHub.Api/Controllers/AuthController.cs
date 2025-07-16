@@ -51,14 +51,30 @@ public sealed class AuthController(
             return BadRequest("Non existing family");
         }
         
-        IdentityResult identityResult = await userManager.CreateAsync(identityUser, request.Password);
-        if (!identityResult.Succeeded)
+        IdentityResult createUserResult = await userManager.CreateAsync(identityUser, request.Password);
+        if (!createUserResult.Succeeded)
         {
             var extensions = new Dictionary<string, object?>
             {
                 {
-                    "errors", 
-                    identityResult.Errors.ToDictionary(e => e.Code, e => e.Description)
+                    "errors",
+                    createUserResult.Errors.ToDictionary(e => e.Code, e => e.Description)
+                }
+            };
+            return Problem(
+                detail: "Unable to register user, please try again",
+                statusCode: StatusCodes.Status400BadRequest,
+                extensions: extensions);
+        }
+
+        IdentityResult addToRoleResult = await userManager.AddToRoleAsync(identityUser, Roles.Member);
+        if (!addToRoleResult.Succeeded)
+        {
+            var extensions = new Dictionary<string, object?>
+            {
+                {
+                    "errors",
+                    addToRoleResult.Errors.ToDictionary(e => e.Code, e => e.Description)
                 }
             };
             return Problem(
@@ -72,7 +88,7 @@ public sealed class AuthController(
 
         await applicationDbContext.SaveChangesAsync();
 
-        TokenRequest tokenRequest = new(user.IdentityId, user.Email);
+        TokenRequest tokenRequest = new(user.IdentityId, user.Email, [Roles.Member]);
         AccessTokensResponse accessToken = tokenProvider.GenerateTokens(tokenRequest);
 
         var refreshToken = new RefreshToken
@@ -100,7 +116,9 @@ public sealed class AuthController(
             return Unauthorized();
         }
 
-        TokenRequest tokenRequest = new(identityUser.Id, request.Email);
+        IList<string> roles =  await userManager.GetRolesAsync(identityUser);
+
+        TokenRequest tokenRequest = new(identityUser.Id, request.Email, roles);
         AccessTokensResponse accessToken = tokenProvider.GenerateTokens(tokenRequest);
 
         var refreshToken = new RefreshToken
@@ -133,10 +151,10 @@ public sealed class AuthController(
             return Unauthorized();
         }
 
-        TokenRequest tokenRequest = new(refreshToken.User.Id, refreshToken.User.Email!);
+        IList<string> roles = await userManager.GetRolesAsync(refreshToken.User);
+
+        TokenRequest tokenRequest = new(refreshToken.User.Id, refreshToken.User.Email!, roles);
         AccessTokensResponse accessToken = tokenProvider.GenerateTokens(tokenRequest);
-        
-        // ToDo : Implement refresh tokens rotations
         
         refreshToken.Token = accessToken.RefreshToken;
         refreshToken.ExpiresAtUtc = DateTime.UtcNow.AddDays(_jwtAuthOptions.RefreshTokenExpirationDays);

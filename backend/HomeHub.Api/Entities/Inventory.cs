@@ -10,4 +10,6 @@ public sealed class Inventory
     public required string LocationId { get; set; }
     public required Location Location { get; set; }
     public required int Threshold { get; set; } = 0;
+    public string UserId { get; set; } = null!;
+    public User User { get; set; } = null!;
 }

@@ -11,6 +11,8 @@ public sealed class Bill
     public string? FileUrl { get; set; }
     public required string CategoryId { get; set; }
     public required Category Category { get; set; }
+    public string UserId { get; set; } = null!;
+    public User User { get; set; } = null!;
 
     public void Pay()
     {

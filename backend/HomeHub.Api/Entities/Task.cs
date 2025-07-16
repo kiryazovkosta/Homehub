@@ -10,4 +10,6 @@ public sealed class Task
     public Status Status{ get; set; }
     public DateTime CreatedAt{ get; set; }
     public DateTime? UpdatedAt{ get; set; }
+    public string UserId { get; set; } = null!;
+    public User User { get; set; } = null!;
 }

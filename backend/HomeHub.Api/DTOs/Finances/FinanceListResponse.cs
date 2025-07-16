@@ -10,4 +10,5 @@ public sealed record FinanceListResponse
     public FinanceType Type { get; init; }
     public required string TypeValue { get; init; }
     public decimal Amount { get; init; }
+    public required string UserId { get; init; }
 }

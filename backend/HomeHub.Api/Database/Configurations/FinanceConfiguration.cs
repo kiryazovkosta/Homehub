@@ -27,5 +27,12 @@ public sealed class FinanceConfiguration : IEntityTypeConfiguration<Finance>
             .HasForeignKey(f => f.CategoryId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(f => f.UserId).HasMaxLength(128);
+
+        builder.HasOne(f => f.User)
+            .WithMany(u => u.Finances)
+            .HasForeignKey(f => f.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

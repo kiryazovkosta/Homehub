@@ -6,7 +6,7 @@ namespace HomeHub.Api.DTOs.Finances;
 
 internal static class FinanceMappings
 {
-    public static Finance ToEntity(this CreateFinanceRequest request, Category category)
+    public static Finance ToEntity(this CreateFinanceRequest request, Category category, string userId)
     {
         return new Finance
         {
@@ -19,7 +19,8 @@ internal static class FinanceMappings
             Amount = request.Amount,
             Date = request.Date,
             CreatedAt = DateTime.UtcNow,
-            UpdatedAt = null
+            UpdatedAt = null,
+            UserId = userId
         };
     }
 
@@ -42,7 +43,8 @@ internal static class FinanceMappings
             Amount = finance.Amount,
             Date = finance.Date,
             CreatedAt = finance.CreatedAt,
-            UpdatedAt = finance.UpdatedAt
+            UpdatedAt = finance.UpdatedAt,
+            UserId = finance.UserId
         };
     }
 

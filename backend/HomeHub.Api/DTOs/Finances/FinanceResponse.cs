@@ -1,3 +1,5 @@
+using HomeHub.Api.DTOs.Users;
+
 namespace HomeHub.Api.DTOs.Finances;
 
 using HomeHub.Api.DTOs.Categories;
@@ -14,5 +16,6 @@ public sealed record FinanceResponse
     public decimal Amount { get; init; }
     public DateOnly Date { get; init; }
     public DateTime CreatedAt { get; init; }
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; init; }
+    public required string UserId { get; init; }
 }

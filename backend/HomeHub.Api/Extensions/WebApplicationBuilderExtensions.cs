@@ -1,4 +1,4 @@
-using System.Text;
+using System.Net.Http.Headers;
 using FluentValidation;
 using HomeHub.Api.Common;
 using HomeHub.Api.Database;
@@ -9,12 +9,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace HomeHub.Api.Extensions;
 
-using HomeHub.Api.Middlewares;
-using HomeHub.Api.Settings;
+using Middlewares;
+using Settings;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using System;
 
 public static class WebApplicationBuilderExtensions
 {
@@ -56,9 +60,7 @@ public static class WebApplicationBuilderExtensions
                     builder.Configuration.GetConnectionString(Databases.HomeHub),
                     npgsqlOptions => npgsqlOptions
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Application))
-                .UseSnakeCaseNamingConvention()
-                .UseAsyncSeeding((context, _, cancellationToken) => Seeder.SeedDataAsync((ApplicationDbContext)context, cancellationToken))
-        );
+                .UseSnakeCaseNamingConvention());
 
         builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
             options
@@ -93,10 +95,23 @@ public static class WebApplicationBuilderExtensions
     {
         builder.Services.AddValidatorsFromAssemblyContaining<Program>(includeInternalTypes: true);
 
-        //builder.Services.AddTransient<DataShapingService>();
+        builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddTransient<TokenProvider>();
-        
+
+        builder.Services.AddMemoryCache();
+
+        // Register application service
+        builder.Services.AddScoped<UserContext>();
+
+        builder.Services.AddHttpClient("supabase")
+            .ConfigureHttpClient(client =>
+            {
+                client.BaseAddress = new Uri("https://trgdjfuelfkbokhhrzmt.supabase.co");
+                
+                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Homehub", "1.0"));
+            });
+
         return builder;
     }
 

@@ -1,7 +1,6 @@
-using HomeHub.Api.DTOs.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace HomeHub.Api.DTOs.Finances;
+namespace HomeHub.Api.DTOs.Common;
 
 public sealed record PaginationResponse<T> : ICollectionResponse<T>
 {

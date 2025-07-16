@@ -1,3 +1,5 @@
-﻿namespace HomeHub.Api.Services;
+﻿using System.Collections;
 
-public sealed record TokenRequest(string UserId, string Email);
+namespace HomeHub.Api.Services;
+
+public sealed record TokenRequest(string UserId, string Email, IEnumerable<string> Roles);

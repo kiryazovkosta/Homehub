@@ -31,5 +31,12 @@ public class BillConfiguration : IEntityTypeConfiguration<Bill>
             .HasForeignKey(b => b.CategoryId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(b => b.UserId).HasMaxLength(128);
+
+        builder.HasOne(b => b.User)
+            .WithMany(u => u.Bills)
+            .HasForeignKey(b => b.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

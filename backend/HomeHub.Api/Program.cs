@@ -1,5 +1,8 @@
+using HomeHub.Api.Database;
+using HomeHub.Api.Database.Seeds;
 using HomeHub.Api.Extensions;
 using HomeHub.Api.Settings;
+using Microsoft.AspNetCore.Identity;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +30,13 @@ if (app.Environment.IsDevelopment())
     });
 
     await app.ApplyMigrationsAsync();
+
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    await Seeder.SeedDataAsync(dbContext, userManager, CancellationToken.None);
+
+    await app.SeedInitialDataAsync();
 }
 
 app.UseHttpsRedirection();

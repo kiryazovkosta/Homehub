@@ -1,4 +1,6 @@
-﻿namespace HomeHub.Api.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HomeHub.Api.Entities;
 
 public sealed class Finance
 {
@@ -12,4 +14,6 @@ public sealed class Finance
     public DateOnly Date { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+    public string UserId { get; set; } = null!;
+    public User User { get; set; } = null!;
 }

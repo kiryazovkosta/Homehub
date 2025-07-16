@@ -12,4 +12,8 @@ public sealed class User
     public required string FamilyId { get; set; }
     public Family Family { get; set; } = null!;
     public required string IdentityId { get; set; }
+    public List<Bill> Bills { get; set; } = [];
+    public List<Inventory> Inventories { get; set; } = [];
+    public List<Finance> Finances { get; set; } = [];
+    public List<Task> Tasks { get; set; } = [];
 }
