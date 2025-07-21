@@ -120,6 +120,22 @@
   transform: translateY(-1px);
 }
 
+.header .nav .nav-buttons .btn-user {
+  background-color: transparent;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+}
+
+.header .nav .nav-buttons .btn-user:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.header .nav .nav-buttons .btn-logout:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
 .header .nav .nav-buttons .btn-logout {
   background-color: transparent;
   color: #e74c3c;

@@ -10,7 +10,6 @@ import { BackToTop } from "./features/common";
     RouterOutlet,
     HeaderSection,
     FooterSection,
-    MainSection,
     BackToTop
 ],
   templateUrl: './app.html',

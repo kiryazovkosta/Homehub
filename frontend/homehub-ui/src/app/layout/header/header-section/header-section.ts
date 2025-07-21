@@ -6,6 +6,7 @@ import { Component, HostListener } from '@angular/core';
   styleUrls: ['./header-section.scss']
 })
 export class HeaderSection {
+  isLoggedIn = false;
   isMobileMenuActive = false;
 
   toggleMobileMenu(): void {
