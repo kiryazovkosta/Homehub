@@ -1,3 +1,5 @@
+namespace HomeHub.Api.DTOs.Services;
+
 public sealed record ServiceListResponse
 {
     public required string Id { get; init; }

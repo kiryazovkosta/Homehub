@@ -1,0 +1,32 @@
+<main class="main">
+    <section class="hero">
+        <div class="container">
+            <h2>Добре дошли в нашия сайт</h2>
+            <p>Това е основната секция на страницата с красива стрилизация.</p>
+            <button class="btn btn-primary">Научете повече</button>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+            <div class="grid">
+                @for (item of (functionalities$ | async)?.items; track item.id; let i = $index) {
+                    <div class="card" [attr.data-index]="i" #serviceCard>
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.description }}</p>
+                    </div>
+                } 
+                @empty {
+                    <div class="card">
+                        <h3>Няма налични услуги</h3>
+                    </div>
+                }
+
+                <!-- <div class="card" *ngFor="let service of services; let i = index" [attr.data-index]="i" #serviceCard>
+                    <h3>{{ service.title }}</h3>
+                    <p>{{ service.description }}</p>
+                </div> -->
+            </div>
+        </div>
+    </section>
+</main>

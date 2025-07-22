@@ -7,3 +7,5 @@ export const inventoriesUrl: string = 'api/inventories';
 export const locationsUrl: string = 'api/locations';
 export const tasksUrl: string = 'api/tasks';
 
+export const functionalitiesUrl: string = 'api/services';
+
