@@ -1,21 +1,21 @@
-<section id="family" class="family-section">
+<section id="family" class="family-section" *ngIf="family$ | async as family">
   <div class="container">
     <div class="section-header">
-      <h2 class="gradient-text">Нашият екип</h2>
-      <p>Запознайте се с хората, които правят всичко възможно</p>
+      <h2 class="gradient-text">Семейство: {{ family.name }}</h2>
+      <p>{{ family.description }}</p>
     </div>
 
     <div class="carousel-container">
       <div class="carousel-track" [style.transform]="'translateX(' + translateX + 'px)'">
-        <div class="family-card" *ngFor="let member of teamMembers">
+        <div class="family-card" *ngFor="let member of family.users">
           <div class="card-image">
-            <img [src]="member.image" [alt]="member.name">
+            <img [src]="member.imageUrl" [alt]="member.imageUrl">
             <div class="card-overlay">
               <div class="social-links">
-                <a [href]="member.linkedin" aria-label="LinkedIn">
+                <a href="#" aria-label="LinkedIn">
                   <i class="social-icon">💼</i>
                 </a>
-                <a [href]="member.twitter" aria-label="Twitter">
+                <a href="#" aria-label="Twitter">
                   <i class="social-icon">🐦</i>
                 </a>
                 <a [href]="'mailto:' + member.email" aria-label="Email">
@@ -25,8 +25,8 @@
             </div>
           </div>
           <div class="card-content">
-            <h3>{{ member.name }}</h3>
-            <p class="position">{{ member.position }}</p>
+            <h3>{{ member.firstName }} {{ member.lastName }}</h3>
+            <p class="position">{{ member.familyRoleValue }}</p>
             <p class="description">{{ member.description }}</p>
           </div>
         </div>
@@ -35,10 +35,7 @@
 
     <!-- Carousel Controls -->
     <div class="carousel-controls">
-      <button class="carousel-btn prev-btn" 
-              [disabled]="currentSlide === 0"
-              (click)="prev()"
-              aria-label="Предишна">
+      <button class="carousel-btn prev-btn" [disabled]="currentSlide === 0" (click)="prev()" aria-label="Предишна">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" 
                 stroke-linecap="round" stroke-linejoin="round"/>
@@ -46,12 +43,8 @@
       </button>
 
       <div class="carousel-dots">
-        <button *ngFor="let dot of dots; let i = index"
-                class="dot"
-                [class.active]="currentSlide === i"
-                [attr.data-slide]="i"
-                [attr.aria-label]="'Слайд ' + (i + 1)"
-                (click)="goToSlide(i)"></button>
+        <button *ngFor="let dot of dots; let i = index" class="dot" [class.active]="currentSlide === i"
+                [attr.data-slide]="i" [attr.aria-label]="'Слайд ' + (i + 1)" (click)="goToSlide(i)"></button>
       </div>
 
       <button class="carousel-btn next-btn" 

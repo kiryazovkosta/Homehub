@@ -33,6 +33,7 @@ public static class UserQueries
         return user => new UserSimplyResponse
         {
             Id = user.Id,
+            Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
             FamilyRoleValue = user.FamilyRole.GetDescription(),

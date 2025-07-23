@@ -22,19 +22,15 @@ export const routes: Routes = [
         canActivate: [guestGuard]
     },
     { 
-        path: 'logout', 
-        loadComponent: () => import('./auth').then(m => m.Login),
-        canActivate: [authGuard]
-    },
-    { 
         path: 'profile', 
-        loadComponent: () => import('./auth').then(m => m.Register), 
+        loadComponent: () => import('./auth').then(m => m.UserProfile), 
         canActivate: [authGuard]
     },
-
-
-
-
+    {
+        path: 'family',
+        loadComponent: () => import('./features').then(m => m.Family),
+        canActivate: [authGuard]
+    },
     { 
         path: 'contact', 
         loadComponent: () => import('./features').then(m => m.ContactForm), 

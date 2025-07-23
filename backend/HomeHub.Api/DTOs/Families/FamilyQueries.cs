@@ -17,6 +17,7 @@ public sealed class FamilyQueries
             Users = family.Users.Select(user => new UserSimplyResponse
             {
                 Id = user.Id,
+                Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 FamilyRoleValue = user.FamilyRole.GetDescription(),

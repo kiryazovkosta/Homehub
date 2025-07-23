@@ -15,19 +15,21 @@
                 <ul class="nav-menu">
                     <li><a routerLink="/about">Начало</a></li>
                     <li><a routerLink="/services">Услуги</a></li>
-                    <li><a routerLink="/products">Продукти</a></li>
-                    <li><a routerLink="/blog">Блог</a></li>
-                    <li><a routerLink="/finance">Финанси</a></li>
-                    <li><a routerLink="/finance-detail">Детайли</a></li>
-                    <li><a routerLink="/contact">Контакти</a></li>
+                    @if (isLoggedIn()) {
+                        <li><a routerLink="/family">Семейство</a></li>
+                        <li><a routerLink="/blog">Блог</a></li>
+                        <li><a routerLink="/finance">Финанси</a></li>
+                        <li><a routerLink="/finance-detail">Детайли</a></li>
+                        <li><a routerLink="/contact">Контакти</a></li>
+                    }
                 </ul>
                 <div class="nav-buttons">
                     @if (isLoggedIn()) {
-                      <button routerLink="/profile" class="btn btn-user">Профил</button>
-                      <button routerLink="/logout" class="btn btn-logout">Изход</button>
+                    <button routerLink="/profile" class="btn btn-user">Профил</button>
+                    <button (click)="logout()" class="btn btn-logout">Изход</button>
                     } @else {
-                      <button routerLink="/login" class="btn btn-login">Вход</button>
-                      <button routerLink="/register" class="btn btn-register">Регистрация</button>
+                    <button routerLink="/login" class="btn btn-login">Вход</button>
+                    <button routerLink="/register" class="btn btn-register">Регистрация</button>
                     }
                 </div>
             </div>

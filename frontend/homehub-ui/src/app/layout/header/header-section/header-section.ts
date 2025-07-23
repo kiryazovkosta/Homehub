@@ -1,6 +1,6 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header-section',
@@ -12,6 +12,7 @@ export class HeaderSection {
   isMobileMenuActive = false;
 
   protected authService: AuthService = inject(AuthService);
+  protected router: Router = inject(Router);
   readonly isLoggedIn = this.authService.isLoggedIn;
 
   toggleMobileMenu(): void {
@@ -30,5 +31,10 @@ export class HeaderSection {
     if (header && !header.contains(target)) {
       this.isMobileMenuActive = false;
     }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(["/about"]);
   }
 }

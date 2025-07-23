@@ -10,3 +10,4 @@ export const tasksUrl: string = 'api/tasks';
 export const functionalitiesUrl: string = 'api/services';
 
 export const supabaseUrl: string = 'api/images';
+export const familyUrl: string = 'api/families/me';
