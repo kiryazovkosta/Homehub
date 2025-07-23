@@ -1,12 +1,12 @@
 export interface RegisterUserRequest {
-    email: string,
     firstName: string,
     lastName: string,
     password: string,
     confirmPassword: string,
+    email: string,
     familyRole: FamilyRole,
     description: string,
-    imageUrl: File,
+    imageUrl: string,
     familyId: string,
 }
 

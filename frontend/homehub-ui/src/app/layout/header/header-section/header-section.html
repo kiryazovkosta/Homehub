@@ -14,12 +14,12 @@
             <div class="nav-content" [class.active]="isMobileMenuActive">
                 <ul class="nav-menu">
                     <li><a routerLink="/about">Начало</a></li>
-                    <li><a href="#services" (click)="closeMenu()">Услуги</a></li>
-                    <li><a href="#products" (click)="closeMenu()">Продукти</a></li>
-                    <li><a href="#blog" (click)="closeMenu()">Блог</a></li>
-                    <li><a href="#finance" (click)="closeMenu()">Финанси</a></li>
-                    <li><a href="#finance-detail" (click)="closeMenu()">Детайли</a></li>
-                    <li><a href="#contact" (click)="closeMenu()">Контакти</a></li>
+                    <li><a routerLink="/services">Услуги</a></li>
+                    <li><a routerLink="/products">Продукти</a></li>
+                    <li><a routerLink="/blog">Блог</a></li>
+                    <li><a routerLink="/finance">Финанси</a></li>
+                    <li><a routerLink="/finance-detail">Детайли</a></li>
+                    <li><a routerLink="/contact">Контакти</a></li>
                 </ul>
                 <div class="nav-buttons">
                     @if (isLoggedIn()) {

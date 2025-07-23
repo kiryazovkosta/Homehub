@@ -62,7 +62,7 @@ export class Login {
             }
 
             // Navigate immediately
-            this.router.navigate(['/']);
+            this.router.navigate(['/about']);
             
           } else {
             // Show error message

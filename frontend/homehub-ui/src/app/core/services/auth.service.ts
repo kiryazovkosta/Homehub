@@ -7,7 +7,7 @@ import { Observable, of } from "rxjs";
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { AccessTokenResponse } from "../../models/auth/access-token-response.model";
 import { authBaseUrl, loginEndpoint, refreshEndpoint, registerEndpoint, accessTokenKey, refreshTokenKey } from "../../constants/auth-constants";
-import { RegisterUserRequest } from "../../models/auth/lregister-user-request.model";
+import { RegisterUserRequest } from "../../models/auth/register-user-request.model";
 
 @Injectable({
     providedIn: 'root'
