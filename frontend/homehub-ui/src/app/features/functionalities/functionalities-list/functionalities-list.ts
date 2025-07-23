@@ -23,14 +23,14 @@ export class FunctionalitiesList implements AfterViewInit, OnDestroy {
   constructor(private elementRef: ElementRef) { 
     this.functionalities$ = this.functionalitiesService.getFunctionalities();
     
-    this.functionalities$.subscribe({
-      next: (data) => {
-        console.log('Functionalities data received:', data);
-      },
-      error: (error) => {
-        console.error('Error loading functionalities:', error);
-      }
-    });
+    // this.functionalities$.subscribe({
+    //   next: (data) => {
+    //     console.log('Functionalities data received:', data);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error loading functionalities:', error);
+    //   }
+    // });
   }
 
   @HostListener('window:scroll', [])
@@ -78,11 +78,11 @@ export class FunctionalitiesList implements AfterViewInit, OnDestroy {
     }
 
     if (!this.serviceCards || this.serviceCards.length === 0) {
-      console.log('No service cards found yet, will retry...');
+      //console.log('No service cards found yet, will retry...');
       return;
     }
 
-    console.log(`Setting up animation for ${this.serviceCards.length} cards`);
+    //console.log(`Setting up animation for ${this.serviceCards.length} cards`);
 
     const observerOptions = {
       threshold: 0.1,

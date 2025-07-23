@@ -5,26 +5,43 @@
             <p>Влезте в своя акаунт за достъп до всички функции</p>
         </div>
         <div class="form-container">
+            <!-- Error Message -->
+            <div class="error-message show" *ngIf="showError">
+                <div class="error-content">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-text">{{ errorMessage }}</span>
+                    <button class="error-close" (click)="closeError()" type="button">✕</button>
+                </div>
+            </div>
+            
             <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                     <label for="login-email">Имейл адрес</label>
                     <input type="email" id="login-email" formControlName="email"
                         [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="validator-error-message">
+                        <small *ngIf="loginForm.get('email')?.errors?.['required']">Имейл адресът е задължителен.</small>
+                        <small *ngIf="loginForm.get('email')?.errors?.['email']">Невалиден имейл формат.</small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="login-password">Парола</label>
                     <input type="password" id="login-password" formControlName="password"
                         [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                    <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="validator-error-message">
+                        <small *ngIf="loginForm.get('password')?.errors?.['required']">Паролата е задължителна.</small>
+                        <small *ngIf="loginForm.get('password')?.errors?.['minlength']">Минимум 6 символа.</small>
+                    </div>
                 </div>
                 <div class="form-group checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" formControlName="remember">
+                        <input type="checkbox" formControlName="rememberMe">
                         <span class="checkmark"></span>
                         Запомни ме
                     </label>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                    <button type="submit" class="btn btn-primary" [disabled]="!isFormValid() || isLoading">
                         {{ buttonText }}
                     </button>
                     <a href="#" class="forgot-password">Забравена парола?</a>

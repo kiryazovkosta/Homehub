@@ -50,7 +50,7 @@ export class Register {
       this.buttonText = 'Изпращане...';
 
       // Simulate API call
-      setTimeout(() => {
+      //setTimeout(() => {
         this.buttonText = 'Успешно!';
 
         // Change button color temporarily
@@ -59,7 +59,7 @@ export class Register {
           button.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
         }
 
-        setTimeout(() => {
+        //setTimeout(() => {
           this.buttonText = 'Регистрация';
           this.isLoading = false;
           if (button) {
@@ -68,8 +68,8 @@ export class Register {
           this.registerForm.reset();
           this.fileName = '';
           this.passwordsMatch = false;
-        }, 2000);
-      }, 1500);
+        //}, 2000);
+      //}, 1500);
     } else {
       this.markFormGroupTouched(this.registerForm);
     }

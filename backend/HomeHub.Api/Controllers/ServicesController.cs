@@ -24,13 +24,3 @@ public sealed class ServicesController : ControllerBase
         return Ok(response);
     }
 }
-
-public static class QueryableExtensions
-{
-    public static IQueryable<T> ToAsyncSafeQueryable<T>(this IEnumerable<T> source)
-    {
-        // If you have a real async provider (like EF Core), return as is.
-        // For in-memory, just return AsQueryable().
-        return source.AsQueryable();
-    }
-}

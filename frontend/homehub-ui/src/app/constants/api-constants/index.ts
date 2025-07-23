@@ -9,3 +9,6 @@ export const tasksUrl: string = 'api/tasks';
 
 export const functionalitiesUrl: string = 'api/services';
 
+
+
+

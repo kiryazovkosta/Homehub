@@ -13,8 +13,7 @@
 
             <div class="nav-content" [class.active]="isMobileMenuActive">
                 <ul class="nav-menu">
-                    <li><a href="#home" (click)="closeMenu()">Начало</a></li>
-                    <li><a href="#about" (click)="closeMenu()">За нас</a></li>
+                    <li><a routerLink="/about">Начало</a></li>
                     <li><a href="#services" (click)="closeMenu()">Услуги</a></li>
                     <li><a href="#products" (click)="closeMenu()">Продукти</a></li>
                     <li><a href="#blog" (click)="closeMenu()">Блог</a></li>
@@ -23,10 +22,13 @@
                     <li><a href="#contact" (click)="closeMenu()">Контакти</a></li>
                 </ul>
                 <div class="nav-buttons">
-                      <button class="btn btn-user">Профил</button>
-                      <button class="btn btn-logout">Изход</button>
-                      <button class="btn btn-login">Вход</button>
-                      <button class="btn btn-register">Регистрация</button>
+                    @if (isLoggedIn()) {
+                      <button routerLink="/profile" class="btn btn-user">Профил</button>
+                      <button routerLink="/logout" class="btn btn-logout">Изход</button>
+                    } @else {
+                      <button routerLink="/login" class="btn btn-login">Вход</button>
+                      <button routerLink="/register" class="btn btn-register">Регистрация</button>
+                    }
                 </div>
             </div>
         </nav>
