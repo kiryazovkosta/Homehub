@@ -23,3 +23,17 @@ export enum FamilyRole {
     Daughter = 10,
     Other = 99
 }
+
+export const familyRoleLabels: Record<number, string> = {
+  [FamilyRole.Father]: 'Баща',
+  [FamilyRole.Mother]: 'Майка',
+  [FamilyRole.PaternalUncle]: 'Чичо (по бащина линия)',
+  [FamilyRole.MaternalUncle]: 'Чичо (по майчина линия)',
+  [FamilyRole.PaternalAunt]: 'Леля (по бащина линия)',
+  [FamilyRole.MaternalAunt]: 'Леля (по майчина линия)',
+  [FamilyRole.PaternalCousin]: 'Братовчед (по бащина линия)',
+  [FamilyRole.MaternalCousin]: 'Братовчед (по майчина линия)',
+  [FamilyRole.Son]: 'Син',
+  [FamilyRole.Daughter]: 'Дъщеря',
+  [FamilyRole.Other]: 'Друго'
+};

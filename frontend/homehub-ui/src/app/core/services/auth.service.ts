@@ -31,9 +31,12 @@ export class AuthService {
         const currentJwt = localStorage.getItem(accessTokenKey);
         const currentRefreshToken = localStorage.getItem(refreshTokenKey);
 
-        if (currentJwt && currentRefreshToken && this.isTokenValid(currentJwt)) {
+        if (currentJwt && this.isTokenValid(currentJwt)) {
             this._isLoggedIn.set(true);
             this._jwtToken.set(currentJwt);
+        }
+
+        if (currentRefreshToken) {
             this._refreshToken.set(currentRefreshToken);
         }
     }
@@ -79,6 +82,28 @@ export class AuthService {
         this._jwtToken.set(null);
         this._refreshToken.set(null);
         this.removeTokens();
+    }
+
+    validateToken(token: string) {
+        return this.isTokenValid(token);
+    }
+
+    refresh(token: string) : Observable<string|null> {
+        return this.httpClient.post<AccessTokenResponse>(this.refreshTokenUrl, { refreshToken: token }).pipe(
+            tap(tokens => {
+                this.saveTokens(tokens);
+                this._isLoggedIn.set(true);
+                this._jwtToken.set(tokens.accessToken);
+                this._refreshToken.set(tokens.refreshToken);
+            }),
+            map((response) => response.accessToken),
+            catchError(error => {
+                this._isLoggedIn.set(false);
+                this._jwtToken.set(null);
+                this._refreshToken.set(null);
+                return of(null);
+            })
+        );
     }
 
     private isTokenValid(token: string) {

@@ -1,1 +1,104 @@
-<p>user-profile works!</p>
+<section id="user-profile" class="form-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="gradient-text">Потребителски профил</h2>
+            <p>Управлявайте вашия профил и лична информация</p>
+        </div>
+        <div class="form-container">
+            <form class="contact-form" [formGroup]="userProfileForm" (ngSubmit)="onSubmit()">
+                <!-- Personal Information -->
+                <div class="form-section-title">
+                    <h3>Лична информация</h3>
+                    <input type="hidden" formControlName="id" />
+                </div>
+
+                <div class="form-group">
+                    <label for="user-profile-imageUrl">Снимка на профила</label>
+                    <div class="profile-image-container">
+                        <img id="user-profile-imageUrl" [src]="profileImageUrl()" alt="Профилна снимка" class="profile-image"
+                            *ngIf="hasProfileImage(); else noImage" />
+                        <ng-template #noImage>
+                            <div class="no-image-placeholder">
+                                <span class="no-image-icon">👤</span>
+                                <p>Няма налична снимка</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="user-profile-firstName">Лично име *</label>
+                        <input type="text" id="user-profile-firstName" formControlName="firstName" [readonly]="!editMode()">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-profile-lastName">Фамилно име *</label>
+                        <input type="text" id="user-profile-lastName" formControlName="lastName" [readonly]="!editMode()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="user-profile-email">Имейл</label>
+                        <input type="text" id="user-profile-email" formControlName="email" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-profile-familyRoleValue">Роля в семейството *</label>
+                        
+                        @if (!editMode()) {
+                            <input type="text" id="user-profile-familyRoleValue" formControlName="familyRoleValue" readonly>
+                        } @else {
+                            <select id="user-profile-familyRole" formControlName="familyRole">
+                                @for (role of familyRoles(); track role[0]) {
+                                    <option [value]="role[0]">{{ role[1] }}</option>
+                                }
+                            </select>
+                        }
+                        
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="user-profile-description">Описание *</label>
+                    <textarea type="text" id="user-profile-description" formControlName="description" [readonly]="!editMode()"
+                        rows="3"></textarea>
+                </div>
+
+                <!-- File Upload -->
+                <div class="form-group">
+                    <label for="user-profile-file">Прикачени файлове</label>
+                    <div class="file-upload">
+                        <input type="file" id="user-profile-file" multiple accept=".jpg,.png,.jpeg"
+                            (change)="onFilesChange($event)" [disabled]="!editMode()">
+                        <label for="user-profile-file" class="file-label" [class.has-file]="selectedFile">
+                            <span class="upload-icon">📎</span>
+                            <span class="upload-text">{{ fileUploadText }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row" formGroupName="familyGroup">
+                    <div class="form-group">
+                        <label for="user-profile-familyName">Семейство</label>
+                        <input type="text" id="user-profile-familyName" formControlName="familyName" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-profile-familyDescription">Описание на семейството</label>
+                        <input type="text" id="user-profile-familyDescription" formControlName="familyDescription"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    @if (editMode()) {
+                        <button type="submit" class="btn btn-primary" [disabled]="isLoading">Запази</button>
+                        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Отказ</button>
+                    } @else {
+                        <button type="button" class="btn btn-primary" [disabled]="editMode()" (click)="enableEditMode()" >Редактиране</button>
+                    }
+
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

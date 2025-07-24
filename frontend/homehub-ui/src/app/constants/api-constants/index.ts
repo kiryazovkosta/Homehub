@@ -1,3 +1,5 @@
+import { C } from "@angular/cdk/keycodes";
+
 export const baseUrl: string = 'http://localhost:15000/';
 
 export const billsUrl: string = 'api/bills';
@@ -11,3 +13,5 @@ export const functionalitiesUrl: string = 'api/services';
 
 export const supabaseUrl: string = 'api/images';
 export const familyUrl: string = 'api/families/me';
+export const userProfileUrl: string = 'api/users/me';
+export const usersUrl: string = 'api/users';

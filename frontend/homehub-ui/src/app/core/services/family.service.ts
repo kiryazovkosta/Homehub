@@ -14,7 +14,7 @@ export class FamilyService {
     constructor(private httpClient: HttpClient){
     }
 
-    getFamiltWithMembers(): Observable<FamilyWithUsersResponse> {
+    getFamilyWithMembers(): Observable<FamilyWithUsersResponse> {
         return this.httpClient.get<FamilyWithUsersResponse>(this.apiUrl);
     }
 }

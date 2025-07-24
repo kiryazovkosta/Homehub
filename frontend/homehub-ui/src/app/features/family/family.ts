@@ -26,7 +26,7 @@ export class Family implements OnInit {
   touchEndX = 0;
 
   constructor() {
-    this.family$ = this.familyService.getFamiltWithMembers();
+    this.family$ = this.familyService.getFamilyWithMembers();
     console.log(this.family$);
   }
 

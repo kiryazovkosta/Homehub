@@ -59,5 +59,33 @@ public sealed class UsersController(ApplicationDbContext dbContext, UserContext 
         return Ok(user);
     }
 
+    [HttpPut]
+    public async Task<ActionResult> Update(UpdateUserRequest request)
+    {
+        string? userId = await userContext.GetUserIdAsync();
+        if (string.IsNullOrWhiteSpace(userId) || request.Id != userId)
+        {
+            return Unauthorized();
+        }
+
+        User? user = await dbContext
+            .Users
+            .Where(u => u.Id == userId)
+            .FirstOrDefaultAsync();
+        if (user is null)
+        {
+            return NotFound();
+        }
+        
+        user.FirstName = request.FirstName;
+        user.LastName = request.LastName;
+        user.FamilyRole = request.FamilyRole;
+        user.Description = request.Description;
+        user.ImageUrl = request.ImageUrl;
+        await dbContext.SaveChangesAsync();
+
+        return NoContent();
+    }
+
 
 }
