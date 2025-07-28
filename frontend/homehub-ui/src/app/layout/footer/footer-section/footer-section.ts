@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-footer-section',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './footer-section.scss'
 })
 export class FooterSection {
-  currentYear: number = new Date().getFullYear();
+  currentYear = signal(new Date().getFullYear());
 }

@@ -16,5 +16,4 @@ import { BackToTop } from "./layout/back-to-top/back-to-top";
   styleUrl: './app.css'
 })
 export class App {
-  protected title = 'Homehub application';
 }

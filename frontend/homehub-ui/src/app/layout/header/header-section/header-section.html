@@ -1,11 +1,15 @@
 <header class="header">
     <div class="container">
-        <nav class="nav">
-            <div class="logo">
+        <nav class="nav" role="navigation">
+            <div class="logo" routerLink="/home" area-label="Home">
                 <h1>Logo</h1>
             </div>
 
-            <div class="mobile-menu-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuActive">
+            <div class="mobile-menu-toggle" 
+                    (click)="toggleMobileMenu()" 
+                    [class.active]="isMobileMenuActive"
+                    aria-label="Toggle navigation menu" 
+                    [attr.aria-expanded]="isMobileMenuActive">
                 <span></span>
                 <span></span>
                 <span></span>
