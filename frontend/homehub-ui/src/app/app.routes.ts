@@ -45,11 +45,6 @@ export const routes: Routes = [
         loadComponent: () => import('./features').then(m => m.FinanceItem),
         canActivate: [authGuard]
     },
-    {
-        path: 'pages',
-        loadComponent: () => import('./shared/page-navigation/page-navigation').then(m => m.PageNavigation),
-        canActivate: [authGuard]
-    },
     { 
         path: 'contact', 
         loadComponent: () => import('./features').then(m => m.ContactForm), 

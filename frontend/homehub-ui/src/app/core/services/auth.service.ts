@@ -106,6 +106,17 @@ export class AuthService {
         );
     }
 
+    getUserId() : string|undefined {
+        const token = this._jwtToken();
+
+        if (token && this.isTokenValid(token)) {
+            const decoded = jwtDecode<JwtPayload>(token);
+            return `u_${decoded?.sub}`;
+        }
+
+        return undefined;
+    }
+
     private isTokenValid(token: string) {
         try {
             const decoded = jwtDecode<JwtPayload>(token);

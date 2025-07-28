@@ -6,7 +6,7 @@
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -214,7 +214,7 @@
 .status-badge {
     padding: 6px 12px;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -223,6 +223,29 @@
 .status-badge.active {
     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     color: white;
+}
+
+.status-text {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.85em;
+  text-transform: uppercase;
+}
+
+.past-status .status-text {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.current-status .status-text {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.active-status .status-text {
+  background-color: #d4edda;
+  color: #155724;
 }
 
 .category-info {

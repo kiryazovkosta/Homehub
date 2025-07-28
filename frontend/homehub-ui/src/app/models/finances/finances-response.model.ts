@@ -7,6 +7,7 @@ export interface FinanceListResponse {
     type: number;
     typeValue: string;
     amount: number;
+    userId: string;
 }
 
 export interface FinanceResponse {
@@ -17,7 +18,8 @@ export interface FinanceResponse {
     typeValue: string;
     category: CategoryResponse;
     amount: number;
-    date: string;
-    createdAt: string;
-    updatedAt: string | null;
+    date: Date;
+    createdAt: Date;
+    updatedAt: Date | null;
+    userId: string;
 }

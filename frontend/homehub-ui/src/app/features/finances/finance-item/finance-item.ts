@@ -1,58 +1,96 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, signal, inject, input, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../core/services/auth.service';
+import { FinancesService } from '../../../core/services';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { FinanceResponse } from '../../../models';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ErrorMessage } from "../../../shared/error-message/error-message";
 
 @Component({
   selector: 'app-finance-item',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, ErrorMessage],
   templateUrl: './finance-item.html',
   styleUrl: './finance-item.scss'
 })
 export class FinanceItem {
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly financesService: FinancesService = inject(FinancesService);
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly router: Router = inject(Router);
+
   id = input<string>();
 
-    // Данни за финансовия запис
-  financeRecord = {
-    id: 'FIN-2024-001',
-    title: 'Продажба продукт А',
-    type: 'income',
-    typeText: 'Приход',
-    description: 'Продажба на основен продукт за клиент от София. Проектът включва пълноценен уеб сайт с модерен дизайн, responsive функционалност и SEO оптимизация.',
-    amount: '+ 2,500.00 лв.',
-    transactionDate: '15.01.2024',
-    createdDate: '15.01.2024 14:30',
-    lastModified: '20.01.2024 09:15',
-    status: 'active',
-    statusText: 'Активен',
-    category: {
-      id: 'CAT-001',
-      name: 'Уеб дизайн',
-      type: 'Приход'
+  private routeParams = toSignal(this.route.params);
+  routeId = computed(() => {
+    const params = this.routeParams();
+    return params?.['id'];
+  });
+
+  effectiveId = computed(() => this.id() || this.routeId());
+
+  financeRecord: FinanceResponse|null = null;
+  loading = signal<boolean>(false);
+  error = signal<string | null>(null);
+
+  readonly userId = computed( () => this.authService.getUserId());
+
+  constructor() {
+    effect(() => {
+      this.loading.set(true);
+      this.error.set(null);
+      const id = this.effectiveId();
+      if (id) {
+        this.financesService.getFinance(id).subscribe({
+          next: (response: FinanceResponse) => {
+            console.log(response);
+            this.financeRecord = response;
+            this.loading.set(false);
+            this.error.set(null);
+          },
+          error: () => {
+            this.loading.set(false);
+            this.error.set("Възникна проблем при извличането на данните!")
+          }
+        });
+      }
+    });
+  }
+
+  onBack(): void {
+  }
+
+  getTypeClass(item: number): string {
+    return item === 1 ? 'income' : 'expense';
+  }
+
+  getTypeValue(item: number): string {
+    return item === 1 ? 'Приход' : 'Разход';
+  }
+
+  getTypeSign(item: number): string {
+    return item === 1 ? '+' : '-';
+  }
+
+  isBeforeOrAfterToday(date: string | Date | null | undefined): number {
+    if (!date) {
+      return 0;
     }
-  };
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const compareDate = new Date(date);
+    compareDate.setHours(0, 0, 0, 0);
+    
+    if (compareDate < today) return -1;
+    if (compareDate > today) return 1;
+    return 0;
+  }
 
-  constructor() { }
-
-    onBack(): void {
-    console.log('Navigating back to finance list');
-
-    // Визуална обратна връзка
-    const button = document.querySelector('.btn-back') as HTMLElement;
-    if (button) {
-      button.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        button.style.transform = '';
-      }, 150);
-    }
-
-    // Навигация към списъка
-    const financeSection = document.querySelector('#finance');
-    if (financeSection) {
-      financeSection.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
+  closeError(): void {
+    this.error.set(null);
   }
 
   // Добавяне на hover ефекти при инициализация
@@ -60,6 +98,11 @@ export class FinanceItem {
     this.addHoverEffects();
     this.addKeyboardNavigation();
   }
+
+    isCreator(userId: string): boolean {
+      // Проверява дали текущият потребител е създател на записа
+      return userId === this.userId();
+    }
 
   private addHoverEffects(): void {
     const buttons = document.querySelectorAll('.btn-edit-detail, .btn-delete, .btn-back');
@@ -83,4 +126,6 @@ export class FinanceItem {
       }
     });
   }
+
+
 }

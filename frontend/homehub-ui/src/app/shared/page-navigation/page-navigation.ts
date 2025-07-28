@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-page-navigation',
@@ -9,8 +9,6 @@ import { ChangeDetectionStrategy, Component, effect, input, output, signal } fro
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageNavigation {
-  startIndex: number = 0;
-  endIndex: number = 6;
   visiblePages: string[] = []
 
   totalCount = input<number>(0);
@@ -20,21 +18,30 @@ export class PageNavigation {
 
   setPageNumber = output<number>();
 
+  startIndex = computed(() => ((this.page() - 1) * this.pageSize()) + 1);
+  endIndex = computed(() => Math.min(this.startIndex() + this.pageSize() - 1, this.totalCount()));
+
   constructor() {
     this.visiblePages = []
 
     effect(() => {
-        this.startIndex = ((this.page() - 1) * this.pageSize()) + 1;
-        this.endIndex = Math.min(this.startIndex + this.pageSize() - 1, this.totalCount());
-
       for (let i = 1; i <= this.totalPages(); i++) {
         this.visiblePages.push(i.toString());
       }
     })
   }
 
-  goToPage(pageNumber: number) {
-    console.log(pageNumber);
-    this.setPageNumber.emit(pageNumber);
+  goToPage(pageNumber: number, event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    }
+    
+    setTimeout(() => {
+      this.setPageNumber.emit(pageNumber);
+    }, 0);
+    
+    return false;
   }
 }

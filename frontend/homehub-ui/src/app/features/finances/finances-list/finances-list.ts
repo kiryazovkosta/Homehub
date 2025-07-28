@@ -4,6 +4,8 @@ import { FinancesService } from '../../../core/services';
 import { FinanceListResponse, PaginationListResponse } from '../../../models';
 import { RouterLink } from '@angular/router';
 import { PageNavigation } from "../../../shared/page-navigation/page-navigation";
+import { AuthService } from '../../../core/services/auth.service';
+import { ErrorMessage } from "../../../shared/error-message/error-message";
 
 interface FinanceRecord {
   id: number;
@@ -15,12 +17,13 @@ interface FinanceRecord {
 
 @Component({
   selector: 'app-finances-list',
-  imports: [CommonModule, RouterLink, PageNavigation],
+  imports: [CommonModule, RouterLink, PageNavigation, ErrorMessage],
   templateUrl: './finances-list.html',
   styleUrl: './finances-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FinancesList {
+  private readonly authService: AuthService = inject(AuthService);
   private readonly financesService: FinancesService = inject(FinancesService);
 
   readonly page = signal<number>(1);
@@ -34,40 +37,50 @@ export class FinancesList {
 
   readonly loading = signal(true);
   readonly hasError = signal(false);
+  readonly errorMessage = signal<string|null>(null);
 
   readonly isNotEmpty = computed(() => this.items().length > 0);
 
+  readonly userId = computed( () => this.authService.getUserId());
+
   constructor() {
-   effect(() => {
+    effect(() => {
       this.loading.set(true);
       this.hasError.set(false);
+      this.errorMessage.set(null);
 
       const currentPage = this.page();
       const currentPageSize = this.pageSize();
 
-      this.financesService.getFinances({page: currentPage, pageSize: currentPageSize }).subscribe({
-        next: (response: PaginationListResponse<FinanceListResponse>) => {  
+      this.financesService.getFinances({ page: currentPage, pageSize: currentPageSize }).subscribe({
+        next: (response: PaginationListResponse<FinanceListResponse>) => {
           this.items.set(response.items);
           this.totalCount.set(response.totalCount);
           this.totalPages.set(response.totalPages);
           this.hasPreviousPage.set(response.hasPreviousPage);
           this.hasNextPage.set(response.hasNextPage);
           this.loading.set(false);
-
-          console.log(this.items())
-          this.calculateVisiblePages();
         },
         error: () => {
           this.loading.set(false);
           this.hasError.set(true);
+          this.errorMessage.set("Възникна проблем при извличането на данните!")
         }
       });
-    }); 
+    });
   }
 
-  setPage(pageNumber: number) {
-    console.log(pageNumber)
+  setPage(pageNumber: number, event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    // Директно актуализирайте страницата без Router навигация
     this.page.set(pageNumber);
+    this.animateCards();
+
+    return false;
   }
 
   setPageSize(pageSize: number) {
@@ -98,72 +111,38 @@ export class FinancesList {
     return item === 1 ? '+' : '-';
   }
 
-  protected startIndex = (this.page() - 1) * this.pageSize();
-  protected endIndex = Math.min(this.startIndex + this.pageSize(), this.totalCount());
-
-  visiblePages: (number | string)[] = [];
-
   updatePagination(pageIndex: number): void {
     console.log(pageIndex);
-
     this.page.set(pageIndex);
-    this.calculateVisiblePages();
     this.animateCards();
   }
 
-  calculateVisiblePages(): void {
-    const pages: (number | string)[] = [];
-
-    if (this.totalPages() <= 5) {
-      // Show all pages if total is 5 or less
-      for (let i = 1; i <= this.totalPages(); i++) {
-        pages.push(i);
-      }
-    } else {
-      // Always show first page
-      pages.push(1);
-
-      if (this.page() > 3) {
-        pages.push('...');
-      }
-
-      // Show pages around current page
-      for (let i = Math.max(2, this.page() - 1); i <= Math.min(this.totalPages() - 1, this.page() + 1); i++) {
-        pages.push(i);
-      }
-
-      if (this.page() < this.totalPages() - 2) {
-        pages.push('...');
-      }
-
-      // Always show last page
-      pages.push(this.totalPages());
-    }
-
-    this.visiblePages = pages;
-  }
-
-  goToPage(pageNumber: number | string): void {
-    // Проверяваме дали page е число
-    if (typeof pageNumber !== 'number') {
-      return;
-    }
-
+  goToPage(pageNumber: number): void {
     if (pageNumber < 1 || pageNumber > this.totalPages() || pageNumber === this.page()) {
       return;
     }
 
     this.updatePagination(pageNumber);
 
-    // Scroll to top of section
-    const financeSection = document.getElementById('finance');
-    if (financeSection) {
-      financeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // // Scroll to top of section
+    // const financeSection = document.getElementById('finance');
+    // if (financeSection) {
+    //   financeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // }
+  }
+
+  isCreator(item: FinanceListResponse): boolean {
+    // Проверява дали текущият потребител е създател на записа
+    return item.userId === this.userId();
+  }
+
+  closeError(): void {
+    this.errorMessage.set(null);
   }
 
   private animateCards(): void {
     setTimeout(() => {
+      3339
       const cards = document.querySelectorAll('.finance-card');
       cards.forEach((card, index) => {
         (card as HTMLElement).style.opacity = '0.5';
@@ -172,18 +151,5 @@ export class FinancesList {
         }, 100 * index);
       });
     }, 0);
-  }
-
-  @HostListener('keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === 'ArrowLeft') {
-      this.goToPage(this.page() - 1);
-    } else if (event.key === 'ArrowRight') {
-      this.goToPage(this.page() + 1);
-    } else if (event.key === 'Home') {
-      this.goToPage(1);
-    } else if (event.key === 'End') {
-      this.goToPage(this.totalPages());
-    }
   }
 }

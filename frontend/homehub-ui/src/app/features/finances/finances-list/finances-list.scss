@@ -27,6 +27,31 @@
     max-width: 600px;
     margin: 0 auto;
   }
+
+  .section-description {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .btn-create {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background-color: var(--primary-color, #4CAF50);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+
+  .btn-create:hover {
+    background-color: var(--primary-color-dark, #388E3C);
+  }
 }
 
 .gradient-text {
