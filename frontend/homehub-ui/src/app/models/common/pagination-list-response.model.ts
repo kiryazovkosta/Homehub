@@ -4,6 +4,6 @@ export interface PaginationListResponse<T> {
     pageSize: number;
     totalCount: number;
     totalPages: number;
-    asPreviousPage: boolean;
+    hasPreviousPage: boolean;
     hasNextPage: boolean;
 }

@@ -1,0 +1,10 @@
+<!-- Error Message -->
+@if (visible()) {
+    <div class="error-message show">
+        <div class="error-content">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text">{{ errorMessageText() }}</span>
+            <button class="error-close" (click)="onClose()" type="button">✕</button>
+        </div>
+    </div>
+}

@@ -5,10 +5,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { familyRoleLabels } from '../../models/auth/register-user-request.model';
 import { UpdateUserRequest } from '../../models/users/update-user-request.model';
+import { UserProfileResponse } from '../../models/users/user-profile.model';
+import { switchMap } from 'rxjs';
+import { ErrorMessage } from "../../shared/error-message/error-message";
 
 @Component({
   selector: 'app-user-profile',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ErrorMessage],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -16,14 +19,14 @@ import { UpdateUserRequest } from '../../models/users/update-user-request.model'
 export class UserProfile {
   protected userProfileForm: FormGroup;
   protected isLoading: boolean = false;
-  protected selectedFile: File|null = null;
+  protected selectedFile: File | null = null;
   protected fileUploadText: string = 'Избери файл (изображение)';
   protected usersService: UsersService = inject(UsersService);
   protected fb: FormBuilder = inject(FormBuilder);
 
-  userProfileSignal = toSignal(this.usersService.getMyInfo());
+  errorMessage = signal<string|null>(null);
+  userProfileSignal = signal<UserProfileResponse | null>(null);
 
-  // Добавете computed signals за изображението
   profileImageUrl = computed(() => {
     const userProfile = this.userProfileSignal();
     return userProfile?.imageUrl || null;
@@ -55,6 +58,10 @@ export class UserProfile {
       }),
     });
 
+    this.usersService.getMyInfo().subscribe(userProfile => {
+      this.userProfileSignal.set(userProfile);
+    });
+
     effect(() => {
       const userProfile = this.userProfileSignal();
       if (userProfile) {
@@ -83,14 +90,14 @@ export class UserProfile {
   }
 
   onFilesChange(event: any): void {
-    const files = Array.from(event.target.files) as File[];
-    this.selectedFile = files[0];
+    // const files = Array.from(event.target.files) as File[];
+    // this.selectedFile = files[0];
 
-    if (files.length > 0) {
-      this.fileUploadText = `Избран файл: ${files[0].name}`;
-    } else {
-      this.fileUploadText = 'Избери файлове (PDF, DOC, изображения, ZIP)';
-    }
+    // if (files.length > 0) {
+    //   this.fileUploadText = `Избран файл: ${files[0].name}`;
+    // } else {
+    //   this.fileUploadText = 'Избери файлове (PDF, DOC, изображения, ZIP)';
+    // }
   }
 
   onSubmit(): void {
@@ -102,20 +109,28 @@ export class UserProfile {
         id: this.userProfileForm.get("id")?.value,
         firstName: this.userProfileForm.get("firstName")?.value,
         lastName: this.userProfileForm.get("lastName")?.value,
-        description: this.userProfileForm.get("description")?.value, 
-        familyRole: this.userProfileForm.get("familyRole")?.value, 
+        description: this.userProfileForm.get("description")?.value,
+        familyRole: this.userProfileForm.get("familyRole")?.value,
         imageUrl: this.userProfileForm.get("imageUrl")?.value
       };
 
-      console.log(updateUserRequest);
-
-      this.usersService.updateMyInfo(updateUserRequest).subscribe((d) => {
-        console.log(d);
-      })
-      
-      this.editMode.set(false);
-
-      this.isLoading = false;
+      this.usersService
+        .updateMyInfo(updateUserRequest)
+        .pipe(switchMap(() => this.usersService.getMyInfo()))
+        .subscribe({
+          next: (updatedProfile) => {
+            console.log('Profile updated and refreshed successfully:', updatedProfile);
+            this.errorMessage.set(null);
+            this.editMode.set(false);
+            this.isLoading = false;
+            this.userProfileSignal.set(updatedProfile);
+          },
+          error: (error) => {
+            console.error('Error updating profile:', error);
+            this.isLoading = false;
+            this.errorMessage.set("Възникна проблем при редактирането на потребителските данни!");
+          }
+        });
     } else {
       this.markFormGroupTouched(this.userProfileForm);
     }
@@ -124,6 +139,10 @@ export class UserProfile {
   cancelEdit(): void {
     this.editMode.set(false);
     this.userProfileForm.reset(this.userProfileSignal());
+  }
+
+  closeError(): void {
+    this.errorMessage.set(null);
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

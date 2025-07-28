@@ -1,9 +1,5 @@
 import { CategoryResponse } from "../categories/category-response.model";
 
-export interface FinancesListCollectionResponse {
-    items: FinanceListResponse[];
-}
-
 export interface FinanceListResponse {
     id: string;
     title: string;

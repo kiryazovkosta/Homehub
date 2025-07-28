@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { FinancesListCollectionResponse, FinanceResponse } from "../../models";
+import { FinanceResponse, PaginationListResponse, FinanceListResponse } from "../../models";
 import { baseUrl, financesUrl } from "../../constants/api-constants";
 
 @Injectable({
@@ -13,8 +13,8 @@ export class FinancesService {
 
     constructor(private httpClient: HttpClient){}
 
-    getFinances(): Observable<FinancesListCollectionResponse> {
-        return this.httpClient.get<FinancesListCollectionResponse>(this.apiUrl);
+    getFinances(pagination: { page:number, pageSize: number }): Observable<PaginationListResponse<FinanceListResponse>> {
+        return this.httpClient.get<PaginationListResponse<FinanceListResponse>>(this.apiUrl, { params: pagination });
     }
 
     getFinance(id: string) : Observable<FinanceResponse> {

@@ -35,6 +35,21 @@ export const routes: Routes = [
         loadComponent: () => import('./features').then(m => m.Family),
         canActivate: [authGuard]
     },
+    {
+        path: 'finances',
+        loadComponent: () => import('./features').then(m => m.FinancesList),
+        canActivate: [authGuard]
+    },
+    {
+        path: 'finances/:id',
+        loadComponent: () => import('./features').then(m => m.FinanceItem),
+        canActivate: [authGuard]
+    },
+    {
+        path: 'pages',
+        loadComponent: () => import('./shared/page-navigation/page-navigation').then(m => m.PageNavigation),
+        canActivate: [authGuard]
+    },
     { 
         path: 'contact', 
         loadComponent: () => import('./features').then(m => m.ContactForm), 

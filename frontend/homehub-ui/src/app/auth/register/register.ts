@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RegisterUserRequest, FamilyRole } from '../../models/auth/register-user-request.model';
 import { CommonModule } from '@angular/common';
@@ -6,10 +6,11 @@ import { AuthService } from '../../core/services/auth.service';
 import { ImagesServices } from '../../core/services/images.service';
 import { SupabaseResponse } from '../../models/common/supabase-response.model';
 import { Router } from '@angular/router';
+import { ErrorMessage } from "../../shared/error-message/error-message";
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ErrorMessage],
   templateUrl: './register.html',
   styleUrls: ['./register.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -21,8 +22,7 @@ export class Register {
   fileName = '';
   passwordsMatch = false;
   selectedFile: File | null = null;
-  errorMessage = '';
-  showError = false;
+  errorMessage = signal<string|null>(null);
 
   private authService: AuthService = inject(AuthService);
   private imagesService: ImagesServices = inject(ImagesServices);
@@ -69,16 +69,14 @@ export class Register {
   }
 
   closeError(): void {
-    this.showError = false;
-    this.errorMessage = '';
+    this.errorMessage.set(null);
     this.changeDetectorRef.markForCheck();
   }
 
   onSubmit(): void {
     if (this.registerForm.valid && this.passwordsMatch) {
       this.isLoading = true;
-      this.showError = false;
-      this.errorMessage = '';
+      this.errorMessage.set(null);
 
       if (this.selectedFile) {
         this.buttonText = 'Качване на снимка...';
@@ -153,8 +151,7 @@ export class Register {
   }
 
   private handleError(message: string): void {
-    this.errorMessage = message;
-    this.showError = true;
+    this.errorMessage.set(message);
     this.buttonText = 'Регистрация';
     this.isLoading = false;
     this.changeDetectorRef.markForCheck();

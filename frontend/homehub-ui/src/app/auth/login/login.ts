@@ -1,12 +1,13 @@
-import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { ErrorMessage } from "../../shared/error-message/error-message";
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ErrorMessage],
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -15,8 +16,7 @@ export class Login {
   loginForm: FormGroup;
   isLoading = false;
   buttonText = 'Вход';
-  errorMessage = '';
-  showError = false;
+  errorMessage = signal<string|null>(null);
 
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
@@ -35,8 +35,7 @@ export class Login {
   }
 
   closeError(): void {
-    this.showError = false;
-    this.errorMessage = '';
+    this.errorMessage.set(null);
     this.changeDetectorRef.markForCheck();
   }
 
@@ -44,8 +43,7 @@ export class Login {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.buttonText = 'Изпращане...';
-      this.showError = false;
-      this.errorMessage = '';
+      this.errorMessage.set(null);
 
       const loginResponse$ = this.authService.login(this.loginForm.value);
       loginResponse$.subscribe({
@@ -61,23 +59,18 @@ export class Login {
               button.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
             }
 
-            // Navigate immediately
             this.router.navigate(['/about']);
             
           } else {
-            // Show error message
-            this.errorMessage = 'Невалиден логин или парола!';
-            this.showError = true;
+            this.errorMessage.set("Невалиден логин, парола или нещо друго!");
             this.buttonText = 'Вход';
             this.isLoading = false;
             this.changeDetectorRef.markForCheck();
           }
         },
         error: (error) => {
-          // Handle unexpected errors (network issues, server errors, etc.)
           console.error('Login error caught:', error);
-          this.errorMessage = 'Възникна грешка при свързването със сървъра!';
-          this.showError = true;
+          this.errorMessage.set('Възникна грешка при свързването със сървъра!');
           this.buttonText = 'Вход';
           this.isLoading = false;
           this.changeDetectorRef.markForCheck();

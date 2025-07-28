@@ -1,5 +1,6 @@
 <section id="user-profile" class="form-section">
     <div class="container">
+
         <div class="section-header">
             <h2 class="gradient-text">Потребителски профил</h2>
             <p>Управлявайте вашия профил и лична информация</p>
@@ -10,6 +11,7 @@
                 <div class="form-section-title">
                     <h3>Лична информация</h3>
                     <input type="hidden" formControlName="id" />
+                    <app-error-message [errorMessage]="errorMessage()" (close)="closeError()" />
                 </div>
 
                 <div class="form-group">
@@ -84,8 +86,7 @@
                     </div>
                     <div class="form-group">
                         <label for="user-profile-familyDescription">Описание на семейството</label>
-                        <input type="text" id="user-profile-familyDescription" formControlName="familyDescription"
-                            readonly>
+                        <input type="text" id="user-profile-familyDescription" formControlName="familyDescription" readonly>
                     </div>
                 </div>
 
@@ -94,9 +95,8 @@
                         <button type="submit" class="btn btn-primary" [disabled]="isLoading">Запази</button>
                         <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Отказ</button>
                     } @else {
-                        <button type="button" class="btn btn-primary" [disabled]="editMode()" (click)="enableEditMode()" >Редактиране</button>
+                        <button type="button" class="btn btn-primary" [disabled]="editMode()" (click)="enableEditMode()">Редактиране</button>
                     }
-
                 </div>
             </form>
         </div>

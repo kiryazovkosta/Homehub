@@ -1,0 +1,46 @@
+<div class="container">
+    <!-- Pagination -->
+    <div class="pagination-container">
+        <div class="pagination-info">
+            <span>Показване на {{ startIndex }}-{{ endIndex }} от {{ totalCount() }} записа</span>
+        </div>
+        <div class="pagination">
+            <button class="pagination-btn first" [disabled]="page() === 1" (click)="goToPage(1)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 17L13 12L18 7M11 17L6 12L11 7" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Първа
+            </button>
+            <button class="pagination-btn prev" [disabled]="page() === 1" (click)="goToPage(page() - 1)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                Предишна
+            </button>
+
+            <div class="page-numbers">
+                <button *ngFor="let vp of visiblePages" class="page-number" [class.active]="vp === page().toString()"
+                    (click)="vp !== '...' && goToPage(+vp)" [disabled]="vp === '...'">
+                    {{ vp }}
+                </button>
+            </div>
+
+            <button class="pagination-btn next" [disabled]="page() === totalPages()" (click)="goToPage(page() + 1)">
+                Следваща
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <button class="pagination-btn last" [disabled]="page() === totalPages()" (click)="goToPage(totalPages())">
+                Последна
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 17L11 12L6 7M13 17L18 12L13 7" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>

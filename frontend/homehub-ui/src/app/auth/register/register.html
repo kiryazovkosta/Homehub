@@ -6,14 +6,7 @@
     </div>
     <div class="form-container">
 
-      <!-- Error Message -->
-      <div class="error-message show" *ngIf="showError">
-          <div class="error-content">
-              <span class="error-icon">⚠️</span>
-              <span class="error-text">{{ errorMessage }}</span>
-              <button class="error-close" (click)="closeError()" type="button">✕</button>
-          </div>
-      </div>
+      <app-error-message [errorMessage]="errorMessage()" (close)="closeError()" />
 
       <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 

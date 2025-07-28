@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './finance-item.html',
   styleUrl: './finance-item.scss'
 })
-export class FinanceItem implements OnInit {
+export class FinanceItem {
   id = input<string>();
 
     // Данни за финансовия запис
@@ -32,10 +32,6 @@ export class FinanceItem implements OnInit {
   };
 
   constructor() { }
-
-  ngOnInit(): void {
-    // Инициализация ако е необходима
-  }
 
     onBack(): void {
     console.log('Navigating back to finance list');

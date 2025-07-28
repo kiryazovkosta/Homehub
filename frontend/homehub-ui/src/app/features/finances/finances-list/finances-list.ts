@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, HostListener, inject, signal, effect, computed, ChangeDetectionStrategy } from '@angular/core';
+import { FinancesService } from '../../../core/services';
+import { FinanceListResponse, PaginationListResponse } from '../../../models';
+import { RouterLink } from '@angular/router';
+import { PageNavigation } from "../../../shared/page-navigation/page-navigation";
 
 interface FinanceRecord {
   id: number;
@@ -11,110 +15,145 @@ interface FinanceRecord {
 
 @Component({
   selector: 'app-finances-list',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, PageNavigation],
   templateUrl: './finances-list.html',
-  styleUrl: './finances-list.scss'
+  styleUrl: './finances-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancesList implements OnInit  {
-financeRecords: FinanceRecord[] = [
-    { id: 1, title: 'Продажба продукт А', type: 'income', description: 'Продажба на основен продукт за клиент от София', amount: 2500 },
-    { id: 2, title: 'Офис разходи', type: 'expense', description: 'Месечни разходи за офис материали и услуги', amount: 850 },
-    { id: 3, title: 'Дигитална реклама', type: 'expense', description: 'Google Ads кампания за Q1 2024', amount: 1200 },
-    { id: 4, title: 'Консултантски услуги', type: 'income', description: 'Консултантски проект за стартъп компания', amount: 3800 },
-    { id: 5, title: 'Лиценз софтуер', type: 'expense', description: 'Годишен лиценз за Adobe Creative Suite', amount: 650 },
-    { id: 6, title: 'Веб дизайн проект', type: 'income', description: 'Пълноценен уеб сайт за ресторант', amount: 4200 },
-    { id: 7, title: 'Транспортни разходи', type: 'expense', description: 'Месечни разходи за транспорт', amount: 320 },
-    { id: 8, title: 'Мобилно приложение', type: 'income', description: 'Разработка на iOS приложение', amount: 6500 },
-    { id: 9, title: 'Хостинг услуги', type: 'expense', description: 'Годишен план за уеб хостинг', amount: 480 },
-    { id: 10, title: 'SEO оптимизация', type: 'income', description: 'SEO услуги за корпоративен клиент', amount: 2100 },
-    { id: 11, title: 'Офис наем', type: 'expense', description: 'Месечен наем за офис пространство', amount: 1500 },
-    { id: 12, title: 'Лого дизайн', type: 'income', description: 'Създаване на фирмена идентичност', amount: 1800 },
-    { id: 13, title: 'Застраховки', type: 'expense', description: 'Годишни бизнес застраховки', amount: 950 },
-    { id: 14, title: 'Онлайн курс', type: 'income', description: 'Продажби на онлайн курс за дизайн', amount: 3200 },
-    { id: 15, title: 'Счетоводни услуги', type: 'expense', description: 'Месечни счетоводни услуги', amount: 550 },
-    { id: 16, title: 'E-commerce сайт', type: 'income', description: 'Онлайн магазин за дрехи', amount: 5800 },
-    { id: 17, title: 'Интернет и телефони', type: 'expense', description: 'Месечни разходи за комуникации', amount: 280 },
-    { id: 18, title: 'Поддръжка на сайтове', type: 'income', description: 'Месечна поддръжка на 5 сайта', amount: 2400 }
-  ];
+export class FinancesList {
+  private readonly financesService: FinancesService = inject(FinancesService);
 
-  paginatedRecords: FinanceRecord[] = [];
-  currentPage = 1;
-  itemsPerPage = 6;
-  totalItems = 0;
-  totalPages = 0;
-  startItem = 0;
-  endItem = 0;
-  visiblePages: (number | string)[] = [];
+  readonly page = signal<number>(1);
+  readonly pageSize = signal(6);
 
-  constructor() { }
+  readonly items = signal<FinanceListResponse[]>([]);
+  readonly totalCount = signal<number>(0);
+  readonly totalPages = signal<number>(0);
+  readonly hasPreviousPage = signal<boolean>(false);
+  readonly hasNextPage = signal<boolean>(false);
 
-  ngOnInit(): void {
-    this.totalItems = this.financeRecords.length;
-    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-    this.updatePagination();
+  readonly loading = signal(true);
+  readonly hasError = signal(false);
+
+  readonly isNotEmpty = computed(() => this.items().length > 0);
+
+  constructor() {
+   effect(() => {
+      this.loading.set(true);
+      this.hasError.set(false);
+
+      const currentPage = this.page();
+      const currentPageSize = this.pageSize();
+
+      this.financesService.getFinances({page: currentPage, pageSize: currentPageSize }).subscribe({
+        next: (response: PaginationListResponse<FinanceListResponse>) => {  
+          this.items.set(response.items);
+          this.totalCount.set(response.totalCount);
+          this.totalPages.set(response.totalPages);
+          this.hasPreviousPage.set(response.hasPreviousPage);
+          this.hasNextPage.set(response.hasNextPage);
+          this.loading.set(false);
+
+          console.log(this.items())
+          this.calculateVisiblePages();
+        },
+        error: () => {
+          this.loading.set(false);
+          this.hasError.set(true);
+        }
+      });
+    }); 
   }
 
-  updatePagination(): void {
-    // Calculate paginated records
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = Math.min(startIndex + this.itemsPerPage, this.totalItems);
-    this.paginatedRecords = this.financeRecords.slice(startIndex, endIndex);
+  setPage(pageNumber: number) {
+    console.log(pageNumber)
+    this.page.set(pageNumber);
+  }
 
-    // Update info
-    this.startItem = startIndex + 1;
-    this.endItem = endIndex;
+  setPageSize(pageSize: number) {
+    this.pageSize.set(pageSize);
+  }
 
-    // Calculate visible page numbers
+  next() {
+    if (this.hasNextPage()) {
+      this.page.set(this.page() + 1);
+    }
+  }
+
+  prev() {
+    if (this.page() > 1) {
+      this.page.set(this.page() - 1);
+    }
+  }
+
+  getTypeClass(item: number): string {
+    return item === 1 ? 'income' : 'expense';
+  }
+
+  getTypeValue(item: number): string {
+    return item === 1 ? 'Приход' : 'Разход';
+  }
+
+  getTypeSign(item: number): string {
+    return item === 1 ? '+' : '-';
+  }
+
+  protected startIndex = (this.page() - 1) * this.pageSize();
+  protected endIndex = Math.min(this.startIndex + this.pageSize(), this.totalCount());
+
+  visiblePages: (number | string)[] = [];
+
+  updatePagination(pageIndex: number): void {
+    console.log(pageIndex);
+
+    this.page.set(pageIndex);
     this.calculateVisiblePages();
-
-    // Add animation
     this.animateCards();
   }
 
   calculateVisiblePages(): void {
     const pages: (number | string)[] = [];
 
-    if (this.totalPages <= 5) {
+    if (this.totalPages() <= 5) {
       // Show all pages if total is 5 or less
-      for (let i = 1; i <= this.totalPages; i++) {
+      for (let i = 1; i <= this.totalPages(); i++) {
         pages.push(i);
       }
     } else {
       // Always show first page
       pages.push(1);
 
-      if (this.currentPage > 3) {
+      if (this.page() > 3) {
         pages.push('...');
       }
 
       // Show pages around current page
-      for (let i = Math.max(2, this.currentPage - 1); i <= Math.min(this.totalPages - 1, this.currentPage + 1); i++) {
+      for (let i = Math.max(2, this.page() - 1); i <= Math.min(this.totalPages() - 1, this.page() + 1); i++) {
         pages.push(i);
       }
 
-      if (this.currentPage < this.totalPages - 2) {
+      if (this.page() < this.totalPages() - 2) {
         pages.push('...');
       }
 
       // Always show last page
-      pages.push(this.totalPages);
+      pages.push(this.totalPages());
     }
 
     this.visiblePages = pages;
   }
 
-  goToPage(page: number | string): void {
+  goToPage(pageNumber: number | string): void {
     // Проверяваме дали page е число
-    if (typeof page !== 'number') {
+    if (typeof pageNumber !== 'number') {
       return;
     }
 
-    if (page < 1 || page > this.totalPages || page === this.currentPage) {
+    if (pageNumber < 1 || pageNumber > this.totalPages() || pageNumber === this.page()) {
       return;
     }
 
-    this.currentPage = page;
-    this.updatePagination();
+    this.updatePagination(pageNumber);
 
     // Scroll to top of section
     const financeSection = document.getElementById('finance');
@@ -138,13 +177,13 @@ financeRecords: FinanceRecord[] = [
   @HostListener('keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'ArrowLeft') {
-      this.goToPage(this.currentPage - 1);
+      this.goToPage(this.page() - 1);
     } else if (event.key === 'ArrowRight') {
-      this.goToPage(this.currentPage + 1);
+      this.goToPage(this.page() + 1);
     } else if (event.key === 'Home') {
       this.goToPage(1);
     } else if (event.key === 'End') {
-      this.goToPage(this.totalPages);
+      this.goToPage(this.totalPages());
     }
   }
 }
