@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, inject, computed, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsersService } from '../../core/services/users.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -17,13 +17,13 @@ import { ErrorMessage } from "../../shared/error-message/error-message";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserProfile {
-  protected userProfileForm: FormGroup;
-  protected isLoading: boolean = false;
-  protected selectedFile: File | null = null;
-  protected fileUploadText: string = 'Избери файл (изображение)';
   protected usersService: UsersService = inject(UsersService);
   protected fb: FormBuilder = inject(FormBuilder);
 
+  userProfileForm: FormGroup;
+  loading = signal<boolean>(false);
+  selectedFile = signal<File|null>(null);
+  fileUploadText = signal<string>('Избери файл (изображение');
   errorMessage = signal<string|null>(null);
   userProfileSignal = signal<UserProfileResponse | null>(null);
 
@@ -87,6 +87,7 @@ export class UserProfile {
 
   enableEditMode() {
     this.editMode.set(true);
+    this.addEditModeValidators();
   }
 
   onFilesChange(event: any): void {
@@ -103,7 +104,7 @@ export class UserProfile {
   onSubmit(): void {
     if (this.userProfileForm.valid) {
       console.log(this.userProfileForm.value)
-      this.isLoading = true;
+      this.loading.set(true);
 
       const updateUserRequest: UpdateUserRequest = {
         id: this.userProfileForm.get("id")?.value,
@@ -118,16 +119,18 @@ export class UserProfile {
         .updateMyInfo(updateUserRequest)
         .pipe(switchMap(() => this.usersService.getMyInfo()))
         .subscribe({
-          next: (updatedProfile) => {
+          next: (updatedProfile: UserProfileResponse) => {
             console.log('Profile updated and refreshed successfully:', updatedProfile);
             this.errorMessage.set(null);
             this.editMode.set(false);
-            this.isLoading = false;
+            this.loading.set(false);
             this.userProfileSignal.set(updatedProfile);
+
+            this.userProfileForm.updateValueAndValidity();
           },
           error: (error) => {
             console.error('Error updating profile:', error);
-            this.isLoading = false;
+            this.loading.set(false);
             this.errorMessage.set("Възникна проблем при редактирането на потребителските данни!");
           }
         });
@@ -139,10 +142,44 @@ export class UserProfile {
   cancelEdit(): void {
     this.editMode.set(false);
     this.userProfileForm.reset(this.userProfileSignal());
+
+    this.userProfileForm.updateValueAndValidity();
   }
 
   closeError(): void {
     this.errorMessage.set(null);
+  }
+
+  private addEditModeValidators() {
+    this.userProfileForm.get('firstName')?.addValidators([
+      Validators.required, 
+      Validators.minLength(3), 
+      Validators.maxLength(64)
+    ]);
+    this.userProfileForm.get('lastName')?.addValidators([
+      Validators.required, 
+      Validators.minLength(3), 
+      Validators.maxLength(64)
+    ]);
+    this.userProfileForm.get('description')?.addValidators([
+      Validators.required, 
+      Validators.minLength(10), 
+      Validators.maxLength(512)
+    ]);
+    this.userProfileForm.get('familyRole')?.addValidators([
+      Validators.required
+    ]);
+
+    this.userProfileForm.updateValueAndValidity();
+  }
+
+  private removeEditModeValidators() {
+    this.userProfileForm.get('firstName')?.clearValidators();
+    this.userProfileForm.get('lastName')?.clearValidators();
+    this.userProfileForm.get('description')?.clearValidators();
+    this.userProfileForm.get('familyRole')?.clearValidators();
+    
+    this.userProfileForm.updateValueAndValidity();
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

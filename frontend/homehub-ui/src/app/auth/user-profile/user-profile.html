@@ -6,6 +6,11 @@
             <p>Управлявайте вашия профил и лична информация</p>
         </div>
         <div class="form-container">
+
+            @if (loading()) {
+            <p>Зареждане...</p>
+            }
+            @else {
             <form class="contact-form" [formGroup]="userProfileForm" (ngSubmit)="onSubmit()">
                 <!-- Personal Information -->
                 <div class="form-section-title">
@@ -17,25 +22,53 @@
                 <div class="form-group">
                     <label for="user-profile-imageUrl">Снимка на профила</label>
                     <div class="profile-image-container">
-                        <img id="user-profile-imageUrl" [src]="profileImageUrl()" alt="Профилна снимка" class="profile-image"
-                            *ngIf="hasProfileImage(); else noImage" />
-                        <ng-template #noImage>
+                        @if (hasProfileImage()) {
+                            <img [src]="profileImageUrl()" alt="Profile Image" class="profile-image">
+                        } @else {
                             <div class="no-image-placeholder">
                                 <span class="no-image-icon">👤</span>
                                 <p>Няма налична снимка</p>
                             </div>
-                        </ng-template>
+                        }
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="user-profile-firstName">Лично име *</label>
-                        <input type="text" id="user-profile-firstName" formControlName="firstName" [readonly]="!editMode()">
+                        <input type="text" id="user-profile-firstName" formControlName="firstName" [readonly]="!editMode()" 
+                        [class.error]="userProfileForm.get('firstName')?.invalid && userProfileForm.get('firstName')?.touched">
+                        @if (editMode() && userProfileForm.get('firstName')?.invalid && userProfileForm.get('firstName')?.touched) {
+                            <div class="validator-error-message">
+                              @if (userProfileForm.get('firstName')?.errors?.['required']) {
+                                <small>Личното име е задължително.</small>
+                              }
+                              @if (userProfileForm.get('firstName')?.errors?.['minlength']) {
+                                <small>Личното име трябва да е поне 3 символа.</small>
+                              }
+                              @if (userProfileForm.get('firstName')?.errors?.['maxlength']) {
+                                <small>Личното име трябва да най-много 64 символа.</small>
+                              }
+                            </div>
+                          }
                     </div>
                     <div class="form-group">
                         <label for="user-profile-lastName">Фамилно име *</label>
-                        <input type="text" id="user-profile-lastName" formControlName="lastName" [readonly]="!editMode()">
+                        <input type="text" id="user-profile-lastName" formControlName="lastName"
+                            [readonly]="!editMode()" [class.error]="userProfileForm.get('lastName')?.invalid && userProfileForm.get('lastName')?.touched">
+                            @if (editMode() && userProfileForm.get('lastName')?.invalid && userProfileForm.get('lastName')?.touched) {
+                            <div class="validator-error-message">
+                                @if (userProfileForm.get('lastName')?.errors?.['required']) {
+                                    <small>Фамилното име е задължително.</small>
+                                }
+                                @if (userProfileForm.get('lastName')?.errors?.['minlength']) {
+                                    <small>Фамилното име трябва да е поне 3 символа.</small>
+                                }
+                                @if (userProfileForm.get('lastName')?.errors?.['maxlength']) {
+                                <small>Фамилното име трябва да най-много 64 символа.</small>
+                                }
+                            </div>
+                            }
                     </div>
                 </div>
 
@@ -46,24 +79,24 @@
                     </div>
                     <div class="form-group">
                         <label for="user-profile-familyRoleValue">Роля в семейството *</label>
-                        
+
                         @if (!editMode()) {
-                            <input type="text" id="user-profile-familyRoleValue" formControlName="familyRoleValue" readonly>
+                        <input type="text" id="user-profile-familyRoleValue" formControlName="familyRoleValue" readonly>
                         } @else {
-                            <select id="user-profile-familyRole" formControlName="familyRole">
-                                @for (role of familyRoles(); track role[0]) {
-                                    <option [value]="role[0]">{{ role[1] }}</option>
-                                }
-                            </select>
+                        <select id="user-profile-familyRole" formControlName="familyRole">
+                            @for (role of familyRoles(); track role[0]) {
+                            <option [value]="role[0]">{{ role[1] }}</option>
+                            }
+                        </select>
                         }
-                        
+
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="user-profile-description">Описание *</label>
-                    <textarea type="text" id="user-profile-description" formControlName="description" [readonly]="!editMode()"
-                        rows="3"></textarea>
+                    <textarea type="text" id="user-profile-description" formControlName="description"
+                        [readonly]="!editMode()" rows="3"></textarea>
                 </div>
 
                 <!-- File Upload -->
@@ -72,9 +105,9 @@
                     <div class="file-upload">
                         <input type="file" id="user-profile-file" multiple accept=".jpg,.png,.jpeg"
                             (change)="onFilesChange($event)" [disabled]="!editMode()">
-                        <label for="user-profile-file" class="file-label" [class.has-file]="selectedFile">
+                        <label for="user-profile-file" class="file-label" [class.has-file]="selectedFile()">
                             <span class="upload-icon">📎</span>
-                            <span class="upload-text">{{ fileUploadText }}</span>
+                            <span class="upload-text">{{ fileUploadText() }}</span>
                         </label>
                     </div>
                 </div>
@@ -86,19 +119,21 @@
                     </div>
                     <div class="form-group">
                         <label for="user-profile-familyDescription">Описание на семейството</label>
-                        <input type="text" id="user-profile-familyDescription" formControlName="familyDescription" readonly>
+                        <input type="text" id="user-profile-familyDescription" formControlName="familyDescription"
+                            readonly>
                     </div>
                 </div>
 
                 <div class="form-actions">
                     @if (editMode()) {
-                        <button type="submit" class="btn btn-primary" [disabled]="isLoading">Запази</button>
-                        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Отказ</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="loading()">Запази</button>
+                    <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Отказ</button>
                     } @else {
-                        <button type="button" class="btn btn-primary" [disabled]="editMode()" (click)="enableEditMode()">Редактиране</button>
+                    <button type="button" class="btn btn-primary" [disabled]="editMode()" (click)="enableEditMode()">Редактиране</button>
                     }
                 </div>
             </form>
+            }
         </div>
     </div>
 </section>

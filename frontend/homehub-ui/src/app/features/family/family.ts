@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, HostListener, inject } from '@angular/core';
+import { Component, OnInit, HostListener, inject, signal } from '@angular/core';
 import { FamilyService } from '../../core/services';
-import { Observable } from 'rxjs';
 import { FamilyWithUsersResponse } from '../../models/families/family-with-users-response.model';
 import { UserSimplyResponse } from '../../models/users/simple-user-response.model';
 
@@ -11,31 +10,32 @@ import { UserSimplyResponse } from '../../models/users/simple-user-response.mode
   templateUrl: './family.html',
   styleUrls: ['./family.scss']
 })
-export class Family implements OnInit {
+export class Family {
   private familyService: FamilyService = inject(FamilyService);
 
-  family$: Observable<FamilyWithUsersResponse>;
-
-  currentSlide = 0;
-  slidesPerView = 3;
-  translateX = 0;
-  maxSlide = 0;
-  dots: number[] = [];
+  family = signal<FamilyWithUsersResponse | null>(null);
+  currentSlide = signal(0);
+  slidesPerView = signal(3);
+  translateX = signal(0);
+  maxSlide = signal(0);
+  dots = signal<number[]>([]);
   cardWidth = 332;
   touchStartX = 0;
   touchEndX = 0;
 
   constructor() {
-    this.family$ = this.familyService.getFamilyWithMembers();
-    console.log(this.family$);
+    this.loadFamilyData();
   }
 
-
-  ngOnInit(): void {
-    this.family$.subscribe(family => {
-      if (family && family.users) {
-        this.initializeCarousel(family.users);
-      }
+  loadFamilyData() {
+    this.familyService.getFamilyWithMembers().subscribe({
+      next: (family) => {
+        this.family.set(family);
+        if (family && family.users) {
+          this.initializeCarousel(family.users);
+        }
+      },
+      error: (error) => console.error('Error loading family:', error)
     });
   }
 
@@ -45,12 +45,11 @@ export class Family implements OnInit {
 
   @HostListener('window:resize', [])
   onResize() {
-    this.family$.subscribe(family => {
-      if (family && family.users) {
-        this.initializeCarousel(family.users);
-        this.goToSlide(0);
-      }
-    });
+    const family = this.family();
+    if (family && family.users) {
+      this.initializeCarousel(family.users);
+      this.goToSlide(0);
+    }
   }
 
   @HostListener('touchstart', ['$event'])
@@ -66,21 +65,22 @@ export class Family implements OnInit {
 
   private updateSlidesPerView(usersCount: number): void {
     const width = window.innerWidth;
+    let slidesPerView = 3;
+    
     if (width <= 480) {
-      this.slidesPerView = 1;
+      slidesPerView = 1;
     } else if (width <= 768) {
-      this.slidesPerView = 2;
-    } else {
-      this.slidesPerView = 3;
+      slidesPerView = 2;
     }
 
-    this.maxSlide = Math.max(0, usersCount - this.slidesPerView);
+    this.slidesPerView.set(slidesPerView);
+    this.maxSlide.set(Math.max(0, usersCount - slidesPerView));
     this.updateDots(usersCount);
   }
 
   private updateDots(usersCount: number): void {
-    const dotsCount = Math.ceil(usersCount / this.slidesPerView);
-    this.dots = Array(dotsCount).fill(0).map((_, i) => i);
+    const dotsCount = Math.ceil(usersCount / this.slidesPerView());
+    this.dots.set(Array(dotsCount).fill(0).map((_, i) => i));
   }
 
   private handleSwipe(): void {
@@ -97,26 +97,26 @@ export class Family implements OnInit {
   }
 
   prev(): void {
-    if (this.currentSlide > 0) {
-      this.currentSlide--;
+    if (this.currentSlide() > 0) {
+      this.currentSlide.set(this.currentSlide() - 1);
       this.updateCarousel();
     }
   }
 
   next(): void {
-    if (this.currentSlide < this.maxSlide) {
-      this.currentSlide++;
+    if (this.currentSlide() < this.maxSlide()) {
+      this.currentSlide.set(this.currentSlide() + 1);
       this.updateCarousel();
     }
   }
 
   goToSlide(slideIndex: number): void {
-    this.currentSlide = Math.max(0, Math.min(slideIndex, this.maxSlide));
+    this.currentSlide.set(Math.max(0, Math.min(slideIndex, this.maxSlide())));
     this.updateCarousel();
   }
 
   private updateCarousel(): void {
-    this.translateX = -this.currentSlide * this.cardWidth;
+    this.translateX.set(-this.currentSlide() * this.cardWidth);
   }
 
   @HostListener('keydown', ['$event'])

@@ -15,10 +15,12 @@
 
     @if (loading()) {
     <p>Зареждане...</p>
-    } @else {
+    }
+    @else {
     @if (hasError()) {
-      <app-error-message [errorMessage]="errorMessage()" (close)="closeError()" />
-    } @else {
+    <app-error-message [errorMessage]="errorMessage()" (close)="closeError()" />
+    }
+
     @if (isNotEmpty()) {
     <div class="finance-grid">
       @for (item of items(); track item.id) {
@@ -70,14 +72,20 @@
       }
     </div>
 
-    <app-page-navigation [totalCount]="totalCount()" [totalPages]="totalPages()" [page]="page()"
+    <app-page-navigation 
+      [totalCount]="totalCount()" 
+      [totalPages]="totalPages()" 
+      [page]="page()"
       (setPageNumber)="setPage($event)">
     </app-page-navigation>
-
-    } @else {
+    }
+    @else {
     <p>Няма резултати.</p>
     }
+
+
+
     }
-    }
+
   </div>
 </section>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-page-navigation',
@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, input, output } f
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageNavigation {
-  visiblePages: string[] = []
+  visiblePages = signal<string[]>([]);
 
   totalCount = input<number>(0);
   totalPages = input<number>(0);
@@ -22,13 +22,13 @@ export class PageNavigation {
   endIndex = computed(() => Math.min(this.startIndex() + this.pageSize() - 1, this.totalCount()));
 
   constructor() {
-    this.visiblePages = []
-
     effect(() => {
+      const pages: string[] = [];
       for (let i = 1; i <= this.totalPages(); i++) {
-        this.visiblePages.push(i.toString());
+        pages.push(i.toString());
       }
-    })
+      this.visiblePages.set(pages);
+    });
   }
 
   goToPage(pageNumber: number, event?: Event) {

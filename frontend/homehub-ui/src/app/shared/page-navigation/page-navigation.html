@@ -21,10 +21,12 @@
             </button>
 
             <div class="page-numbers">
-                <button type="button" *ngFor="let vp of visiblePages" class="page-number" [class.active]="vp === page().toString()"
-                    (click)="vp !== '...' && goToPage(+vp, $event)" [disabled]="vp === '...'">
-                    {{ vp }}
-                </button>
+                @for (vp of visiblePages(); track vp) {
+                    <button type="button" class="page-number" [class.active]="vp === page().toString()"
+                        (click)="vp !== '...' && goToPage(+vp, $event)" [disabled]="vp === '...'">
+                        {{ vp }}
+                    </button>
+                }
             </div>
 
             <button type="button" class="pagination-btn next" [disabled]="page() === totalPages()" (click)="goToPage(page() + 1, $event)">

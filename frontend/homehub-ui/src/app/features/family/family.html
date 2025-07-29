@@ -1,61 +1,68 @@
-<section id="family" class="family-section" *ngIf="family$ | async as family">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="gradient-text">Семейство: {{ family.name }}</h2>
-      <p>{{ family.description }}</p>
-    </div>
+@if (family()) {
+  <section id="family" class="family-section">
+    <div class="container">
 
-    <div class="carousel-container">
-      <div class="carousel-track" [style.transform]="'translateX(' + translateX + 'px)'">
-        <div class="family-card" *ngFor="let member of family.users">
-          <div class="card-image">
-            <img [src]="member.imageUrl" [alt]="member.imageUrl">
-            <div class="card-overlay">
-              <div class="social-links">
-                <a href="#" aria-label="LinkedIn">
-                  <i class="social-icon">💼</i>
-                </a>
-                <a href="#" aria-label="Twitter">
-                  <i class="social-icon">🐦</i>
-                </a>
-                <a [href]="'mailto:' + member.email" aria-label="Email">
-                  <i class="social-icon">✉️</i>
-                </a>
+      <div class="section-header">
+        <h2 class="gradient-text">Семейство: {{ family()?.name }}</h2>
+        <p>{{ family()?.description }}</p>
+      </div>
+
+      <div class="carousel-container">
+        <div class="carousel-track" [style.transform]="'translateX(' + translateX() + 'px)'">
+          @for (member of family()?.users; track member.id) {
+            <div class="family-card">
+              <div class="card-image">
+                <img [src]="member.imageUrl" [alt]="member.imageUrl">
+                <div class="card-overlay">
+                  <div class="social-links">
+                    <a href="#" aria-label="LinkedIn">
+                      <i class="social-icon">💼</i>
+                    </a>
+                    <a href="#" aria-label="Twitter">
+                      <i class="social-icon">🐦</i>
+                    </a>
+                    <a [href]="'mailto:' + member.email" aria-label="Email">
+                      <i class="social-icon">✉️</i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="card-content">
+                <h3>{{ member.firstName }} {{ member.lastName }}</h3>
+                <p class="position">{{ member.familyRoleValue }}</p>
+                <p class="description">{{ member.description }}</p>
               </div>
             </div>
-          </div>
-          <div class="card-content">
-            <h3>{{ member.firstName }} {{ member.lastName }}</h3>
-            <p class="position">{{ member.familyRoleValue }}</p>
-            <p class="description">{{ member.description }}</p>
-          </div>
+          }
         </div>
       </div>
-    </div>
 
-    <!-- Carousel Controls -->
-    <div class="carousel-controls">
-      <button class="carousel-btn prev-btn" [disabled]="currentSlide === 0" (click)="prev()" aria-label="Предишна">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" 
-                stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      <!-- Carousel Controls -->
+      <div class="carousel-controls">
+        <button class="carousel-btn prev-btn" [disabled]="currentSlide() === 0" (click)="prev()" aria-label="Предишна">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" 
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
 
-      <div class="carousel-dots">
-        <button *ngFor="let dot of dots; let i = index" class="dot" [class.active]="currentSlide === i"
-                [attr.data-slide]="i" [attr.aria-label]="'Слайд ' + (i + 1)" (click)="goToSlide(i)"></button>
+        <div class="carousel-dots">
+          @for (dot of dots(); track dot) {
+            <button class="dot" [class.active]="currentSlide() === dot"
+                    [attr.data-slide]="dot" [attr.aria-label]="'Слайд ' + (dot + 1)" (click)="goToSlide(dot)"></button>
+          }
+        </div>
+
+        <button class="carousel-btn next-btn" 
+                [disabled]="currentSlide() >= maxSlide()"
+                (click)="next()"
+                aria-label="Следваща">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" 
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
-
-      <button class="carousel-btn next-btn" 
-              [disabled]="currentSlide >= maxSlide"
-              (click)="next()"
-              aria-label="Следваща">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" 
-                stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
     </div>
-  </div>
-</section>
+  </section>
+}

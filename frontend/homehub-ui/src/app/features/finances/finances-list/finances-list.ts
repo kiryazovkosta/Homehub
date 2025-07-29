@@ -76,7 +76,6 @@ export class FinancesList {
       event.stopPropagation();
     }
 
-    // Директно актуализирайте страницата без Router навигация
     this.page.set(pageNumber);
     this.animateCards();
 
@@ -123,16 +122,9 @@ export class FinancesList {
     }
 
     this.updatePagination(pageNumber);
-
-    // // Scroll to top of section
-    // const financeSection = document.getElementById('finance');
-    // if (financeSection) {
-    //   financeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // }
   }
 
   isCreator(item: FinanceListResponse): boolean {
-    // Проверява дали текущият потребител е създател на записа
     return item.userId === this.userId();
   }
 
@@ -142,7 +134,6 @@ export class FinancesList {
 
   private animateCards(): void {
     setTimeout(() => {
-      3339
       const cards = document.querySelectorAll('.finance-card');
       cards.forEach((card, index) => {
         (card as HTMLElement).style.opacity = '0.5';

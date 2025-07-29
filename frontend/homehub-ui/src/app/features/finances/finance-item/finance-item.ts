@@ -30,7 +30,7 @@ export class FinanceItem {
 
   effectiveId = computed(() => this.id() || this.routeId());
 
-  financeRecord: FinanceResponse|null = null;
+  financeRecord = signal<FinanceResponse|null>(null);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
 
@@ -44,8 +44,7 @@ export class FinanceItem {
       if (id) {
         this.financesService.getFinance(id).subscribe({
           next: (response: FinanceResponse) => {
-            console.log(response);
-            this.financeRecord = response;
+            this.financeRecord.set(response);
             this.loading.set(false);
             this.error.set(null);
           },
