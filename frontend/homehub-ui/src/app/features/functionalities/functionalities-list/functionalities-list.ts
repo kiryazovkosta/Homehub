@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, ViewChildren, QueryList, ElementRef, AfterViewInit, OnDestroy, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, HostListener, ViewChildren, QueryList, ElementRef, AfterViewInit, OnDestroy, inject, signal, effect } from '@angular/core';
 
 import { FunctionalitiesService } from '../../../core/services';
 import { FunctionalityListResponse, PaginationListResponse } from '../../../models';
@@ -18,19 +17,25 @@ export class FunctionalitiesList implements AfterViewInit, OnDestroy {
 
   @ViewChildren('serviceCard') serviceCards!: QueryList<ElementRef>;
 
-  functionalities$: Observable<PaginationListResponse<FunctionalityListResponse>>;
+  functionalities = signal<PaginationListResponse<FunctionalityListResponse> | null>(null);
+  error = signal<string | null>(null);
 
-  constructor(private elementRef: ElementRef) { 
-    this.functionalities$ = this.functionalitiesService.getFunctionalities();
-    
-    // this.functionalities$.subscribe({
-    //   next: (data) => {
-    //     console.log('Functionalities data received:', data);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error loading functionalities:', error);
-    //   }
-    // });
+  constructor(private elementRef: ElementRef) {
+    this.functionalitiesService.getFunctionalities().subscribe({
+      next: data => {
+        this.functionalities.set(data);
+        this.error.set(null);
+      },
+      error: err => {
+        this.error.set('Сървърът не е достъпен. Моля, опитайте по-късно.');
+      }
+    });
+
+    effect(() => {
+      if (this.error()) {
+        console.error('Functionalities endpoint error:', this.error());
+      }
+    });
   }
 
   @HostListener('window:scroll', [])
@@ -78,11 +83,8 @@ export class FunctionalitiesList implements AfterViewInit, OnDestroy {
     }
 
     if (!this.serviceCards || this.serviceCards.length === 0) {
-      //console.log('No service cards found yet, will retry...');
       return;
     }
-
-    //console.log(`Setting up animation for ${this.serviceCards.length} cards`);
 
     const observerOptions = {
       threshold: 0.1,

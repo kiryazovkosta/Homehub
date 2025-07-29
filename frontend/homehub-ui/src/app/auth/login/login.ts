@@ -10,12 +10,12 @@ import { ErrorMessage } from "../../shared/error-message/error-message";
   imports: [ReactiveFormsModule, CommonModule, ErrorMessage],
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Login {
   loginForm: FormGroup;
-  isLoading = false;
-  buttonText = 'Вход';
+  loading = signal<boolean>(false);
+  buttonText = signal<string>('Вход');
   errorMessage = signal<string|null>(null);
 
   private authService: AuthService = inject(AuthService);
@@ -41,19 +41,17 @@ export class Login {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.isLoading = true;
-      this.buttonText = 'Изпращане...';
+      this.loading.set(true);
+      this.buttonText.set("Изпращане...");
       this.errorMessage.set(null);
 
       const loginResponse$ = this.authService.login(this.loginForm.value);
       loginResponse$.subscribe({
         next: (success: boolean) => {
           if (success) {
-            this.buttonText = 'Успешно!';
-            this.isLoading = false;
-            this.changeDetectorRef.markForCheck();
+            this.buttonText.set("Успешно!");
+            this.loading.set(false);
             
-            // Change button color for success
             const button = document.querySelector('.btn-primary') as HTMLElement;
             if (button) {
               button.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
@@ -63,17 +61,15 @@ export class Login {
             
           } else {
             this.errorMessage.set("Невалиден логин, парола или нещо друго!");
-            this.buttonText = 'Вход';
-            this.isLoading = false;
-            this.changeDetectorRef.markForCheck();
+            this.loading.set(false);
+            this.buttonText.set('Вход');
           }
         },
         error: (error) => {
           console.error('Login error caught:', error);
           this.errorMessage.set('Възникна грешка при свързването със сървъра!');
-          this.buttonText = 'Вход';
-          this.isLoading = false;
-          this.changeDetectorRef.markForCheck();
+          this.loading.set(false);
+          this.buttonText.set('Вход');
         }
       });
     } else {

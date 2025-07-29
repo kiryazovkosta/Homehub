@@ -10,7 +10,7 @@
     <section class="content">
         <div class="container">
             <div class="grid">
-                @for (item of (functionalities$ | async)?.items; track item.id; let i = $index) {
+                @for (item of functionalities()?.items; track item.id; let i = $index) {
                     <div class="card" [attr.data-index]="i" #serviceCard>
                         <h3>{{ item.title }}</h3>
                         <p>{{ item.description }}</p>

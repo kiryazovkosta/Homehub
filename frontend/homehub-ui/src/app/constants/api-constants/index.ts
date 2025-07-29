@@ -13,5 +13,6 @@ export const functionalitiesUrl: string = 'api/services';
 
 export const supabaseUrl: string = 'api/images';
 export const familyUrl: string = 'api/families/me';
+export const familiesUrl: string = 'api/families';
 export const userProfileUrl: string = 'api/users/me';
 export const usersUrl: string = 'api/users';

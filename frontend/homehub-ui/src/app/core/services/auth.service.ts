@@ -7,7 +7,7 @@ import { Observable, of } from "rxjs";
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { AccessTokenResponse } from "../../models/auth/access-token-response.model";
 import { authBaseUrl, loginEndpoint, refreshEndpoint, registerEndpoint, accessTokenKey, refreshTokenKey } from "../../constants/auth-constants";
-import { RegisterUserRequest } from "../../models/auth/register-user-request.model";
+import { RegisterUserRequest, FamilyRole, familyRoleLabels } from "../../models/auth/register-user-request.model";
 
 @Injectable({
     providedIn: 'root'
@@ -115,6 +115,11 @@ export class AuthService {
         }
 
         return undefined;
+    }
+
+    getFamilyRoles(): Observable<{ value: number, label: string }[]> {
+        const roles = Object.entries(familyRoleLabels).map(([value, label]) => ({ value: Number(value), label }));
+        return of(roles);
     }
 
     private isTokenValid(token: string) {

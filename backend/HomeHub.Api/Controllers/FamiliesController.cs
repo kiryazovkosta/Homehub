@@ -19,6 +19,7 @@ public sealed class FamiliesController(
     UserContext userContext) : ControllerBase
 {
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<TasksListCollectionResponse>> GetFamilies()
     {
         List<FamilyListResponse> tasks = await dbContext
