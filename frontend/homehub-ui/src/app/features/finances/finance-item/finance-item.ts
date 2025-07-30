@@ -29,7 +29,7 @@ export class FinanceItem {
   });
 
   effectiveId = computed(() => this.id() || this.routeId());
-
+  
   financeRecord = signal<FinanceResponse|null>(null);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
