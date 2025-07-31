@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsersService } from '../../core/services/users.service';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { familyRoleLabels } from '../../models/auth/register-user-request.model';
 import { UpdateUserRequest } from '../../models/users/update-user-request.model';

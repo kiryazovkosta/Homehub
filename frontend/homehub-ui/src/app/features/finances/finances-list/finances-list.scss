@@ -36,21 +36,14 @@
   }
 
   .btn-create {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    background-color: var(--primary-color, #4CAF50);
+    background: #6342f8;
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
-  }
 
-  .btn-create:hover {
-    background-color: var(--primary-color-dark, #388E3C);
+    &:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(52, 152, 219, 0.3);
+    }
   }
 }
 

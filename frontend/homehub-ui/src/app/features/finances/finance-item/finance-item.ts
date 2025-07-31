@@ -6,11 +6,12 @@ import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { FinanceResponse } from '../../../models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ErrorMessage } from "../../../shared/error-message/error-message";
+import { ConfirmDialog } from "../../../shared/confirm-dialog/confirm-dialog";
 
 @Component({
   selector: 'app-finance-item',
   standalone: true,
-  imports: [CommonModule, RouterModule, ErrorMessage],
+  imports: [CommonModule, RouterModule, ErrorMessage, ConfirmDialog],
   templateUrl: './finance-item.html',
   styleUrl: './finance-item.scss'
 })
@@ -33,6 +34,8 @@ export class FinanceItem {
   financeRecord = signal<FinanceResponse|null>(null);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
+
+  delete = signal<boolean>(false);
 
   readonly userId = computed( () => this.authService.getUserId());
 
@@ -92,16 +95,34 @@ export class FinanceItem {
     this.error.set(null);
   }
 
-  // Добавяне на hover ефекти при инициализация
+  closeDelete(): void {
+    this.delete.set(false);
+  }
+
+  deleteFinance(): void {
+    console.log(`Deleting: ${this.effectiveId()}`);
+    this.financesService.delete(this.effectiveId()).subscribe({
+      next: () => {
+        this.delete.set(false);
+        this.error.set(null);
+        console.log(`Deleted: ${this.effectiveId()}`);
+        this.router.navigate(['/finances']);
+      },
+      error: (err) => {
+        this.delete.set(false);
+        this.error.set("Възникна проблем при изтриването на този запис!")
+      }
+    })
+  }
+
   ngAfterViewInit(): void {
     this.addHoverEffects();
     this.addKeyboardNavigation();
   }
 
-    isCreator(userId: string): boolean {
-      // Проверява дали текущият потребител е създател на записа
-      return userId === this.userId();
-    }
+  isCreator(userId: string): boolean {
+    return userId === this.userId();
+  }
 
   private addHoverEffects(): void {
     const buttons = document.querySelectorAll('.btn-edit-detail, .btn-delete, .btn-back');

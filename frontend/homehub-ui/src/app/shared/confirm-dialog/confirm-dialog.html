@@ -1,0 +1,14 @@
+<div class="modal-overlay">
+  <div class="modal-backdrop" (click)="closeDialog()"></div>
+  <div class="confirm-message show">
+    <div class="confirm-content">
+      <span class="confirm-icon">❓</span>
+      <span class="confirm-text">{{ message() }}</span>
+      <button class="confirm-close" (click)="closeDialog()" type="button">✕</button>
+    </div>
+    <div class="confirm-detail-actions">
+      <button class="btn btn-confirm" (click)="confirmDialog()" type="button">Изпълни</button>
+      <button class="btn btn-close" (click)="closeDialog()" type="button">Отказ</button>
+    </div>
+  </div>
+</div>

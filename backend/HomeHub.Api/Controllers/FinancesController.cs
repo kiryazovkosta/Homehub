@@ -1,12 +1,14 @@
 using FluentValidation;
 using HomeHub.Api.Database;
+using HomeHub.Api.DTOs.Categories;
 using HomeHub.Api.DTOs.Finances;
 using HomeHub.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 using HomeHub.Api.DTOs.Common;
+using HomeHub.Api.Entities;
+using HomeHub.Api.Extensions;
 
 namespace HomeHub.Api.Controllers;
 
@@ -41,6 +43,7 @@ public sealed class FinancesController(
             .Where(f => query.CategoryId == null || f.CategoryId == query.CategoryId)
             .Where(f => query.Amount == null || f.Amount >= query.Amount)
             .Where(f => query.Date == null || f.Date >= query.Date)
+            .OrderByDescending(f => f.CreatedAt)
             .Select(FinanceQueries.ToListResponse());
 
         var response = await PaginationResponse<FinanceListResponse>.CreateAsync(financesQuery, query.Page, query.PageSize);
@@ -85,6 +88,29 @@ public sealed class FinancesController(
         };
 
         return Ok(financesSummary);
+    }
+
+    [HttpGet("types")]
+    public ActionResult<List<EnumResponse>> GetFinancesTypes()
+    {
+        var types = Enum.GetValues<FinanceType>()
+            .Select(m => new EnumResponse()
+            {
+                Id = (int)m, 
+                Value = m.GetDescription()
+            })
+            .ToList();
+        return Ok(types);
+    }
+    
+    [HttpGet("categories")]
+    public ActionResult<List<CategorySimpleResponse>> GetFinancesCategories()
+    {
+        var categories = dbContext.Categories
+            .Where(c => c.Type == CategoryType.Finance)
+            .Select(c => new CategorySimpleResponse { Id = c.Id, Name = c.Name })
+            .ToList();
+        return Ok(categories);
     }
 
     [HttpPost]

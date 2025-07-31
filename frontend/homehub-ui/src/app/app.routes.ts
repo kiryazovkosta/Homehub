@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { guestGuard, authGuard, roleGuard } from './core/guards';
+import { NotFound } from './features/not-found/not-found';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/about', pathMatch: 'full' },
@@ -11,7 +12,9 @@ export const routes: Routes = [
     { path: 'profile', loadComponent: () => import('./auth').then(m => m.UserProfile), canActivate: [authGuard] },
     { path: 'family', loadComponent: () => import('./features').then(m => m.Family), canActivate: [authGuard] },
     { path: 'finances', loadComponent: () => import('./features').then(m => m.FinancesList), canActivate: [authGuard] },
-    { path: 'finances/:id',loadComponent: () => import('./features').then(m => m.FinanceItem),canActivate: [authGuard]},
+    { path: 'finances/create', loadComponent: () => import('./features').then(c => c.CreateFinance), canActivate: [authGuard] },
+    { path: 'finances/:id',loadComponent: () => import('./features').then(m => m.FinanceItem),canActivate: [authGuard] },
     { path: 'contact', loadComponent: () => import('./features').then(m => m.ContactForm), canActivate: [authGuard]},
-    { path: 'management', loadComponent: () => import('./features').then(m => m.ContactForm), canActivate: [roleGuard], data: { role: 'Administrator' }
-}];
+    { path: 'management', loadComponent: () => import('./features').then(m => m.ContactForm), canActivate: [roleGuard], data: { role: 'Administrator' }},
+    { path: '**', component: NotFound }
+];

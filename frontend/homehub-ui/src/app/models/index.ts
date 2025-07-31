@@ -6,3 +6,4 @@ export * from './tasks/tasks-response.model';
 export * from './inventories/inventories.response';
 export * from './functionalities/functionality.model';
 export * from './common/pagination-list-response.model';
+export * from './common/enum-member-response.model';

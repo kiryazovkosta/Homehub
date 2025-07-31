@@ -8,7 +8,6 @@ export const jwtInterceptor: HttpInterceptorFn = (request, next: HttpHandlerFn) 
     const authService = inject(AuthService);
     
     if (request.url.includes('/refresh') || request.url.includes('refresh')) {
-        console.log('Skipping interceptor for refresh request');
         return next(request);
     }
     

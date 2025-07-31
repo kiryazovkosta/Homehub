@@ -4,7 +4,7 @@
       <h2 class="gradient-text">Финансови записи</h2>
       <div class="section-description">
         <p>Управление на финансовите транзакции и отчети</p>
-        <button type="button" class="btn btn-create">
+        <button class="btn btn-create" routerLink="/finances/create">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
@@ -49,13 +49,13 @@
         </div>
 
         <div class="card-actions">
-          <button class="btn btn-view" [routerLink]="['/finances', item.id]">
+          <a class="btn btn-view" [routerLink]="['/finances', item.id]">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M1 12S5 4 12 4S23 12 23 12S19 20 12 20S1 12 1 12Z" stroke="currentColor" stroke-width="2" />
               <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
             </svg>
             Преглед
-          </button>
+          </a>
           @if (isCreator(item)) {
           <button class="btn btn-edit" [attr.data-id]="item.id">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">

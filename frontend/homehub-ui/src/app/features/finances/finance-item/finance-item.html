@@ -11,8 +11,16 @@
       } 
       @else {
       @if (error()) {
-      <app-error-message [errorMessage]="error()" (close)="closeError()" />
-      } @else {
+        <app-error-message 
+          [errorMessage]="error()" 
+          (close)="closeError()" />
+      }
+      @if (delete()) {
+        <app-confirm-dialog 
+          [message]="'Сигурни ли сте, че желаете да изтриете този запис?'" 
+          (confirm)="deleteFinance()" 
+          (close)="closeDelete()" />
+      }
       <div class="detail-card">
         <div class="detail-header">
           <div class="detail-title">
@@ -31,7 +39,7 @@
                 </svg>
                 Редактирай
               </button>
-              <button class="btn btn-delete">
+              <button class="btn btn-delete" (click)="delete.set(true)">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" />
@@ -145,7 +153,6 @@
         </div>
 
       </div>
-      }
       }
 
     </div>

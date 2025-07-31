@@ -23,3 +23,4 @@ export interface FinanceResponse {
     updatedAt: Date | null;
     userId: string;
 }
+

@@ -4,3 +4,8 @@ export interface CategoryResponse {
     type: number;
     typeValue: string;
 }
+
+export interface CategorySimpleResponse {
+    id: string;
+    name: string;
+}
