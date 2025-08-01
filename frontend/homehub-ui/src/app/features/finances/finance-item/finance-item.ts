@@ -38,8 +38,9 @@ export class FinanceItem {
   delete = signal<boolean>(false);
 
   readonly userId = computed( () => this.authService.getUserId());
-
+  
   constructor() {
+
     effect(() => {
       this.loading.set(true);
       this.error.set(null);
@@ -61,6 +62,10 @@ export class FinanceItem {
   }
 
   onBack(): void {
+  }
+
+  setDeleteMode(): void {
+    this.delete.set(true);
   }
 
   getTypeClass(item: number): string {
@@ -146,6 +151,4 @@ export class FinanceItem {
       }
     });
   }
-
-
 }

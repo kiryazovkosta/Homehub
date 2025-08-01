@@ -10,149 +10,150 @@
         <p>Зареждане...</p>
       } 
       @else {
-      @if (error()) {
-        <app-error-message 
-          [errorMessage]="error()" 
-          (close)="closeError()" />
-      }
-      @if (delete()) {
-        <app-confirm-dialog 
-          [message]="'Сигурни ли сте, че желаете да изтриете този запис?'" 
-          (confirm)="deleteFinance()" 
-          (close)="closeDelete()" />
-      }
-      <div class="detail-card">
-        <div class="detail-header">
-          <div class="detail-title">
-            <h3>{{ financeRecord()?.title }}</h3>
-            <span class="type-badge" [ngClass]="getTypeClass(financeRecord()?.type ?? 1)">{{ financeRecord()?.typeValue
-              }}</span>
-          </div>
-          @if (isCreator(financeRecord()?.userId ?? '')) {
-            <div class="detail-actions">
-              <button class="btn btn-edit-detail">
+        @if (error()) {
+          <app-error-message 
+            [errorMessage]="error()" 
+            (close)="closeError()" />
+        }
+        
+        @if (delete()) {
+          <app-confirm-dialog 
+            [message]="'Сигурни ли сте, че желаете да изтриете този запис?'" 
+            (confirm)="deleteFinance()" 
+            (close)="closeDelete()" />
+        }
+        
+          <div class="detail-card">
+            <div class="detail-header">
+              <div class="detail-title">
+                  <h3>{{ financeRecord()?.title }}</h3>
+                  <span class="type-badge" [ngClass]="getTypeClass(financeRecord()?.type ?? 1)">{{ financeRecord()?.typeValue }}</span>
+              </div>
+              @if (isCreator(financeRecord()?.userId ?? '')) {
+                <div class="detail-actions">
+                  <a class="btn btn-edit-detail" [routerLink]="['/finances/edit', financeRecord()?.id]">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M11 4H4A2 2 0 0 0 2 6V20A2 2 0 0 0 4 22H18A2 2 0 0 0 20 20V13" stroke="currentColor"
+                        stroke-width="2" />
+                      <path d="M18.5 2.5A2.121 2.121 0 0 1 21 5L11 15H8V12L18.5 2.5Z" stroke="currentColor"
+                        stroke-width="2" />
+                    </svg>
+                    Редактирай
+                  </a>
+                  <a class="btn btn-delete" (click)="setDeleteMode()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                      <path d="M8 6V4A2 2 0 0 1 10 2H14A2 2 0 0 1 16 4V6M19 6V20A2 2 0 0 1 17 22H7A2 2 0 0 1 5 20V6H19Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                      <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </svg>
+                    Изтрий
+                  </a>
+                </div>
+              }
+            </div>
+
+            <div class="detail-content">
+              <div class="detail-description">
+                <h4>Описание</h4>
+                <p>{{ financeRecord()?.description }}</p>
+              </div>
+
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <span class="label">ID на записа:</span>
+                  <span class="value">{{ financeRecord()?.id?.slice(0, 15) }}</span>
+                </div>
+
+                <div class="detail-item">
+                  <span class="label">Тип транзакция:</span>
+                  <span class="value">{{ financeRecord()?.typeValue }}</span>
+                </div>
+
+                <div class="detail-item">
+                  <span class="label">Категория:</span>
+                  <span class="value">{{ financeRecord()?.category?.name }}</span>
+                </div>
+
+                <div class="detail-item">
+                  <span class="label">Сума:</span>
+                  <span class="amount"
+                    [ngClass]="{'positive': financeRecord()?.type === 1, 'negative': financeRecord()?.type === 2}">
+                    {{ getTypeSign(financeRecord()?.type ?? 1) }} {{ financeRecord()?.amount | number:'1.2-2' }} лв.
+                  </span>
+                </div>
+
+                <div class="detail-item">
+                  <span class="label">Дата на транзакция:</span>
+                  <span class="value">{{ financeRecord()?.date }}</span>
+                </div>
+
+                <div class="detail-item">
+                  <span class="label">Създаден на:</span>
+                  <span class="value">{{ financeRecord()?.createdAt | date:'dd.MM.yyyy HH:mm' }}</span>
+                </div>
+
+                <div class="detail-item">
+                  <span class="label">Последна промяна:</span>
+                  <span class="value">{{ financeRecord()?.updatedAt | date:'dd.MM.yyyy HH:mm' }}</span>
+                </div>
+
+                <div class="detail-item">
+                  <span class="label">Статус:</span>
+                  <span class="status-badge" [ngClass]="{
+                    'past-status': isBeforeOrAfterToday(financeRecord()?.date) === -1,
+                    'current-status': isBeforeOrAfterToday(financeRecord()?.date) === 0,
+                    'active-status': isBeforeOrAfterToday(financeRecord()?.date) === 1
+                  }">
+                    <span class="status-text">
+                      @if (isBeforeOrAfterToday(financeRecord()?.date) === -1) {
+                      Изминала
+                      } @else if (isBeforeOrAfterToday(financeRecord()?.date) === 0) {
+                      Текуща
+                      } @else {
+                      Активна
+                      }
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="category-info">
+                <h4>Информация за категорията</h4>
+                <div class="category-details">
+                  <div class="category-item">
+                    <span class="label">ID на категория:</span>
+                    <span class="value">{{ financeRecord()?.category?.id?.slice(0, 15) }}</span>
+                  </div>
+                  <div class="category-item">
+                    <span class="label">Име на категория:</span>
+                    <span class="value">{{ financeRecord()?.category?.name }}</span>
+                  </div>
+                  <div class="category-item">
+                    <span class="label">Тип на категория:</span>
+                    <span class="value">{{ financeRecord()?.category?.typeValue }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-footer">
+              <button type="button" class="btn btn-back" routerLink="/finances" >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M11 4H4A2 2 0 0 0 2 6V20A2 2 0 0 0 4 22H18A2 2 0 0 0 20 20V13" stroke="currentColor"
-                    stroke-width="2" />
-                  <path d="M18.5 2.5A2.121 2.121 0 0 1 21 5L11 15H8V12L18.5 2.5Z" stroke="currentColor"
-                    stroke-width="2" />
-                </svg>
-                Редактирай
-              </button>
-              <button class="btn btn-delete" (click)="delete.set(true)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" />
-                  <path d="M8 6V4A2 2 0 0 1 10 2H14A2 2 0 0 1 16 4V6M19 6V20A2 2 0 0 1 17 22H7A2 2 0 0 1 5 20V6H19Z"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                  <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg>
-                Изтрий
+                Назад към списъка
               </button>
             </div>
-            }
-        </div>
 
-        <div class="detail-content">
-          <div class="detail-description">
-            <h4>Описание</h4>
-            <p>{{ financeRecord()?.description }}</p>
           </div>
-
-          <div class="detail-grid">
-            <div class="detail-item">
-              <span class="label">ID на записа:</span>
-              <span class="value">{{ financeRecord()?.id?.slice(0, 15) }}</span>
-            </div>
-
-            <div class="detail-item">
-              <span class="label">Тип транзакция:</span>
-              <span class="value">{{ financeRecord()?.typeValue }}</span>
-            </div>
-
-            <div class="detail-item">
-              <span class="label">Категория:</span>
-              <span class="value">{{ financeRecord()?.category?.name }}</span>
-            </div>
-
-            <div class="detail-item">
-              <span class="label">Сума:</span>
-              <span class="amount"
-                [ngClass]="{'positive': financeRecord()?.type === 1, 'negative': financeRecord()?.type === 2}">
-                {{ getTypeSign(financeRecord()?.type ?? 1) }} {{ financeRecord()?.amount | number:'1.2-2' }} лв.
-              </span>
-            </div>
-
-            <div class="detail-item">
-              <span class="label">Дата на транзакция:</span>
-              <span class="value">{{ financeRecord()?.date }}</span>
-            </div>
-
-            <div class="detail-item">
-              <span class="label">Създаден на:</span>
-              <span class="value">{{ financeRecord()?.createdAt | date:'dd.MM.yyyy HH:mm' }}</span>
-            </div>
-
-            <div class="detail-item">
-              <span class="label">Последна промяна:</span>
-              <span class="value">{{ financeRecord()?.updatedAt | date:'dd.MM.yyyy HH:mm' }}</span>
-            </div>
-
-            <div class="detail-item">
-              <span class="label">Статус:</span>
-              <span class="status-badge" [ngClass]="{
-                'past-status': isBeforeOrAfterToday(financeRecord()?.date) === -1,
-                'current-status': isBeforeOrAfterToday(financeRecord()?.date) === 0,
-                'active-status': isBeforeOrAfterToday(financeRecord()?.date) === 1
-              }">
-                <span class="status-text">
-                  @if (isBeforeOrAfterToday(financeRecord()?.date) === -1) {
-                  Изминала
-                  } @else if (isBeforeOrAfterToday(financeRecord()?.date) === 0) {
-                  Текуща
-                  } @else {
-                  Активна
-                  }
-                </span>
-              </span>
-            </div>
-          </div>
-
-          <div class="category-info">
-            <h4>Информация за категорията</h4>
-            <div class="category-details">
-              <div class="category-item">
-                <span class="label">ID на категория:</span>
-                <span class="value">{{ financeRecord()?.category?.id?.slice(0, 15) }}</span>
-              </div>
-              <div class="category-item">
-                <span class="label">Име на категория:</span>
-                <span class="value">{{ financeRecord()?.category?.name }}</span>
-              </div>
-              <div class="category-item">
-                <span class="label">Тип на категория:</span>
-                <span class="value">{{ financeRecord()?.category?.typeValue }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="detail-footer">
-          <button type="button" class="btn btn-back" routerLink="/finances" >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" />
-              <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-            Назад към списъка
-          </button>
-        </div>
-
-      </div>
       }
 
     </div>

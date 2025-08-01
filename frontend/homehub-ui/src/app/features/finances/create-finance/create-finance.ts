@@ -1,9 +1,8 @@
-import { Component, inject, signal, computed, effect } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FinancesService } from '../../../core/services';
 import { CategorySimpleResponse, EnumMemberResponse } from '../../../models';
-import { F } from '@angular/cdk/keycodes';
 import { ErrorMessage } from "../../../shared/error-message/error-message";
 
 @Component({

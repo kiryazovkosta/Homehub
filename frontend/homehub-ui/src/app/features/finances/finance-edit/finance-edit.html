@@ -1,0 +1,131 @@
+<section id="user-profile" class="form-section">
+    <div class="container">
+
+        <div class="section-header">
+            <h2 class="gradient-text">Финансово движение</h2>
+            <p>Редактиране на съществуващо финансово движение</p>
+        </div>
+        <div class="form-container">
+
+            @if (loading()) {
+                <p>Зареждане...</p>
+            }
+            @else {
+            <form class="contact-form" [formGroup]="editFinanceForm" (ngSubmit)="onSubmit()">
+
+                @if (errorMessage()) {
+                    <app-error-message [errorMessage]="errorMessage()" (onClose)="onErrorClose()" />
+                }
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="create-finance-title">Заглавие</label>
+                        <input type="text" id="create-finance-title" formControlName="title"
+                            [class.error]="editFinanceForm.get('title')?.invalid && editFinanceForm.get('title')?.touched" />
+                        @if (editFinanceForm.get('title')?.invalid && editFinanceForm.get('title')?.touched) {
+                        <div class="validator-error-message">
+                            @if (editFinanceForm.get('title')?.errors?.['required']) {
+                            <small>Заглавието е задължително</small>
+                            }
+                            @if (editFinanceForm.get('title')?.errors?.['minlength']) {
+                            <small>Заглавието трябва да е поне 2 символа</small>
+                            }
+                        </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="create-finance-type">Вид</label>
+                        @if (!!types() && types()!.length > 0) {
+                        <select id="user-profile-type" formControlName="type"
+                            [class.error]="editFinanceForm.get('type')?.invalid && editFinanceForm.get('type')?.touched">
+                            <option value="" disabled selected>Изберете тип</option>
+                            @for (type of types(); track type.id) {
+                            <option [value]="type.id">{{ type.value }}</option>
+                            }
+                        </select>
+                        } @else {
+                        <div>Зареждане на типове...</div>
+                        }
+                        @if (editFinanceForm.get('type')?.invalid && editFinanceForm.get('type')?.touched) {
+                        <div class="validator-error-message">
+                            <small>Видът е задължителен</small>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="create-finance-description">Описание</label>
+                    <textarea type="text" id="create-finance-description" formControlName="description" rows="3"
+                        [class.error]="editFinanceForm.get('description')?.invalid && editFinanceForm.get('description')?.touched"></textarea>
+                    @if (editFinanceForm.get('description')?.invalid && editFinanceForm.get('description')?.touched)
+                    {
+                    <div class="validator-error-message">
+                        @if (editFinanceForm.get('description')?.errors?.['required']) {
+                        <small>Описанието е задължително</small>
+                        }
+                        @if (editFinanceForm.get('description')?.errors?.['minlength']) {
+                        <small>Описанието трябва да е поне 5 символа</small>
+                        }
+                    </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label for="create-finance-categoryId">Категория</label>
+                    @if (!!categories() && categories()!.length > 0) {
+                    <select id="user-profile-categoryId" formControlName="categoryId"
+                        [class.error]="editFinanceForm.get('categoryId')?.invalid && editFinanceForm.get('categoryId')?.touched">
+                        <option value="" disabled selected>Изберете категория</option>
+                        @for (category of categories(); track category.id) {
+                        <option [value]="category.id">{{ category.name }}</option>
+                        }
+                    </select>
+                    } @else {
+                    <div>Зареждане на категории...</div>
+                    }
+                    @if (editFinanceForm.get('categoryId')?.invalid && editFinanceForm.get('categoryId')?.touched) {
+                    <div class="validator-error-message">
+                        <small>Категорията е задължителна</small>
+                    </div>
+                    }
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="create-finance-amount">Сума</label>
+                        <input type="number" id="create-finance-amount" formControlName="amount" step="0.01"
+                            [class.error]="editFinanceForm.get('amount')?.invalid && editFinanceForm.get('amount')?.touched" />
+                        @if (editFinanceForm.get('amount')?.invalid && editFinanceForm.get('amount')?.touched) {
+                        <div class="validator-error-message">
+                            @if (editFinanceForm.get('amount')?.errors?.['required']) {
+                            <small>Сумата е задължителна</small>
+                            }
+                            @if (editFinanceForm.get('amount')?.errors?.['min']) {
+                            <small>Сумата трябва да е по-голяма от 0</small>
+                            }
+                        </div>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-profile-date">Дата</label>
+                        <input type="date" id="user-profile-date" formControlName="date"
+                            [class.error]="editFinanceForm.get('date')?.invalid && editFinanceForm.get('date')?.touched" />
+                        @if (editFinanceForm.get('date')?.invalid && editFinanceForm.get('date')?.touched) {
+                        <div class="validator-error-message">
+                            <small>Датата е задължителна</small>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" [disabled]="!isFormValid()">Запази</button>
+                </div>
+            </form>
+            }
+        </div>
+    </div>
+</section>

@@ -13,6 +13,7 @@ export const routes: Routes = [
     { path: 'family', loadComponent: () => import('./features').then(m => m.Family), canActivate: [authGuard] },
     { path: 'finances', loadComponent: () => import('./features').then(m => m.FinancesList), canActivate: [authGuard] },
     { path: 'finances/create', loadComponent: () => import('./features').then(c => c.CreateFinance), canActivate: [authGuard] },
+    { path: 'finances/edit/:id', loadComponent: () => import('./features').then(c => c.FinanceEdit), canActivate: [authGuard] },
     { path: 'finances/:id',loadComponent: () => import('./features').then(m => m.FinanceItem),canActivate: [authGuard] },
     { path: 'contact', loadComponent: () => import('./features').then(m => m.ContactForm), canActivate: [authGuard]},
     { path: 'management', loadComponent: () => import('./features').then(m => m.ContactForm), canActivate: [roleGuard], data: { role: 'Administrator' }},

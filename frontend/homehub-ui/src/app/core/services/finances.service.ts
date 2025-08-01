@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 import { FinanceResponse, PaginationListResponse, FinanceListResponse, CategorySimpleResponse } from "../../models";
 import { baseUrl, financesUrl } from "../../constants/api-constants";
 import { EnumMemberResponse } from "../../models/common/enum-member-response.model";
-import { CreateFinanceRequest } from "../../models/finances/create-finance-request.model";
+import { CreateFinanceRequest, UpdateFinanceRequest } from "../../models/finances/create-finance-request.model";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -27,6 +27,10 @@ export class FinancesService {
         return this.httpClient.post<FinanceResponse>(this.apiUrl, financeRequest);
     }
 
+    update(financeRequest: UpdateFinanceRequest): Observable<void> {
+        return this.httpClient.put<void>(`${this.apiUrl}/${financeRequest.id}`, financeRequest);
+    }
+
     delete(id: string): Observable<void> {
         return this.httpClient.delete<void>(`${this.apiUrl}/${id}`)
     }
@@ -38,6 +42,4 @@ export class FinancesService {
     getCategories() : Observable<CategorySimpleResponse[]> {
         return this.httpClient.get<CategorySimpleResponse[]>(`${this.apiUrl}/categories`);
     }
-
-
 }
