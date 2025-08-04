@@ -36,4 +36,14 @@ public sealed class FamilyQueries
             Name = family.Name
         };
     }
+
+    public static Expression<Func<Family, FamilyResponse>> ToResponse()
+    {
+        return family => new FamilyResponse
+        {
+            Id = family.Id,
+            Name = family.Name,
+            Description = family.Description
+        };
+    }
 }

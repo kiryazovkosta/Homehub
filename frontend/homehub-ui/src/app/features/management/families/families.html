@@ -11,22 +11,34 @@
     <table>
       <thead>
         <tr>
-          <th>Family Name</th>
-          <th>Members</th>
-          <th>Created Date</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th>Наименование</th>
+          <th>Описание</th>
+          <th>Действия</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>No families found</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-      </tbody>
+      @if (loading()) {
+        <tbody>
+          <tr>
+            <td colspan="6">Зареждане...</td>
+          </tr>
+        </tbody>
+      } @else {
+        <tbody>
+          @for (family of families(); track family.id) {
+            <tr>
+              <td>{{ family.name }}</td>
+              <td>{{ family.description }}</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-edit">Edit</button>
+                  <button class="btn-delete">Delete</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      }
+
     </table>
   </div>
 </div>

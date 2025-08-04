@@ -19,3 +19,4 @@ export const usersUrl: string = 'api/users';
 
 export const adminDashboardUrl: string = 'api/admin/dashboard';
 export const adminUsersUrl: string = 'api/admin/users';
+export const adminFamiliesUrl: string = 'api/admin/families';

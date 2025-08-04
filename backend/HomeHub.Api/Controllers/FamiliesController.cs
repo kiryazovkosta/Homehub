@@ -20,7 +20,7 @@ public sealed class FamiliesController(
 {
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ActionResult<TasksListCollectionResponse>> GetFamilies()
+    public async Task<ActionResult<FamiliesListCollectionResponse>> GetFamilies()
     {
         List<FamilyListResponse> tasks = await dbContext
             .Families

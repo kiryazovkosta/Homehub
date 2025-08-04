@@ -3,6 +3,7 @@ using HomeHub.Api.DTOs.Common;
 using HomeHub.Api.DTOs.Finances;
 using HomeHub.Api.DTOs.Users;
 using HomeHub.Api.Entities;
+using HomeHub.Api.DTOs.Families;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,18 @@ public sealed class AdminController(ApplicationDbContext dbContext) : Controller
             .Select(UserQueries.ProjectToListResponse());
 
         var response = await PaginationResponse<UserSimplyResponse>.CreateAsync(usersQuery, query.Page, query.PageSize);
+        return Ok(response);
+    }
+
+    [HttpGet("families")]
+    public async Task<ActionResult<PaginationResponse<FamilyResponse>>> GetFamilies([FromQuery] PageQueryParameters query)
+    {
+        IQueryable<FamilyResponse> familiesQuery = dbContext
+            .Families
+            .Where(f => f.Name != "Администратори")
+            .Select(FamilyQueries.ToResponse());
+
+        var response = await PaginationResponse<FamilyResponse>.CreateAsync(familiesQuery, query.Page, query.PageSize);
         return Ok(response);
     }
 
