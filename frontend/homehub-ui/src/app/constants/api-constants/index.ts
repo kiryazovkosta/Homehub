@@ -17,4 +17,5 @@ export const familiesUrl: string = 'api/families';
 export const userProfileUrl: string = 'api/users/me';
 export const usersUrl: string = 'api/users';
 
-export const dashboardUrl: string = 'api/admin/dashboard';
+export const adminDashboardUrl: string = 'api/admin/dashboard';
+export const adminUsersUrl: string = 'api/admin/users';
