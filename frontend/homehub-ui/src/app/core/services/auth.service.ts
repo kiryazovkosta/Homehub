@@ -38,6 +38,9 @@ export class AuthService {
         if (currentJwt && this.isTokenValid(currentJwt)) {
             this._isLoggedIn.set(true);
             this._jwtToken.set(currentJwt);
+            const decoded = jwtDecode<CustomJwtPayload>(currentJwt);
+            const roles = this.extractRoles(decoded);
+            this._isAdmin.set(roles.includes('Administrator'));
         }
 
         if (currentRefreshToken) {
