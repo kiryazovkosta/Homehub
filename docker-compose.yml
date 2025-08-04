@@ -12,6 +12,12 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - homehub_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U homehub -d homehub"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   homehub.api:
     image: ${DOCKER_REGISTRY:-}homehubapi
@@ -19,7 +25,8 @@ services:
       context: .
       dockerfile: backend/HomeHub.Api/Dockerfile
     depends_on:
-      - homehub.db
+      homehub.db:
+        condition: service_healthy
     ports:
       - 15000:8080
       - 15001:8081

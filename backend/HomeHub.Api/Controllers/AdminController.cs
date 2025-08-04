@@ -43,4 +43,19 @@ public sealed class AdminController(ApplicationDbContext dbContext) : Controller
         return Ok(response);
     }
 
+    [HttpGet("dashboard")]
+    public async Task<ActionResult<DashboardResponse>> GetDashboard()
+    {
+        var response = new DashboardResponse
+        {
+            Families = await dbContext.Families.CountAsync(),
+            Users = await dbContext.Users.CountAsync(),
+            ActiveSessions = 2,
+            Finances = await dbContext.Finances.CountAsync(),
+            Bills = await dbContext.Bills.CountAsync(),
+            Inventories = await dbContext.Inventories.CountAsync()
+        };
+        return Ok(response);
+    }
+
 }

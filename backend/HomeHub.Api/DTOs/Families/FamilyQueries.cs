@@ -20,6 +20,7 @@ public sealed class FamilyQueries
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                FamilyRole = user.FamilyRole,
                 FamilyRoleValue = user.FamilyRole.GetDescription(),
                 Description = user.Description,
                 ImageUrl = user.ImageUrl
