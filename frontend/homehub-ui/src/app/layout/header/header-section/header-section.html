@@ -19,12 +19,15 @@
                 <ul class="nav-menu">
                     <li><a routerLink="/about">Начало</a></li>
                     <li><a routerLink="/services">Услуги</a></li>
-                    @if (isLoggedIn()) {
-                        <li><a routerLink="/family">Семейство</a></li>
+                    @if (isLoggedIn() && !isAdmin()) {
+                        <li><a routerLink="/family" routerLinkActive="active">Семейство</a></li>
                         <li><a routerLink="/finances">Финанси</a></li>
-                        <li><a routerLink="/finance-detail">Детайли</a></li>
-                        <li><a routerLink="/pages">Пейджиране</a></li>
+                        <li><a routerLink="/bills">Сметки</a></li>
+                        <li><a routerLink="/inventories">Наличности</a></li>
                         <li><a routerLink="/contact">Контакти</a></li>
+                    }
+                    @if (isAdmin()) {
+                        <li><a routerLink="/management">Управление</a></li>
                     }
                 </ul>
                 <div class="nav-buttons">

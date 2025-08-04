@@ -1,0 +1,28 @@
+<div class="management-layout">
+  <aside class="management-sidebar">
+    <nav class="management-nav">
+      <h3>Management</h3>
+      <ul class="nav-links">
+        <li>
+          <a routerLink="./" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            Табло за управление
+          </a>
+        </li>
+        <li>
+          <a routerLink="./families" routerLinkActive="active">
+            Семейства
+          </a>
+        </li>
+        <li>
+          <a routerLink="./admin-users" routerLinkActive="active">
+            Потребители
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  
+  <main class="management-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -147,6 +147,13 @@
   color: white;
 }
 
+&.active {
+  background-color: #34495e;
+  color: #3498db;
+  border-left-color: #3498db;
+  font-weight: 600;
+}
+
 /* Mobile menu toggle */
 .mobile-menu-toggle {
   display: none;

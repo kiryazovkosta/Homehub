@@ -14,7 +14,8 @@ export class HeaderSection {
   protected authService: AuthService = inject(AuthService);
   protected router: Router = inject(Router);
   readonly isLoggedIn = this.authService.isLoggedIn;
-
+  readonly isAdmin = this.authService.isAdmin;
+  
   toggleMobileMenu(): void {
     this.isMobileMenuActive = !this.isMobileMenuActive;
   }

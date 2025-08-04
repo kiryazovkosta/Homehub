@@ -1,0 +1,61 @@
+.management-layout {
+  display: flex;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.management-sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.management-nav {
+  h3 {
+    margin: 0 0 20px 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ecf0f1;
+  }
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    padding: 12px 20px;
+    color: #bdc3c7;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+
+    &:hover {
+      background-color: #34495e;
+      color: #ecf0f1;
+      border-left-color: #3498db;
+    }
+
+    &.active {
+      background-color: #34495e;
+      color: #3498db;
+      border-left-color: #3498db;
+      font-weight: 600;
+    }
+  }
+}
+
+.management-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: white;
+}

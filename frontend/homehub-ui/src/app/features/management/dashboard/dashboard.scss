@@ -1,0 +1,42 @@
+.dashboard {
+  h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  p {
+    color: #7f8c8d;
+    margin-bottom: 30px;
+  }
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 30%);
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #3498db;
+
+  h3 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3498db;
+    margin: 0;
+  }
+} 

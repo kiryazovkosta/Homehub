@@ -1,0 +1,70 @@
+.admin-users-management {
+  h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #7f8c8d;
+    margin-bottom: 30px;
+  }
+}
+
+.management-actions {
+  margin-bottom: 30px;
+  
+  button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    
+    &.btn-primary {
+      background-color: #3498db;
+      color: white;
+      
+      &:hover {
+        background-color: #2980b9;
+      }
+    }
+    
+    &.btn-secondary {
+      background-color: #95a5a6;
+      color: white;
+      
+      &:hover {
+        background-color: #7f8c8d;
+      }
+    }
+  }
+}
+
+.admin-users-table {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ecf0f1;
+    }
+    
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    td {
+      color: #7f8c8d;
+    }
+  }
+}

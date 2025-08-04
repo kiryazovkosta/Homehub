@@ -1,0 +1,31 @@
+<div class="dashboard">
+  <h1>Табло за управление</h1>
+  <p>Добре дошли в административния панел. Използвайте страничната лента, за да преминавате между различните раздели за управление.</p>
+  
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <h3>Семейства</h3>
+      <p class="stat-number">{{ dashboard()?.families }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Потребители</h3>
+      <p class="stat-number">{{ dashboard()?.users }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Активни сесии</h3>
+      <p class="stat-number">{{ dashboard()?.activeSessions }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Финанси</h3>
+      <p class="stat-number">{{ dashboard()?.finances }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Сметки</h3>
+      <p class="stat-number">{{ dashboard()?.bills }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Наличности</h3>
+      <p class="stat-number">{{ dashboard()?.inventories }}</p>
+    </div>
+  </div>
+</div> 

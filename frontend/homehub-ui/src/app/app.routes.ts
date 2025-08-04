@@ -16,6 +16,17 @@ export const routes: Routes = [
     { path: 'finances/edit/:id', loadComponent: () => import('./features').then(c => c.FinanceEdit), canActivate: [authGuard] },
     { path: 'finances/:id',loadComponent: () => import('./features').then(m => m.FinanceItem),canActivate: [authGuard] },
     { path: 'contact', loadComponent: () => import('./features').then(m => m.ContactForm), canActivate: [authGuard]},
-    { path: 'management', loadComponent: () => import('./features').then(m => m.ContactForm), canActivate: [roleGuard], data: { role: 'Administrator' }},
+    { 
+        path: 'management', 
+        loadComponent: () => import('./features').then(m => m.Management), 
+        canActivate: [roleGuard], 
+        data: { role: 'Administrator' },
+        children: [
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+            { path: 'dashboard', loadComponent: () => import('./features/management').then(m => m.Dashboard) },
+            { path: 'families', loadComponent: () => import('./features/management').then(m => m.Families) },
+            { path: 'admin-users', loadComponent: () => import('./features/management').then(m => m.AdminUsers) }
+        ]
+    },
     { path: '**', component: NotFound }
 ];

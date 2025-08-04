@@ -5,9 +5,11 @@ import { tap, catchError, map } from "rxjs/operators";
 import { Observable, of } from "rxjs";
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+
 import { AccessTokenResponse } from "../../models/auth/access-token-response.model";
 import { authBaseUrl, loginEndpoint, refreshEndpoint, registerEndpoint, accessTokenKey, refreshTokenKey } from "../../constants/auth-constants";
 import { RegisterUserRequest, FamilyRole, familyRoleLabels } from "../../models/auth/register-user-request.model";
+import { CustomJwtPayload } from "../../models/auth/custom-jwt-payload.model";
 
 @Injectable({
     providedIn: 'root'
@@ -22,10 +24,12 @@ export class AuthService {
     private _isLoggedIn = signal<boolean>(false);
     private _jwtToken = signal<string | null>(null);
     private _refreshToken = signal<string | null>(null);
+    private _isAdmin = signal<boolean>(false);
 
     public isLoggedIn = this._isLoggedIn.asReadonly();
     public jwtToken = this._jwtToken.asReadonly();
     public refreshToken = this._refreshToken.asReadonly();
+    public isAdmin = this._isAdmin.asReadonly();
 
     constructor() {
         const currentJwt = localStorage.getItem(accessTokenKey);
@@ -48,12 +52,16 @@ export class AuthService {
                 this._isLoggedIn.set(true);
                 this._jwtToken.set(tokens.accessToken);
                 this._refreshToken.set(tokens.refreshToken);
+                const decoded = jwtDecode<CustomJwtPayload>(tokens.accessToken);
+                const roles = this.extractRoles(decoded);
+                this._isAdmin.set(roles.includes('Administrator'));
             }),
             map(() => true),
             catchError(error => {
                 this._isLoggedIn.set(false);
                 this._jwtToken.set(null);
                 this._refreshToken.set(null);
+                this._isAdmin.set(false);
                 return of(false);
             })
         );
@@ -66,6 +74,9 @@ export class AuthService {
                 this._isLoggedIn.set(true);
                 this._jwtToken.set(tokens.accessToken);
                 this._refreshToken.set(tokens.refreshToken);
+                const decoded = jwtDecode<CustomJwtPayload>(tokens.accessToken);
+                const roles = this.extractRoles(decoded);
+                this._isAdmin.set(roles.includes('Administrator'));
             }),
             map(() => true),
             catchError(error => {
@@ -81,6 +92,7 @@ export class AuthService {
         this._isLoggedIn.set(false);
         this._jwtToken.set(null);
         this._refreshToken.set(null);
+        this._isAdmin.set(false);
         this.removeTokens();
     }
 
@@ -95,12 +107,16 @@ export class AuthService {
                 this._isLoggedIn.set(true);
                 this._jwtToken.set(tokens.accessToken);
                 this._refreshToken.set(tokens.refreshToken);
+                const decoded = jwtDecode<CustomJwtPayload>(tokens.accessToken);
+                const roles = this.extractRoles(decoded);
+                this._isAdmin.set(roles.includes('Administrator'));
             }),
             map((response) => response.accessToken),
             catchError(error => {
                 this._isLoggedIn.set(false);
                 this._jwtToken.set(null);
                 this._refreshToken.set(null);
+                this._isAdmin.set(false);
                 return of(null);
             })
         );
@@ -110,11 +126,20 @@ export class AuthService {
         const token = this._jwtToken();
 
         if (token && this.isTokenValid(token)) {
-            const decoded = jwtDecode<JwtPayload>(token);
+            const decoded = jwtDecode<CustomJwtPayload>(token);
             return `u_${decoded?.sub}`;
         }
 
         return undefined;
+    }
+
+    getRoles(): string[] {
+        const token = this._jwtToken();
+        if (token && this.isTokenValid(token)) {
+            const decoded = jwtDecode<CustomJwtPayload>(token);
+            return this.extractRoles(decoded);
+        }
+        return [];
     }
 
     getFamilyRoles(): Observable<{ value: number, label: string }[]> {
@@ -124,7 +149,7 @@ export class AuthService {
 
     private isTokenValid(token: string) {
         try {
-            const decoded = jwtDecode<JwtPayload>(token);
+            const decoded = jwtDecode<CustomJwtPayload>(token);
             const currentTime = Math.floor(Date.now() / 1000);
             const expirationTime = decoded?.exp || 0;
             return expirationTime > currentTime;
@@ -136,6 +161,21 @@ export class AuthService {
     private saveTokens(tokens: AccessTokenResponse): void {
         localStorage.setItem(accessTokenKey, tokens.accessToken);
         localStorage.setItem(refreshTokenKey, tokens.refreshToken);
+    }
+
+    private extractRoles(decodedToken: CustomJwtPayload): string[] {
+        const roleClaim = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+        const role = decodedToken[roleClaim];
+        
+        if (!role) {
+            return [];
+        }
+        
+        if (Array.isArray(role)) {
+            return role;
+        } else {
+            return [role];
+        }
     }
 
     private removeTokens(): void {

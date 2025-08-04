@@ -5,3 +5,4 @@ export * from './finances/finance-item/finance-item';
 export * from './finances/create-finance/create-finance';
 export * from './finances/finance-edit/finance-edit';
 export * from './contact-form/contact-form';
+export * from './management/management/management';
