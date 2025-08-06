@@ -33,7 +33,6 @@ export class AddUser {
     }))
   );
 
-  // Event emitter to notify parent component when user is added
   added = output<void>();
 
   private adminService: AdminService = inject(AdminService);
@@ -169,6 +168,7 @@ export class AddUser {
   }
 
   cancel(): void {
+    console.log("cancel creation");
     this.added.emit();
   }
 }

@@ -231,17 +231,6 @@
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
       }
     }
-
-    .btn-secondary {
-      background: #f8f9fa;
-      color: #666;
-      border: 1px solid #e1e5e9;
-
-      &:hover:not(:disabled) {
-        background: #e9ecef;
-        color: #495057;
-      }
-    }
   }
 }
 

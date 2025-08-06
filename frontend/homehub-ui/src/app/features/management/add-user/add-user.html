@@ -1,4 +1,4 @@
-<div class="modal-overlay" (click)="cancel()">
+<div class="modal-overlay">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h2 class="modal-title">Добави потребител</h2>
@@ -183,9 +183,6 @@
           </div>
 
           <div class="form-actions">
-            <button type="button" class="btn btn-secondary" (click)="cancel()">
-              Отказ
-            </button>
             <button type="submit" class="btn btn-primary" [disabled]="loading()">
               {{ buttonText() }}
             </button>

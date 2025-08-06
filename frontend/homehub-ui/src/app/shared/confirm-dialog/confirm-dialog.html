@@ -1,6 +1,6 @@
 <div class="modal-overlay">
-  <div class="modal-backdrop" (click)="closeDialog()"></div>
-  <div class="confirm-message show">
+  <div class="modal-backdrop"></div>
+  <div class="confirm-message show" (click)="$event.stopPropagation()">
     <div class="confirm-content">
       <span class="confirm-icon">❓</span>
       <span class="confirm-text">{{ message() }}</span>
