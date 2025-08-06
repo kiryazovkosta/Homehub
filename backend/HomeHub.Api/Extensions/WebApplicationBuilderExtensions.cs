@@ -119,7 +119,8 @@ public static class WebApplicationBuilderExtensions
     {
         builder.Services
             .AddIdentity<IdentityUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+            .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+            .AddDefaultTokenProviders();
 
         builder.Services.Configure<JwtAuthOptions>(builder.Configuration.GetSection("Jwt"));
 

@@ -3,48 +3,157 @@
   <p>Управление на потребители, роли и статус</p>
   
   <div class="management-actions">
-    <button class="btn-primary">Добави</button>
+    <button class="btn-primary" (click)="addingUser()">Добави</button>
   </div>
+
+  @if (isAdded()) {
+    <app-add-user (added)="addedUser()" (added)="addedUser()"></app-add-user>
+  }
   
   <div class="admin-users-table">
     <table>
       <thead>
         <tr>
+          <th>Снимка</th>
           <th>Първо име</th>
           <th>Фамилия</th>
           <th>Имейл</th>
           <th>Роля</th>
           <th>Описание</th>
-          <th>Снимка</th>
+          <th>Семейство</th>
+          <th>Парола</th>
           <th>Действия</th>
         </tr>
       </thead>
       @if (loading()) {
         <tbody>
           <tr>
-            <td colspan="6">Зареждане...</td>
+            <td colspan="9">Зареждане...</td>
           </tr>
         </tbody>
       } @else {
+
+        @if (errorMessage()) {
+          <tr>
+            <td colspan="9">
+              <app-error-message 
+                [errorMessage]="errorMessage()" 
+                (close)="closeError()" />
+            </td>
+          </tr>
+        }
+
+        @if (isDeleted()) {
+          <app-confirm-dialog 
+            [message]="'Сигурни ли сте, че желаете да изтриете този запис?'" 
+            (confirm)="delete()" 
+            (close)="closeDelete()" />
+        }
+
         <tbody>
           @for (user of users(); track user.id) {
             <tr>
-              <td><img [src]="user.imageUrl" alt="User Image" /></td>
-              <td>{{ user.firstName }}</td>
-              <td>{{ user.lastName }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.familyRoleValue }}</td>
-              <td>{{ user.description }}</td>
-              <td>
-                <div class="action-buttons">
-                  <button class="btn-edit">Edit</button>
-                  <button class="btn-delete">Delete</button>
-                </div>
-              </td>
+              @if (isEditing(user.id) && editForm()) {
+                <td><img [src]="user.imageUrl" alt="User Image" /></td>
+                <td>
+                  <input 
+                    type="text" 
+                    [formControl]="$any(editForm()!.get('firstName'))"
+                    class="form-input"
+                    [class.error]="editForm()!.get('firstName')?.invalid && editForm()!.get('firstName')?.touched"
+                  />
+                  @if (editForm()!.get('firstName')?.invalid && editForm()!.get('firstName')?.touched) {
+                    <div class="error-message">Първото име е задължително</div>
+                  }
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    [formControl]="$any(editForm()!.get('lastName'))"
+                    class="form-input"
+                    [class.error]="editForm()!.get('lastName')?.invalid && editForm()!.get('lastName')?.touched"
+                  />
+                  @if (editForm()!.get('lastName')?.invalid && editForm()!.get('lastName')?.touched) {
+                    <div class="error-message">Фамилията е задължителна</div>
+                  }
+                </td>
+                <td>{{ user.email }}</td>
+                <td>
+                  <select [formControl]="$any(editForm()!.get('familyRole'))"
+                    class="form-input"
+                    [class.error]="editForm()!.get('familyRole')?.invalid && editForm()!.get('familyRole')?.touched">
+                    @for (role of familyRoles(); track role[0]) {
+                      <option [value]="role[0]">{{ role[1] }}</option>
+                    }
+                  </select>
+                  @if (editForm()!.get('familyRole')?.invalid && editForm()!.get('familyRole')?.touched) {
+                    <div class="error-message">Ролята е задължителна</div>
+                  }
+                </td>
+                <td>
+                  <textarea 
+                    [formControl]="$any(editForm()!.get('description'))"
+                    class="form-input"
+                    rows="3"
+                    [class.error]="editForm()!.get('description')?.invalid && editForm()!.get('description')?.touched">
+                  </textarea>
+                  @if (editForm()!.get('description')?.invalid && editForm()!.get('description')?.touched) {
+                    <div class="error-message">Описание е задължително</div>
+                  }
+                </td>
+                <td>
+                  <select [formControl]="$any(editForm()!.get('familyId'))"
+                    class="form-input"
+                    [class.error]="editForm()!.get('familyId')?.invalid && editForm()!.get('familyId')?.touched">
+                    @for (family of families(); track family.id) {
+                      <option [value]="family.id">{{ family.name }}</option>
+                    }
+                  </select>
+                  @if (editForm()!.get('familyId')?.invalid && editForm()!.get('familyId')?.touched) {
+                    <div class="error-message">Семейство е задължително</div>
+                  }
+                </td>
+                <td>
+                  <input type="password" [formControl]="$any(editForm()!.get('password'))"
+                    class="form-input"
+                    autocomplete="new-password"
+                    [class.error]="editForm()!.get('password')?.invalid && editForm()!.get('password')?.touched"
+                  />
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button 
+                      class="btn-save" 
+                      (click)="save(user)"
+                      [disabled]="editForm()!.invalid">Save</button>
+                    <button class="btn-cancel" (click)="cancel()">Cancel</button>
+                  </div>
+                </td>
+              }
+              @else {
+                <td><img [src]="user.imageUrl" alt="User Image" /></td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.familyRoleValue }}</td>
+                <td>{{ user.description }}</td>
+                <td>{{ user.familyName }}</td>
+                <td>********</td>
+                <td>
+                  <div class="action-buttons">
+                      <button class="btn-edit" (click)="edit(user)">Edit</button>
+                      <button class="btn-delete" (click)="this.editingUserId.set(user.id);setDeletedMode()">Delete</button>
+                  </div>
+                </td>
+              }
             </tr>
           }
         </tbody>
       }
     </table>
   </div>
+
+  <app-page-navigation [totalCount]="totalCount()" [totalPages]="totalPages()" [page]="page()" [pageSize]="pageSize()"
+    (setPageNumber)="setPage($event)">
+  </app-page-navigation>
 </div>

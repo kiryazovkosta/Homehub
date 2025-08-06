@@ -28,9 +28,9 @@ public static class UserQueries
         };
     }
 
-    public static Expression<Func<User, UserSimplyResponse>> ProjectToListResponse()
+    public static Expression<Func<User, UserAdminResponse>> ProjectToListResponse()
     {
-        return user => new UserSimplyResponse
+        return user => new UserAdminResponse()
         {
             Id = user.Id,
             Email = user.Email,
@@ -39,7 +39,9 @@ public static class UserQueries
             FamilyRole = user.FamilyRole,
             FamilyRoleValue = user.FamilyRole.GetDescription(),
             Description = user.Description,
-            ImageUrl = user.ImageUrl
+            ImageUrl = user.ImageUrl,
+            FamilyId = user.FamilyId,
+            FamilyName = user.Family.Name
         };
     }
 }

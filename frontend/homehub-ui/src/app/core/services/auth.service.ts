@@ -83,6 +83,7 @@ export class AuthService {
             }),
             map(() => true),
             catchError(error => {
+                console.log(error);
                 this._isLoggedIn.set(false);
                 this._jwtToken.set(null);
                 this._refreshToken.set(null);

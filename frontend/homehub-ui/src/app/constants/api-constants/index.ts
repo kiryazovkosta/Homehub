@@ -20,3 +20,5 @@ export const usersUrl: string = 'api/users';
 export const adminDashboardUrl: string = 'api/admin/dashboard';
 export const adminUsersUrl: string = 'api/admin/users';
 export const adminFamiliesUrl: string = 'api/admin/families';
+export const adminUpdateUserUrl: string = 'api/admin/users/update';
+export const adminDeleteUserUrl: string = 'api/admin/users/delete'

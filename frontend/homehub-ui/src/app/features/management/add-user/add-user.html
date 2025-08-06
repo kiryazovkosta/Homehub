@@ -1,0 +1,197 @@
+<div class="modal-overlay" (click)="cancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Добави потребител</h2>
+      <button class="close-button" (click)="cancel()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      @if (loading()) {
+        <div class="loading-spinner">
+          <p>Зареждане...</p>
+        </div>
+      } @else {
+        @if (errorMessage()) {
+          <app-error-message [errorMessage]="errorMessage()" (close)="closeError()" />
+        }
+
+        <form class="add-user-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="add-user-firstName">Първо име</label>
+              <input type="text" id="add-user-firstName" formControlName="firstName"
+                [class.error]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+              @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
+                <div class="validator-error-message">
+                  @if (registerForm.get('firstName')?.errors?.['required']) {
+                    <small>Първото име е задължително.</small>
+                  }
+                  @if (registerForm.get('firstName')?.errors?.['minlength']) {
+                    <small>Първото име трябва да е поне 3 символа.</small>
+                  }
+                  @if (registerForm.get('firstName')?.errors?.['maxlength']) {
+                    <small>Първото име не може да е по-дълго от 64 символа.</small>
+                  }
+                </div>
+              }
+            </div>
+            <div class="form-group">
+              <label for="add-user-lastName">Фамилия</label>
+              <input type="text" id="add-user-lastName" formControlName="lastName"
+                [class.error]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+              @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
+                <div class="validator-error-message">
+                  @if (registerForm.get('lastName')?.errors?.['required']) {
+                    <small>Фамилията е задължителна.</small>
+                  }
+                  @if (registerForm.get('lastName')?.errors?.['minlength']) {
+                    <small>Фамилията трябва да е поне 3 символа.</small>
+                  }
+                  @if (registerForm.get('lastName')?.errors?.['maxlength']) {
+                    <small>Фамилията не може да е по-дълга от 64 символа.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="add-user-email">Имейл адрес</label>
+              <input type="email" id="add-user-email" formControlName="email"
+                [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+              @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+                <div class="validator-error-message">
+                  @if (registerForm.get('email')?.errors?.['required']) {
+                    <small>Имейл адресът е задължителен.</small>
+                  }
+                  @if (registerForm.get('email')?.errors?.['email']) {
+                    <small>Невалиден имейл формат.</small>
+                  }
+                </div>
+              }
+            </div>
+            <div class="form-group">
+              <label for="add-user-familyRole">Роля в семейството</label>
+              <select id="add-user-familyRole" formControlName="familyRole"
+                      [class.error]="registerForm.get('familyRole')?.invalid && registerForm.get('familyRole')?.touched">
+                <option value="" disabled selected>Избери роля в семейството</option>
+                @for (role of familyRoleOptions(); track role.value) {
+                  <option [value]="role.value">{{ role.label }}</option>
+                }
+              </select>
+              @if (registerForm.get('familyRole')?.invalid && registerForm.get('familyRole')?.touched) {
+                <div class="validator-error-message">
+                  @if (registerForm.get('familyRole')?.errors?.['required']) {
+                    <small>Ролята в семейството е задължителна.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="add-user-password">Парола</label>
+              <input type="password" id="add-user-password" formControlName="password"
+                [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                (input)="checkPasswordMatch()">
+              @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+                <div class="validator-error-message">
+                  @if (registerForm.get('password')?.errors?.['required']) {
+                    <small>Паролата е задължителна.</small>
+                  }
+                  @if (registerForm.get('password')?.errors?.['minlength']) {
+                    <small>Паролата трябва да е поне 4 символа.</small>
+                  }
+                  @if (registerForm.get('password')?.errors?.['maxlength']) {
+                    <small>Паролата не може да е по-дълга от 16 символа.</small>
+                  }
+                </div>
+              }
+            </div>
+            <div class="form-group">
+              <label for="add-user-confirm">Повтори парола</label>
+              <input type="password" id="add-user-confirm" formControlName="confirmPassword"
+                [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+                [class.success]="passwordsMatch() && registerForm.get('confirmPassword')?.value"
+                (input)="checkPasswordMatch()">
+              @if (registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) {
+                <div class="validator-error-message">
+                  @if (registerForm.get('confirmPassword')?.errors?.['required']) {
+                    <small>Повторете паролата е задължителна.</small>
+                  }
+                  @if (!passwordsMatch() && registerForm.get('confirmPassword')?.touched) {
+                    <small>Паролите не съвпадат.</small>
+                  }
+                </div>  
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="add-user-description">Описание</label>
+            <textarea id="add-user-description" formControlName="description" rows="3"
+              [class.error]="registerForm.get('description')?.invalid && registerForm.get('description')?.touched">
+            </textarea>
+            @if (registerForm.get('description')?.invalid && registerForm.get('description')?.touched) {
+              <div class="validator-error-message">
+                @if (registerForm.get('description')?.errors?.['required']) {
+                  <small>Описание е задължително.</small>
+                }
+                @if (registerForm.get('description')?.errors?.['minlength']) {
+                  <small>Описание трябва да е поне 10 символа.</small>
+                }
+                @if (registerForm.get('description')?.errors?.['maxlength']) {
+                  <small>Описание не може да е по-дълго от 256 символа.</small>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="profile-image">Профилна снимка</label>
+            <div class="file-upload">
+              <input type="file" id="profile-image" accept="image/*" (change)="onFileChange($event)">
+              <label for="profile-image" class="file-label" [class.has-file]="fileName()">
+                <span class="upload-icon">📷</span>
+                <span class="upload-text">{{ fileName() || 'Избери снимка' }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="add-user-familyId">Семейство</label>
+            @if (!!families() && families()!.length > 0) {
+              <select id="add-user-familyId" formControlName="familyId"
+                      [class.error]="registerForm.get('familyId')?.invalid && registerForm.get('familyId')?.touched">
+                <option value="" disabled selected>Избери семейството</option>
+                @for (family of families(); track family.id) {
+                  <option [value]="family.id">{{ family.name }}</option>
+                }
+              </select>
+            } @else {
+              <div>Зареждане на семейства...</div>
+            }
+            @if (registerForm.get('familyId')?.invalid && registerForm.get('familyId')?.touched) {
+              <div class="validator-error-message">
+                @if (registerForm.get('familyId')?.errors?.['required']) {
+                  <small>Семейството е задължително.</small>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="cancel()">
+              Отказ
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="loading()">
+              {{ buttonText() }}
+            </button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+</div>

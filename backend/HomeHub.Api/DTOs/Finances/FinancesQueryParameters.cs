@@ -1,4 +1,6 @@
-using HomeHub.Api.Entities;
+namespace HomeHub.Api.DTOs.Finances;
+
+using Entities;
 using Microsoft.AspNetCore.Mvc;
 
 public sealed record FinancesQueryParameters : PageQueryParameters

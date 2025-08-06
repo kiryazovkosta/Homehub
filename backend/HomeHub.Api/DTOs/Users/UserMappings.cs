@@ -20,4 +20,19 @@ public static class UserMappings
             IdentityId = identityId
         };
     }
+
+    public static UserSimplyResponse ToResponse(this User user)
+    {
+        return new UserSimplyResponse()
+        {
+            Id = user.Id,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            FamilyRole = user.FamilyRole,
+            FamilyRoleValue = user.FamilyRole.ToString(),
+            Description = user.Description,
+            ImageUrl = user.ImageUrl
+        };
+    }
 }
