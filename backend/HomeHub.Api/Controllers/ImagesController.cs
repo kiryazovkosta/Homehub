@@ -8,10 +8,10 @@ using System.Net.Http;
 
 [ApiController]
 [Route("api/images")]
+[Consumes("multipart/form-data")]
 public sealed class ImagesController(IHttpClientFactory httpClientFactory) : ControllerBase
 {
     private readonly string _bucket = "images";
-    private readonly string _users = "users";
     private readonly string _key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRyZ2RqZnVlbGZrYm9raGhyem10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NDk3MzgsImV4cCI6MjA2ODIyNTczOH0.kWYnW0yZzu_vIHrp5jdn78axnbGfYE3No2DbRqN_PeI";
     private readonly Supabase.SupabaseOptions _options = new()
     {
@@ -23,7 +23,7 @@ public sealed class ImagesController(IHttpClientFactory httpClientFactory) : Con
 
     [HttpPost]
     public async Task<ActionResult<SupabaseImageResponse>> UploadImage(
-    IFormFile file)
+        SupabaseImageRequest request)
     {
         try
         {
@@ -34,7 +34,7 @@ public sealed class ImagesController(IHttpClientFactory httpClientFactory) : Con
                 return BadRequest(new { error = "Authentication failed." });
             }
 
-            var uploadResult = await UploadFileToSupabaseAsync(file, accessToken);
+            var uploadResult = await UploadFileToSupabaseAsync(request.Folder, request.File, accessToken);
             return uploadResult.IsSuccess? Ok(uploadResult) : BadRequest(uploadResult);
         }
         catch (Exception)
@@ -68,9 +68,11 @@ public sealed class ImagesController(IHttpClientFactory httpClientFactory) : Con
     }
 
     private async Task<SupabaseImageResponse> UploadFileToSupabaseAsync(
-        IFormFile file, string accessToken)
+        string folder,
+        IFormFile file, 
+        string accessToken)
     {
-        var filePath = Path.Combine(_users, file.FileName).Replace("\\", "/");
+        var filePath = Path.Combine(folder, file.FileName).Replace("\\", "/");
         var uploadUrl = $"storage/v1/object/{_bucket}/{filePath}";
 
         using HttpClient httpClient = CreateSupabaseClient(accessToken);

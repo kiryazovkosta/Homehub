@@ -1,6 +1,10 @@
 using FluentValidation;
 using HomeHub.Api.Database;
+using HomeHub.Api.DTOs.Categories;
+using HomeHub.Api.DTOs.Common;
 using HomeHub.Api.DTOs.Inventories;
+using HomeHub.Api.Entities;
+using HomeHub.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,22 +12,33 @@ namespace HomeHub.Api.Controllers;
 
 [ApiController]
 [Route("api/inventories")]
-public sealed class InventoriesController(ApplicationDbContext dbContext) : ControllerBase
+public sealed class InventoriesController(
+    ApplicationDbContext dbContext,
+    UserContext userContext) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<InventoriesListCollectionResponse>> GetInventories()
+    public async Task<ActionResult<InventoriesListCollectionResponse>> GetInventories(
+        [FromQuery] InventoriesQueryParameters parameters,
+        UserContext userContext)
     {
-        List<InventoryListResponse> tasks = await dbContext
-            .Inventories
-            .Include(i => i.Category)
-            .Select(InventoryQueries.ToListResponse())
-            .ToListAsync();
-
-        var response = new InventoriesListCollectionResponse
+        string? familyId = await userContext.GetFamilyIdAsync();
+        if (string.IsNullOrWhiteSpace(familyId))
         {
-            Items = tasks
-        };
+            return Unauthorized();
+        }
 
+        IQueryable<InventoryListResponse> inventoriesQuery = dbContext
+            .Inventories
+            .Include(i => i.User)
+            .Include(i => i.Category)
+            .Where(i => i.User.FamilyId == familyId)
+            .Where(i => parameters.Search == null ||
+                        i.Name.ToLower().Contains(parameters.Search) ||
+                        i.Description.ToLower().Contains(parameters.Search))
+            .OrderByDescending(i => i.Id)
+            .Select(InventoryQueries.ToListResponse());
+
+        var response = await PaginationResponse<InventoryListResponse>.CreateAsync(inventoriesQuery, parameters.Page, parameters.PageSize);
         return Ok(response);
     }
 
@@ -63,14 +78,30 @@ public sealed class InventoriesController(ApplicationDbContext dbContext) : Cont
         return Ok(response);
     }
 
+    [HttpGet("categories")]
+    public ActionResult<List<CategorySimpleResponse>> GetCategories()
+    {
+        var categories = dbContext.Categories
+            .Where(c => c.Type == CategoryType.Inventory)
+            .Select(c => new CategorySimpleResponse { Id = c.Id, Name = c.Name })
+            .ToList();
+        return Ok(categories);
+    }
+
     [HttpPost]
     public async Task<ActionResult<InventoryResponse>> CreateInventory(
         [FromBody] CreateInventoryRequest request,
         IValidator<CreateInventoryRequest> validator,
         CancellationToken cancellationToken)
     {
+        string? userId = await userContext.GetUserIdAsync(cancellationToken);
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return Unauthorized();
+        }
+
         await validator.ValidateAndThrowAsync(request, cancellationToken);
-        
+
         var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
         if (category is null)
         {
@@ -83,7 +114,7 @@ public sealed class InventoriesController(ApplicationDbContext dbContext) : Cont
             return NotFound();
         }
 
-        var inventory = request.ToEntity(category, location);
+        var inventory = request.ToEntity(userId, category, location);
         dbContext.Inventories.Add(inventory);
         await dbContext.SaveChangesAsync(cancellationToken);
         InventoryResponse response = inventory.ToResponse();
@@ -111,16 +142,31 @@ public sealed class InventoriesController(ApplicationDbContext dbContext) : Cont
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteInventory(string id)
+    public async Task<ActionResult> DeleteInventory(
+        string id,
+        CancellationToken cancellationToken)
     {
-        var inventory = await dbContext.Inventories.FirstOrDefaultAsync(t => t.Id == id);
+        string? familyId = await userContext.GetFamilyIdAsync(cancellationToken);
+        if (string.IsNullOrWhiteSpace(familyId))
+        { 
+            return Unauthorized();
+        }
+
+        var inventory = await dbContext.Inventories
+            .Include(i => i.User)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
         if (inventory is null)
         {
             return NotFound();
         }
+        
+        if (inventory.User.FamilyId != familyId)
+        {
+            return Unauthorized();
+        }
 
         dbContext.Inventories.Remove(inventory);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
         return NoContent();
     }
 }

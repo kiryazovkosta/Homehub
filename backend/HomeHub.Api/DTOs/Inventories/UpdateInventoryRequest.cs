@@ -7,4 +7,5 @@ public sealed record UpdateInventoryRequest
     public required string CategoryId { get; init; }
     public required string LocationId { get; init; }
     public int Threshold { get; init; }
+    public required string Description { get; init; }
 }

@@ -14,9 +14,17 @@ public sealed class InventoryConfiguration : IEntityTypeConfiguration<Inventory>
 
         builder.Property(t => t.Name).HasMaxLength(128).IsRequired();
 
-        builder.Property(i => i.CategoryId).IsRequired().HasMaxLength(128); ;
+        builder.Property(i => i.CategoryId).IsRequired().HasMaxLength(128);
 
-        builder.Property(i => i.LocationId).IsRequired().HasMaxLength(128); ;
+        builder.Property(i => i.LocationId).IsRequired().HasMaxLength(128);
+        
+        builder.Property(i => i.Quantity).IsRequired();
+
+        builder.Property(i => i.Threshold).IsRequired();
+
+        builder.Property(i => i.Description).IsRequired().HasMaxLength(200);
+
+        builder.Property(i => i.ImageUrl).IsRequired().HasMaxLength(200);
 
         builder.HasOne(i => i.Category)
             .WithMany()

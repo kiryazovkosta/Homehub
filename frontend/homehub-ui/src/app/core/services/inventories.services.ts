@@ -45,4 +45,8 @@ export class InventoriesService {
     create(createInvebtoryRequest: CreateInventoryRequest): Observable<InventoryResponse> {
         return this.httpClient.post<InventoryResponse>(this.apiUrl, createInvebtoryRequest);
     }
+
+    delete(id: string) : Observable<void> {
+        return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
+    }
 }

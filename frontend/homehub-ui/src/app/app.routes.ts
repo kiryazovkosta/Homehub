@@ -17,6 +17,8 @@ export const routes: Routes = [
     { path: 'finances/:id', loadComponent: () => import('./features').then(m => m.FinanceItem),canActivate: [authGuard] },
     { path: 'inventories', loadComponent: () => import('./features/inventories').then(m => m.InventoriesList), canActivate: [authGuard] },
     { path: 'inventories/create', loadComponent: () => import('./features/inventories').then(m => m.InventoryCreate), canActivate: [authGuard] },
+    { path: 'inventories/:id', loadComponent: () => import('./features/inventories').then(m => m.InventoryItem), canActivate: [authGuard] },
+    { path: 'inventories/:id/edit', loadComponent: () => import('./features/inventories').then(m => m.InventoryItem), canActivate: [authGuard] },
     { path: 'contact', loadComponent: () => import('./features').then(m => m.ContactForm), canActivate: [authGuard]},
     { 
         path: 'management', 

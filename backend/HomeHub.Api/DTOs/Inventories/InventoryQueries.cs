@@ -10,43 +10,47 @@ public static class InventoryQueries
 {
     public static Expression<Func<Inventory, InventoryListResponse>> ToListResponse()
     {
-        return i => new InventoryListResponse
+        return inventory => new InventoryListResponse
         {
-            Id = i.Id,
-            Name = i.Name,
-            Quantity = i.Quantity,
+            Id = inventory.Id,
+            Name = inventory.Name,
+            Quantity = inventory.Quantity,
             Category = new CategoryResponse
             {
-                Id = i.Category.Id,
-                Name = i.Category.Name,
-                Type = i.Category.Type,
-                TypeValue = i.Category.Type.GetDescription()
+                Id = inventory.Category.Id,
+                Name = inventory.Category.Name,
+                Type = inventory.Category.Type,
+                TypeValue = inventory.Category.Type.GetDescription()
             },
-            Threshold = i.Threshold
+            Threshold = inventory.Threshold,
+            Description = inventory.Description,
+            ImageUrl = inventory.ImageUrl
         };
     }
 
     public static Expression<Func<Inventory, InventoryResponse>> ToResponse()
     {
-        return i => new InventoryResponse
+        return inventory => new InventoryResponse
         {
-            Id = i.Id,
-            Name = i.Name,
-            Quantity = i.Quantity,
+            Id = inventory.Id,
+            Name = inventory.Name,
+            Quantity = inventory.Quantity,
             Category = new CategoryResponse
             {
-                Id = i.Category.Id,
-                Name = i.Category.Name,
-                Type = i.Category.Type,
-                TypeValue = i.Category.Type.GetDescription()
+                Id = inventory.Category.Id,
+                Name = inventory.Category.Name,
+                Type = inventory.Category.Type,
+                TypeValue = inventory.Category.Type.GetDescription()
             },
             Location = new LocationResponse
             {
-                Id = i.Location.Id,
-                Name = i.Location.Name,
-                Description = i.Location.Description
+                Id = inventory.Location.Id,
+                Name = inventory.Location.Name,
+                Description = inventory.Location.Description
             },
-            Threshold = i.Threshold
+            Threshold = inventory.Threshold,
+            Description = inventory.Description,
+            ImageUrl = inventory.ImageUrl
         };
     }
 }

@@ -9,4 +9,6 @@ public sealed record InventoryListResponse
     public int Quantity { get; init; }
     public required CategoryResponse Category { get; init; }
     public required int Threshold { get; init; }
+    public required string Description { get; init; }
+    public required string ImageUrl { get; init; }
 }

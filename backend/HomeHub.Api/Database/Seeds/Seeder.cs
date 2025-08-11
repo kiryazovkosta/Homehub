@@ -233,6 +233,55 @@ internal static class Seeder
                 , cancellationToken);
         }
 
+        dataExists = await context.Inventories.AnyAsync(cancellationToken);
+        if (!dataExists)
+        {
+            seedData = true;
+            await context.Inventories.AddRangeAsync([
+                // Храни (Category17Id)
+                new Inventory { Id = InventoryConstant.Inventory1Id, Name = "Бял ориз", Quantity = 5, CategoryId = CategoryConstants.Category17Id, LocationId = LocationConstants.Location1Id, Threshold = 2, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Бял ориз за готвене, 1кг пакет", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory2Id, Name = "Пълнозърнест хляб", Quantity = 3, CategoryId = CategoryConstants.Category17Id, LocationId = LocationConstants.Location2Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-eb95eeeee9d8", Description = "Пълнозърнест хляб в хладилника", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory3Id, Name = "Яйца", Quantity = 12, CategoryId = CategoryConstants.Category17Id, LocationId = LocationConstants.Location2Id, Threshold = 6, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Свежи яйца в хладилника", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory4Id, Name = "Мляко", Quantity = 2, CategoryId = CategoryConstants.Category17Id, LocationId = LocationConstants.Location2Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-eb95eeeee9d8", Description = "Пълномаслено мляко 3.5%", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory5Id, Name = "Кашкавал", Quantity = 1, CategoryId = CategoryConstants.Category17Id, LocationId = LocationConstants.Location2Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Твърд кашкавал за готвене", ImageUrl = InventoryConstant.DefaultImage },
+                
+                // Напитки (Category18Id)
+                new Inventory { Id = InventoryConstant.Inventory6Id, Name = "Минерална вода", Quantity = 6, CategoryId = CategoryConstants.Category18Id, LocationId = LocationConstants.Location1Id, Threshold = 2, UserId = "u_01980d39-f055-742a-bef5-efadeedbfca5", Description = "Минерална вода 1.5л бутилки", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory7Id, Name = "Сок портокал", Quantity = 2, CategoryId = CategoryConstants.Category18Id, LocationId = LocationConstants.Location2Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-f23a2c727526", Description = "Портокалов сок 1л", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory8Id, Name = "Кафе зърна", Quantity = 1, CategoryId = CategoryConstants.Category18Id, LocationId = LocationConstants.Location1Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Кафе зърна за еспресо", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory9Id, Name = "Чай пакетчета", Quantity = 50, CategoryId = CategoryConstants.Category18Id, LocationId = LocationConstants.Location1Id, Threshold = 10, UserId = "u_01980d39-f055-742a-bef5-eb95eeeee9d8", Description = "Черен чай пакетчета", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory10Id, Name = "Бира", Quantity = 4, CategoryId = CategoryConstants.Category18Id, LocationId = LocationConstants.Location2Id, Threshold = 2, UserId = "u_01980d39-f055-742a-bef5-f513cbe5f2bf", Description = "Бира за уикенда", ImageUrl = InventoryConstant.DefaultImage },
+                
+                // Препарати за почистване (Category19Id)
+                new Inventory { Id = InventoryConstant.Inventory11Id, Name = "Сапун за съдове", Quantity = 2, CategoryId = CategoryConstants.Category19Id, LocationId = LocationConstants.Location1Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Сапун за миене на съдове", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory12Id, Name = "Препарат за тоалетна", Quantity = 1, CategoryId = CategoryConstants.Category19Id, LocationId = LocationConstants.Location3Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-eb95eeeee9d8", Description = "Препарат за почистване на тоалетна", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory13Id, Name = "Спрей за кухня", Quantity = 1, CategoryId = CategoryConstants.Category19Id, LocationId = LocationConstants.Location1Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Спрей за почистване на кухня", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory14Id, Name = "Прах за пране", Quantity = 3, CategoryId = CategoryConstants.Category19Id, LocationId = LocationConstants.Location7Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-eb95eeeee9d8", Description = "Прах за пране на дрехи", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory15Id, Name = "Мекотелина", Quantity = 2, CategoryId = CategoryConstants.Category19Id, LocationId = LocationConstants.Location7Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Мекотелина за дрехи", ImageUrl = InventoryConstant.DefaultImage },
+                
+                // Тоалетни принадлежности (Category20Id)
+                new Inventory { Id = InventoryConstant.Inventory16Id, Name = "Тоалетна хартия", Quantity = 8, CategoryId = CategoryConstants.Category20Id, LocationId = LocationConstants.Location3Id, Threshold = 2, UserId = "u_01980d39-f055-742a-bef5-eb95eeeee9d8", Description = "Тоалетна хартия ролки", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory17Id, Name = "Сапун за ръце", Quantity = 3, CategoryId = CategoryConstants.Category20Id, LocationId = LocationConstants.Location3Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Сапун за ръце в банята", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory18Id, Name = "Шампоан", Quantity = 2, CategoryId = CategoryConstants.Category20Id, LocationId = LocationConstants.Location3Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-eb95eeeee9d8", Description = "Шампоан за коса", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory19Id, Name = "Паста за зъби", Quantity = 4, CategoryId = CategoryConstants.Category20Id, LocationId = LocationConstants.Location3Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Паста за зъби тъби", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory20Id, Name = "Дезодорант", Quantity = 2, CategoryId = CategoryConstants.Category20Id, LocationId = LocationConstants.Location7Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-efadeedbfca5", Description = "Дезодорант спрей", ImageUrl = InventoryConstant.DefaultImage },
+                
+                // Електроника (Category21Id)
+                new Inventory { Id = InventoryConstant.Inventory21Id, Name = "Лаптоп", Quantity = 1, CategoryId = CategoryConstants.Category21Id, LocationId = LocationConstants.Location10Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Работен лаптоп", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory22Id, Name = "Смартфон", Quantity = 1, CategoryId = CategoryConstants.Category21Id, LocationId = LocationConstants.Location6Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-eb95eeeee9d8", Description = "Мобилен телефон", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory23Id, Name = "Наушници", Quantity = 2, CategoryId = CategoryConstants.Category21Id, LocationId = LocationConstants.Location10Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-efadeedbfca5", Description = "Безжични наушници", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory24Id, Name = "Зарядно устройство", Quantity = 3, CategoryId = CategoryConstants.Category21Id, LocationId = LocationConstants.Location6Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-f23a2c727526", Description = "USB зарядно устройство", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory25Id, Name = "Телевизор", Quantity = 1, CategoryId = CategoryConstants.Category21Id, LocationId = LocationConstants.Location6Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-f513cbe5f2bf", Description = "LED телевизор 55 инча", ImageUrl = InventoryConstant.DefaultImage },
+                
+                // Мебели (Category22Id)
+                new Inventory { Id = InventoryConstant.Inventory26Id, Name = "Диван", Quantity = 1, CategoryId = CategoryConstants.Category22Id, LocationId = LocationConstants.Location6Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-f91631b10db3", Description = "Триместен диван в хола", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory27Id, Name = "Маса за ядене", Quantity = 1, CategoryId = CategoryConstants.Category22Id, LocationId = LocationConstants.Location1Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-e54990be9f56", Description = "Дървена маса за ядене", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory28Id, Name = "Легло", Quantity = 2, CategoryId = CategoryConstants.Category22Id, LocationId = LocationConstants.Location7Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-eb95eeeee9d8", Description = "Легло с матрак", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory29Id, Name = "Шкаф", Quantity = 3, CategoryId = CategoryConstants.Category22Id, LocationId = LocationConstants.Location7Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-efadeedbfca5", Description = "Гардероб за дрехи", ImageUrl = InventoryConstant.DefaultImage },
+                new Inventory { Id = InventoryConstant.Inventory30Id, Name = "Бюро", Quantity = 1, CategoryId = CategoryConstants.Category22Id, LocationId = LocationConstants.Location10Id, Threshold = 1, UserId = "u_01980d39-f055-742a-bef5-f23a2c727526", Description = "Работно бюро в офиса", ImageUrl = InventoryConstant.DefaultImage }
+            ], cancellationToken);
+        }
+
         if (seedData)
         {
             await context.SaveChangesAsync(cancellationToken);

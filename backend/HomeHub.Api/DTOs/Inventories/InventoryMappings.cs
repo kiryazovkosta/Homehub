@@ -7,7 +7,7 @@ namespace HomeHub.Api.DTOs.Inventories;
 
 internal static class InventoryMappings
 {
-    public static Inventory ToEntity(this CreateInventoryRequest request, Category category, Location location)
+    public static Inventory ToEntity(this CreateInventoryRequest request, string userId, Category category, Location location)
     {
         return new Inventory()
         {
@@ -18,7 +18,10 @@ internal static class InventoryMappings
             Category = category,
             LocationId = location.Id,
             Location = location,
-            Threshold = request.Threshold
+            Threshold = request.Threshold,
+            Description = request.Description,
+            ImageUrl = request.ImageUrl,
+            UserId = userId
         };
     }
 
@@ -42,7 +45,9 @@ internal static class InventoryMappings
                 Name = inventory.Location.Name,
                 Description = inventory.Location.Description
             },
-            Threshold = inventory.Threshold
+            Threshold = inventory.Threshold,
+            Description = inventory.Description,
+            ImageUrl = inventory.ImageUrl
         };
     }
 
@@ -53,5 +58,6 @@ internal static class InventoryMappings
         inventory.CategoryId = request.CategoryId;
         inventory.LocationId = request.LocationId;
         inventory.Threshold = request.Threshold;
+        inventory.Description = request.Description;
     }
 }
