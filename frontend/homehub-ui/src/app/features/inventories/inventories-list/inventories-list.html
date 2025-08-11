@@ -1,0 +1,49 @@
+<section id="inventories" class="inventories-section">
+    <div class="container">
+
+        <div class="header">
+            <div class="header-left">
+                <h1>Инвентар</h1>
+            </div>
+            <div class="header-right">
+                <button mat-button class="btn-add" routerLink="/inventories/create">
+                    <span>Добави</span>
+                </button>
+            </div>
+        </div>
+
+        <mat-grid-list cols="{{colsItems()}}" gutterSize="16px" rowHeight="1:1.2">
+            @for (inventory of items(); track inventory.id) {
+                <mat-grid-tile>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>{{inventory.name}}</h3>
+                            <img src="{{inventory.imageUrl}}" alt="{{inventory.name}}" />
+                        </div>
+                        <div class="card-content">
+                            <p>{{inventory.description}}</p>
+                            <p class="category-item">Категория: <span class="category">{{inventory.category.name}}</span></p>
+                            <p class="quantity-item">Налично количество: <span class="quantity">{{inventory.quantity}}</span></p>
+                            <p class="threshold-item">Минимално количество: <span class="threshold">{{inventory.threshold}}</span></p>
+                        </div>
+                        <div class="card-actions">
+                            <button mat-button class="btn-view">
+                                <span>Преглед</span>
+                            </button>
+                            <button mat-button class="btn-edit">
+                                <span>Редактирай</span>
+                            </button>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+            }
+            
+        </mat-grid-list>
+
+        <div class="parinator">
+            <mat-paginator [length]="totalCount()" [pageSize]="pageSize()" [pageIndex]="queryParameters().page -1" (page)="onPageChange($event)"  >
+            </mat-paginator>
+        </div>
+
+    </div>
+</section>

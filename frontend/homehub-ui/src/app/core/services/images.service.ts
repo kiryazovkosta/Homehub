@@ -16,6 +16,15 @@ export class ImagesServices {
     uploadImagesToSupabase(file: File): Observable<SupabaseResponse> {
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('folder', "users");
+        return this.httpClient.post<SupabaseResponse>(this.apiUrl, formData);
+    }
+
+    uploadProductToSupabase(file: File): Observable<SupabaseResponse> {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', "products");
+        console.log(formData);
         return this.httpClient.post<SupabaseResponse>(this.apiUrl, formData);
     }
 }

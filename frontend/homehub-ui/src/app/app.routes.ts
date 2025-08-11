@@ -14,7 +14,9 @@ export const routes: Routes = [
     { path: 'finances', loadComponent: () => import('./features').then(m => m.FinancesList), canActivate: [authGuard] },
     { path: 'finances/create', loadComponent: () => import('./features').then(c => c.CreateFinance), canActivate: [authGuard] },
     { path: 'finances/edit/:id', loadComponent: () => import('./features').then(c => c.FinanceEdit), canActivate: [authGuard] },
-    { path: 'finances/:id',loadComponent: () => import('./features').then(m => m.FinanceItem),canActivate: [authGuard] },
+    { path: 'finances/:id', loadComponent: () => import('./features').then(m => m.FinanceItem),canActivate: [authGuard] },
+    { path: 'inventories', loadComponent: () => import('./features/inventories').then(m => m.InventoriesList), canActivate: [authGuard] },
+    { path: 'inventories/create', loadComponent: () => import('./features/inventories').then(m => m.InventoryCreate), canActivate: [authGuard] },
     { path: 'contact', loadComponent: () => import('./features').then(m => m.ContactForm), canActivate: [authGuard]},
     { 
         path: 'management', 

@@ -1,0 +1,47 @@
+img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.form-field {
+    margin-bottom: 16px;
+    
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.87);
+    }
+    
+    input[type="file"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid rgba(0, 0, 0, 0.23);
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: white;
+        transition: border-color 0.2s ease;
+        
+        &:focus {
+            outline: none;
+            border-color: #1976d2;
+            border-width: 2px;
+        }
+        
+        &:hover {
+            border-color: rgba(0, 0, 0, 0.87);
+        }
+    }
+    
+    .error-message {
+        margin-top: 4px;
+        font-size: 12px;
+        color: #d32f2f;
+        
+        span {
+            display: block;
+        }
+    }
+}

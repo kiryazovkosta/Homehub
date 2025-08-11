@@ -11,6 +11,8 @@ export interface InventoryListResponse {
     quantity: number;
     category: CategoryResponse;
     threshold: number;
+    description: string;
+    imageUrl: string;
 }
 
 export interface InventoryResponse {
@@ -20,4 +22,6 @@ export interface InventoryResponse {
     category: CategoryResponse;
     location: LocationResponse;
     threshold: number;
+    description: string;
+    imageUrl: string;
 }

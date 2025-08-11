@@ -1,0 +1,237 @@
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.inventories-section {
+  padding: 20px 0;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%);
+  color: #333;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 2px solid rgba(52, 152, 219, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 8px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+  .header-left {
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  .header-right {
+    .btn-add {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        background: linear-gradient(135deg, #2980b9, #1f5f8b);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+.parinator {
+  margin-top: 12px;
+  margin-bottom: 16px;
+  padding: 2px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-top: 2px solid rgba(52, 152, 219, 0.2);
+
+  mat-paginator {
+    background: transparent;
+    border: none;
+    
+    ::ng-deep .mat-mdc-paginator-container {
+      background: transparent;
+    }
+    
+    ::ng-deep .mat-mdc-paginator-page-size {
+      color: #666;
+    }
+    
+    ::ng-deep .mat-mdc-paginator-range-actions {
+      color: #666;
+    }
+  }
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  transition: transform 0.2s;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      color: red;
+    }
+
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+  }
+
+  .card-content {
+    flex: 1;
+    padding: 16px 0;
+    overflow: hidden;
+    
+    p {
+      margin: 8px 0;
+      color: #666;
+    }
+
+    p.category-item,
+    p.quantity-item,
+    p.threshold-item {
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin: 0;
+      color: #9b9a9a;
+      background-color: #e9fcf9;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #666;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      span.category,
+      span.quantity,
+      span.threshold {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+        color: #383838;
+      }
+    }
+  }
+
+  .card-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 16px 0 0 0;
+    margin: 0;
+    flex-shrink: 0;
+    
+    .btn-view {
+      min-width: 80px;
+      color: #2196f3;
+      border: 1px solid #2196f3;
+      
+      &:hover {
+        background-color: #2196f3;
+        color: white;
+      }
+    }
+    
+    .btn-edit {
+      min-width: 80px;
+      color: #4caf50;
+      border: 1px solid #4caf50;
+      
+      &:hover {
+        background-color: #4caf50;
+        color: white;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    
+    .header-left h1 {
+      font-size: 2rem;
+    }
+    
+    .header-right .btn-add {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+  }
+  
+  .footer {
+    margin-top: 24px;
+    padding: 16px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 16px;
+    
+    .header-left h1 {
+      font-size: 1.75rem;
+    }
+  }
+  
+  .footer {
+    margin-top: 16px;
+    padding: 12px 0;
+  }
+}
+

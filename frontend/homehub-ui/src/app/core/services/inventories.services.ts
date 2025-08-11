@@ -1,23 +1,48 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { InventoriesListCollectionResponse, InventoryResponse } from "../../models";
+import { CategorySimpleResponse, FinanceResponse, InventoryListResponse, InventoryResponse, PaginationListResponse } from "../../models";
 import { baseUrl, inventoriesUrl } from "../../constants/api-constants";
+import { CreateInventoryRequest } from "../../models/inventories/create-inventory-request.model";
+
+export interface InventoriesQueryParameters {
+    page: number;
+    pageSize: number;
+    q: string|null;
+    sort: string|null;
+}
 
 @Injectable({
     providedIn: 'root'
 })
-export class LocationsService {
+export class InventoriesService {
     private readonly apiUrl: string = `${baseUrl}${inventoriesUrl}`;
 
     constructor(private httpClient: HttpClient){}
 
-    getBills(): Observable<InventoriesListCollectionResponse> {
-        return this.httpClient.get<InventoriesListCollectionResponse>(this.apiUrl);
+    getInventories(parameters: InventoriesQueryParameters): Observable<PaginationListResponse<InventoryListResponse>> {
+        const params: Record<string, string> = {
+            page: parameters.page.toString(),
+            pageSize: parameters.pageSize.toString()
+        };
+        
+        if (parameters.q) params['q'] = parameters.q;
+        if (parameters.sort) params['sort'] = parameters.sort;
+        
+        const queryParams = new HttpParams({fromObject: params});
+        return this.httpClient.get<PaginationListResponse<InventoryListResponse>>(this.apiUrl, {params: queryParams});
     }
 
-    getBill(id: string) : Observable<InventoryResponse> {
+    getInventory(id: string) : Observable<InventoryResponse> {
         return this.httpClient.get<InventoryResponse>(`${this.apiUrl}/${id}`);
+    }
+
+    getCategories() : Observable<CategorySimpleResponse[]> {
+        return this.httpClient.get<CategorySimpleResponse[]>(`${this.apiUrl}/categories`);
+    }
+
+    create(createInvebtoryRequest: CreateInventoryRequest): Observable<InventoryResponse> {
+        return this.httpClient.post<InventoryResponse>(this.apiUrl, createInvebtoryRequest);
     }
 }
