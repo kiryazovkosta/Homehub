@@ -1,50 +1,195 @@
 <section id="inventory-detail" class="inventory-detail-section">
     <div class="container">
-      <div class="section-header">
-        <h2 class="gradient-text">Детайлен преглед на наличност</h2>
-        <p>Пълна информация за избраната наличност</p>
-      </div>
-  
-      <div class="detail-container">
-        @if (isLoading()) {
+        <div class="section-header">
+            <h2 class="gradient-text">Детайлен преглед на наличност</h2>
+            <p>Пълна информация за избраната наличност</p>
+        </div>
+
+        <div class="detail-container">
+            @if (isLoading()) {
             <p>Зареждане...</p>
-        }
-        @else {
+            }
+            @else {
             @if (errorMessage()) {
-                <app-error-message 
-                    [errorMessage]="errorMessage()" 
-                    (close)="closeErrorMessage()" />
+            <app-error-message [errorMessage]="errorMessage()" (close)="closeErrorMessage()" />
             }
 
             @if (isDeleted()) {
-            <app-confirm-dialog 
-                [message]="'Сигурни ли сте, че желаете да изтриете този запис?'" 
-                (confirm)="delete()" 
-                (close)="close()" />
+            <app-confirm-dialog [message]="'Сигурни ли сте, че желаете да изтриете този запис?'" (confirm)="delete()"
+                (close)="closeDeleteDialog()" />
             }
-            
-            @if (isEdit()) {
-                <p>inventory-item into edit mode!</p>
-                <button mat-button (click)="isEdit.set(false)">
-                    <span>Запази</span>
-                </button>
-                <button mat-button (click)="isEdit.set(false)">
-                    <span>Отказ</span>
-                </button>
-            }
-            @else {
-                <p>inventory-item into read-only mode!</p>
-                <button mat-button (click)="isEdit.set(true)">
-                    <span>Редактирай</span>
-                </button>
-                <button mat-button (click)="isDeleted.set(true)">
-                    <span>Изтрий</span>
-                </button>
-            }
-        }
 
-      </div>
+            <form class="auth-form" [formGroup]="inventoryEditForm">
+
+                <div class="form-group">
+                    @if (isEdit()) {
+                        <label for="inventory-image">Снимка на наличността</label>
+                        @if (inventory()?.imageUrl) {
+                            <img [src]="inventory()?.imageUrl" alt="Inventory Image" class="inventory-image" />
+                        }
+                        <input type="file" id="inventory-image" (change)="onFileSelected($event)" accept="image/*">
+                        @if (inventory()?.imageUrl) {
+                            <small class="current-image-info">Текуща снимка: {{ inventory()?.imageUrl }}</small>
+                        }
+                        @if (hasSelectedFile()) {
+                            <small class="new-file-info">Нова снимка: {{ getSelectedFileName() }}</small>
+                        }
+                    }
+                    @else {
+                    <img [src]="inventory()?.imageUrl" alt="Inventory Image" class="inventory-image" />
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label for="inventory-name">Наименование</label>
+                    <input type="text" id="inventory-name" formControlName="name"
+                        [class.error]="inventoryEditForm.get('name')?.invalid && inventoryEditForm.get('name')?.touched">
+                    @if (inventoryEditForm.get('name')?.invalid && inventoryEditForm.get('name')?.touched) {
+                    <div class="validator-error-message">
+                        @if (inventoryEditForm.get('name')?.errors?.['required']) {
+                        <small>Първото име е задължително.</small>
+                        }
+                        @if (inventoryEditForm.get('name')?.errors?.['minlength']) {
+                        <small>Първото име трябва да е поне 3 символа.</small>
+                        }
+                        @if (inventoryEditForm.get('name')?.errors?.['maxlength']) {
+                        <small>Първото име не може да е по-дълго от 64 символа.</small>
+                        }
+                    </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label for="inventory-description">Описание</label>
+                    <textarea id="inventory-description" formControlName="description" rows="3"
+                        [class.error]="inventoryEditForm.get('description')?.invalid && inventoryEditForm.get('description')?.touched">
+                      </textarea>
+                    @if (inventoryEditForm.get('description')?.invalid && inventoryEditForm.get('description')?.touched)
+                    {
+                    <div class="validator-error-message">
+                        @if (inventoryEditForm.get('description')?.errors?.['required']) {
+                        <small>Описание е задължително.</small>
+                        }
+                        @if (inventoryEditForm.get('description')?.errors?.['minlength']) {
+                        <small>Описание трябва да е поне 10 символа.</small>
+                        }
+                        @if (inventoryEditForm.get('description')?.errors?.['maxlength']) {
+                        <small>Описание не може да е по-дълго от 256 символа.</small>
+                        }
+                    </div>
+                    }
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="inventory-categoryId">Категория</label>
+                        <select id="inventory-categoryId" formControlName="categoryId"
+                            [class.error]="inventoryEditForm.get('categoryId')?.invalid && inventoryEditForm.get('categoryId')?.touched">
+                            <option value="" disabled selected>Изберете категория</option>
+                            @if (categories() && categories()!.length > 0) {
+                            @for (category of categories(); track category.id) {
+                            <option [value]="category.id">{{ category.name }}</option>
+                            }
+                            } @else {
+                            <option disabled>Зареждане на категории...</option>
+                            }
+                        </select>
+                        @if (inventoryEditForm.get('categoryId')?.invalid &&
+                        inventoryEditForm.get('categoryId')?.touched) {
+                        <div class="validator-error-message">
+                            @if (inventoryEditForm.get('categoryId')?.errors?.['required']) {
+                            <small>Категорията е задължителна.</small>
+                            }
+                        </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="inventory-locationId">Местоположение</label>
+                        <select id="inventory-locationId" formControlName="locationId"
+                            [class.error]="inventoryEditForm.get('locationId')?.invalid && inventoryEditForm.get('locationId')?.touched">
+                            <option value="" disabled selected>Изберете местоположение</option>
+                            @if (locations() && locations()!.length > 0) {
+                            @for (location of locations(); track location.id) {
+                            <option [value]="location.id">{{ location.name }}</option>
+                            }
+                            } @else {
+                            <option disabled>Зареждане на места за съхранение...</option>
+                            }
+                        </select>
+                        @if (inventoryEditForm.get('locationId')?.invalid && inventoryEditForm.get('locationId')?.touched) {
+                        <div class="validator-error-message">
+                            @if (inventoryEditForm.get('locationId')?.errors?.['required']) {
+                            <small>Местоположението е задължително.</small>
+                            }
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="inventory-quantity">Количество</label>
+                        <input type="text" id="inventory-quantity" formControlName="quantity"
+                            [class.error]="inventoryEditForm.get('quantity')?.invalid && inventoryEditForm.get('quantity')?.touched">
+                        @if (inventoryEditForm.get('quantity')?.invalid && inventoryEditForm.get('quantity')?.touched) {
+                        <div class="validator-error-message">
+                            @if (inventoryEditForm.get('quantity')?.errors?.['required']) {
+                            <small>Първото име е задължително.</small>
+                            }
+                            @if (inventoryEditForm.get('quantity')?.errors?.['minlength']) {
+                            <small>Първото име трябва да е поне 3 символа.</small>
+                            }
+                            @if (inventoryEditForm.get('quantity')?.errors?.['maxlength']) {
+                            <small>Първото име не може да е по-дълго от 64 символа.</small>
+                            }
+                        </div>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inventory-threshold">Минимално количество</label>
+                        <input type="text" id="inventory-threshold" formControlName="threshold"
+                            [class.error]="inventoryEditForm.get('threshold')?.invalid && inventoryEditForm.get('threshold')?.touched">
+                        @if (inventoryEditForm.get('threshold')?.invalid && inventoryEditForm.get('threshold')?.touched)
+                        {
+                        <div class="validator-error-message">
+                            @if (inventoryEditForm.get('threshold')?.errors?.['required']) {
+                            <small>Първото име е задължително.</small>
+                            }
+                            @if (inventoryEditForm.get('threshold')?.errors?.['minlength']) {
+                            <small>Първото име трябва да е поне 3 символа.</small>
+                            }
+                            @if (inventoryEditForm.get('threshold')?.errors?.['maxlength']) {
+                            <small>Първото име не може да е по-дълго от 64 символа.</small>
+                            }
+                        </div>
+                        }
+                    </div>
+
+                </div>
+
+                <div class="form-group command-buttons">
+                    @if (isEdit()) {
+                    <button mat-button class="btn btn-save" (click)="update()">
+                        <span>Запази</span>
+                    </button>
+                    <button mat-button class="btn btn-cancel" (click)="cancel()">
+                        <span>Отказ</span>
+                    </button>
+                    }
+                    @else {
+                    <button mat-button class="btn" (click)="isEdit.set(true)">
+                        <span>Редактирай</span>
+                    </button>
+                    <button mat-button class="btn btn-delete" (click)="isDeleted.set(true)">
+                        <span>Изтрий</span>
+                    </button>
+                    }
+                </div>
+
+            </form>
+            }
+
+        </div>
     </div>
-  </section>
-
-
+</section>

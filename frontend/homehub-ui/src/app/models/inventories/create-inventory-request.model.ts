@@ -1,4 +1,4 @@
-export interface CreateInventoryRequest {
+export interface InventoryRequest {
     name: string;
     description: string;
     categoryId: string;

@@ -15,7 +15,7 @@ import { CategorySimpleResponse, LocationResponse } from '../../../models';
 import { InventoriesService } from '../../../core/services/inventories.services';
 import { LocationsService } from '../../../core/services';
 import { processError } from '../../../utils/error.utils';
-import { CreateInventoryRequest } from '../../../models/inventories/create-inventory-request.model';
+import { InventoryRequest } from '../../../models/inventories/create-inventory-request.model';
 
 @Component({
   selector: 'app-inventory-create',
@@ -85,7 +85,7 @@ export class InventoryCreate {
         next: (response: SupabaseResponse) => {
           if (response.isSuccess) {
             console.log(response.url);
-            const createInventory: CreateInventoryRequest = {
+            const createInventory: InventoryRequest = {
               name: formData.name.toString(),
               description: formData.description.toString(),
               categoryId: formData.categoryId.toString(),
@@ -105,8 +105,6 @@ export class InventoryCreate {
                 this.errorMessage.set(processError(err));
               }
             })
-
-
           } else {
             console.log(response.error);
             this.errorMessage.set(response.error);
@@ -159,6 +157,4 @@ export class InventoryCreate {
       error: () => this.locations.set([]),
     });
   }
-
-
 }

@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 
 import { CategorySimpleResponse, FinanceResponse, InventoryListResponse, InventoryResponse, PaginationListResponse } from "../../models";
 import { baseUrl, inventoriesUrl } from "../../constants/api-constants";
-import { CreateInventoryRequest } from "../../models/inventories/create-inventory-request.model";
+import { InventoryRequest } from "../../models/inventories/create-inventory-request.model";
 
 export interface InventoriesQueryParameters {
     page: number;
@@ -42,8 +42,14 @@ export class InventoriesService {
         return this.httpClient.get<CategorySimpleResponse[]>(`${this.apiUrl}/categories`);
     }
 
-    create(createInvebtoryRequest: CreateInventoryRequest): Observable<InventoryResponse> {
-        return this.httpClient.post<InventoryResponse>(this.apiUrl, createInvebtoryRequest);
+    create(inventoryRequest: InventoryRequest): Observable<InventoryResponse> {
+        return this.httpClient.post<InventoryResponse>(this.apiUrl, inventoryRequest);
+    }
+
+    update(id: string, inventoryRequest: InventoryRequest): Observable<void> {
+        console.log(inventoryRequest);
+
+        return this.httpClient.put<void>(`${this.apiUrl}/${id}`, inventoryRequest);
     }
 
     delete(id: string) : Observable<void> {

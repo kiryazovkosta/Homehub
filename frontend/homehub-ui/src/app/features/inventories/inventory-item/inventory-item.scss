@@ -1,0 +1,87 @@
+.inventory-image {
+    width: 80px;
+    height: 80px;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.current-image-info {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    font-style: italic;
+}
+
+.new-file-info {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #28a745;
+    text-align: center;
+    font-weight: 500;
+}
+
+.command-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.btn {
+    margin-right: 10px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.btn-edit {
+        background-color: red;
+        color: white;
+    }
+
+    &.btn-edit:hover {
+        background-color: blue;
+    }
+
+    &.btn-delete {
+        background-color: blue;
+        color: white;
+    }
+
+    &.btn-delete:hover {
+        background-color: #0056b3;
+    }
+
+    &.btn-save {
+        background-color: orange;
+        color: white;
+    }
+
+    &.btn-save:hover {
+        background-color: #0056b3;
+    }
+
+    &.btn-cancel {
+        background-color: green;
+        color: white;
+    }
+
+    &.btn-cancel:hover {
+        background-color: #0056b3;
+    }
+}
+
+input[type="file"] {
+    margin-top: 10px;
+}
