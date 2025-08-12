@@ -59,5 +59,6 @@ internal static class InventoryMappings
         inventory.LocationId = request.LocationId;
         inventory.Threshold = request.Threshold;
         inventory.Description = request.Description;
+        inventory.ImageUrl = request.ImageUrl;
     }
 }

@@ -1,11 +1,11 @@
-﻿using HomeHub.Api.Database;
+﻿using FluentValidation;
+using HomeHub.Api.Database;
 using HomeHub.Api.DTOs.Auth;
 using HomeHub.Api.DTOs.Common;
 using HomeHub.Api.DTOs.Families;
 using HomeHub.Api.DTOs.Finances;
 using HomeHub.Api.DTOs.Users;
 using HomeHub.Api.Entities;
-using HomeHub.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -194,7 +194,7 @@ public sealed class AdminController(
     }
 
     [HttpDelete("users/delete/{id}")]
-    public async Task<ActionResult<FamilyWithUsersResponse>> UpdateUserById(string id)
+    public async Task<ActionResult<FamilyWithUsersResponse>> DeleteUserById(string id)
     {
         var user = await dbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
         if (user is null)
@@ -238,6 +238,78 @@ public sealed class AdminController(
         {
             return Problem(
                 detail: "Възникна непоправим проблем при изтриването на потребителя!",
+                statusCode: StatusCodes.Status400BadRequest);
+        }
+    }
+
+    [HttpPost("families/create")]
+    public async Task<ActionResult<FamilyResponse>> CreateFamily(
+        [FromBody] CreateFamilyRequest request,
+        IValidator<CreateFamilyRequest> validator,
+        CancellationToken cancellationToken)
+    {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        var family = request.ToEntity();
+        dbContext.Families.Add(family);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        FamilyResponse response = family.ToResponse();
+        return Ok(response);
+    }
+
+    [HttpPut("families/update")]
+    public async Task<ActionResult<FamilyWithUsersResponse>> UpdateFamily(
+    UpdateFamilyRequest request)
+    {
+        var family = await dbContext.Families.Where(u => u.Id == request.Id).FirstOrDefaultAsync();
+        if (family is null)
+        {
+            return NotFound("Семейството не съществува");
+        }
+
+        try
+        {
+            family.Name = request.Name;
+            family.Description = request.Description;
+            await dbContext.SaveChangesAsync();
+            return NoContent();
+        }
+        catch (Exception)
+        {
+            return Problem(
+                detail: "Възникна непоправим проблем при редактирането на семейството!",
+                statusCode: StatusCodes.Status400BadRequest);
+        }
+    }
+
+    [HttpDelete("families/delete/{id}")]
+    public async Task<ActionResult<FamilyWithUsersResponse>> DeleteFamily(string id)
+    {
+        var family = await dbContext.Families
+            .Where(u => u.Id == id)
+            .FirstOrDefaultAsync();
+        if (family is null)
+        {
+            return NotFound("Семейството не съществува");
+        }
+
+        try
+        {
+            var usersCount = await dbContext.Users.CountAsync(u => u.FamilyId == id);
+            if (usersCount > 0)
+            {
+                return Problem(
+                    detail: "Семейството има присвоени членове в системата и изтриването му е невъзможно!",
+                    statusCode: StatusCodes.Status400BadRequest);
+            }
+
+            dbContext.Families.Remove(family);
+            await dbContext.SaveChangesAsync();
+            return NoContent();
+        }
+        catch (Exception)
+        {
+            return Problem(
+                detail: "Възникна непоправим проблем при изтриването на семейството!",
                 statusCode: StatusCodes.Status400BadRequest);
         }
     }

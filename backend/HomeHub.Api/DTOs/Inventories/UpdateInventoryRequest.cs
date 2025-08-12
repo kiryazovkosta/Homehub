@@ -8,4 +8,5 @@ public sealed record UpdateInventoryRequest
     public required string LocationId { get; init; }
     public int Threshold { get; init; }
     public required string Description { get; init; }
+    public required string ImageUrl { get; init; }
 }

@@ -3,7 +3,9 @@
   <p>Управление на семейства, членове и статус</p>
   
   <div class="management-actions">
-    <button class="btn-primary">Добави ново</button>
+    @if (!isAdding()) {
+    <button class="btn-primary" (click)="add()">Добави ново</button>
+    }
     <button class="btn-secondary">Експорт</button>
   </div>
   
@@ -24,18 +26,119 @@
         </tbody>
       } @else {
         <tbody>
-          @for (family of families(); track family.id) {
+          
+          @if (errorMessage()) {
             <tr>
-              <td>{{ family.name }}</td>
-              <td>{{ family.description }}</td>
+              <td colspan="9">
+                <app-error-message 
+                  [errorMessage]="errorMessage()" 
+                  (close)="closeError()" />
+              </td>
+            </tr>
+          }
+
+          @if (isDeleted()) {
+            <app-confirm-dialog 
+              [message]="'Сигурни ли сте, че желаете да изтриете този запис?'" 
+              (confirm)="delete()" 
+              (close)="closeDelete()" />
+          }
+
+          @if (isAdding()) {
+            <tr>
+              <td>
+                <input 
+                  type="text" 
+                  [formControl]="$any(createFamilyForm()!.get('name'))"
+                  class="form-input"
+                  [class.error]="createFamilyForm()!.get('name')?.invalid && createFamilyForm()!.get('name')?.touched"
+                />
+                @if (createFamilyForm()!.get('name')?.errors?.['required'] && createFamilyForm()!.get('name')?.touched) {
+                  <div class="error-message">Наименованието е задължително</div>
+                } @else if (createFamilyForm()!.get('name')?.errors?.['minlength'] && createFamilyForm()!.get('name')?.touched) {
+                  <small>Наименованието трябва да е поне 2 символа.</small>
+                } @else if (createFamilyForm()!.get('name')?.errors?.['maxlength'] && createFamilyForm()!.get('name')?.touched) {
+                  <small>Наименованието не може да е по-дълго от 64 символа.</small>
+                }
+              </td>
+              <td>
+                <input 
+                  type="text" 
+                  [formControl]="$any(createFamilyForm()!.get('description'))"
+                  class="form-input"
+                  [class.error]="createFamilyForm()!.get('description')?.invalid && createFamilyForm()!.get('description')?.touched"
+                />
+                @if (createFamilyForm()!.get('description')?.errors?.['required'] && createFamilyForm()!.get('description')?.touched) {
+                  <div class="error-message">Описанието е задължително</div>
+                } @else if (createFamilyForm()!.get('description')?.errors?.['minlength'] && createFamilyForm()!.get('description')?.touched) {
+                  <small>Описанието трябва да е поне 2 символа.</small>
+                } @else if (createFamilyForm()!.get('description')?.errors?.['maxlength'] && createFamilyForm()!.get('description')?.touched) {
+                  <small>Описанието не може да е по-дълго от 255 символа.</small>
+                }
               <td>
                 <div class="action-buttons">
-                  <button class="btn-edit">Edit</button>
-                  <button class="btn-delete">Delete</button>
+                  <button class="btn-primary" (click)="save()" [disabled]="!createFamilyForm()?.valid">Запази</button>
+                  <button class="btn-secondary" (click)="closeAdd()">Откажи</button>
                 </div>
               </td>
             </tr>
           }
+
+          @for (family of families(); track family.id) {
+            <tr>
+              @if (editFamilyForm() && isEditing(family.id)) {
+                <td>
+                  <input 
+                    type="text" 
+                    [formControl]="$any(editFamilyForm()!.get('name'))"
+                    class="form-input"
+                    [class.error]="editFamilyForm()!.get('name')?.invalid && editFamilyForm()!.get('name')?.touched"
+                  />
+                  @if (editFamilyForm()!.get('name')?.errors?.['required'] && editFamilyForm()!.get('name')?.touched) {
+                    <div class="error-message">Наименованието е задължително</div>
+                  } @else if (editFamilyForm()!.get('name')?.errors?.['minlength'] && editFamilyForm()!.get('name')?.touched) {
+                    <small>Наименованието трябва да е поне 2 символа.</small>
+                  } @else if (editFamilyForm()!.get('name')?.errors?.['maxlength'] && editFamilyForm()!.get('name')?.touched) {
+                    <small>Наименованието не може да е по-дълго от 64 символа.</small>
+                  }
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    [formControl]="$any(editFamilyForm()!.get('description'))"
+                    class="form-input"
+                    [class.error]="editFamilyForm()!.get('description')?.invalid && editFamilyForm()!.get('description')?.touched"
+                  />
+                  @if (editFamilyForm()!.get('description')?.errors?.['required'] && editFamilyForm()!.get('description')?.touched) {
+                    <div class="error-message">Описанието е задължително</div>
+                  } @else if (editFamilyForm()!.get('description')?.errors?.['minlength'] && editFamilyForm()!.get('description')?.touched) {
+                    <small>Описанието трябва да е поне 2 символа.</small>
+                  } @else if (editFamilyForm()!.get('description')?.errors?.['maxlength'] && editFamilyForm()!.get('description')?.touched) {
+                    <small>Описанието не може да е по-дълго от 255 символа.</small>
+                  }
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-primary" (click)="update()">Запазване</button>
+                    <button class="btn-secondary" (click)="cancelEdit()">Отказване</button>
+                  </div>
+                </td>
+              } @else {
+                <td>{{ family.name }}</td>
+                <td>{{ family.description }}</td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-primary" (click)="edit(family)">Редактиране</button>
+                    <button class="btn-secondary" (click)="setDeleteMode(family.id)">Изтриване</button>
+                  </div>
+                </td>
+              }
+
+
+
+            </tr>
+          }
+
         </tbody>
       }
 

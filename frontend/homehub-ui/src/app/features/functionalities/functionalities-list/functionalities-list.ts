@@ -3,10 +3,11 @@ import { Component, HostListener, ViewChildren, QueryList, ElementRef, AfterView
 
 import { FunctionalitiesService } from '../../../core/services';
 import { FunctionalityListResponse, PaginationListResponse } from '../../../models';
+import { ErrorMessage } from "../../../shared/error-message/error-message";
 
 @Component({
   selector: 'app-functionalities-list',
-  imports: [CommonModule],
+  imports: [CommonModule, ErrorMessage],
   templateUrl: './functionalities-list.html',
   styleUrl: './functionalities-list.scss',
 })
@@ -36,6 +37,10 @@ export class FunctionalitiesList implements AfterViewInit, OnDestroy {
         console.error('Functionalities endpoint error:', this.error());
       }
     });
+  }
+
+  closeError() {
+    this.error.set(null);
   }
 
   @HostListener('window:scroll', [])

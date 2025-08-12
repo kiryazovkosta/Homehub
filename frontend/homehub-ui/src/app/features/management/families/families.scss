@@ -1,3 +1,28 @@
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 15px;
+  color: #2c3e50;
+  background: #f8f9fa;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  margin-bottom: 4px;
+
+  &:focus {
+    border-color: #3498db;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(52,152,219,0.1);
+  }
+
+  &.error {
+    border-color: #e74c3c;
+    background: #fff6f6;
+  }
+}
+
 .families-management {
   h1 {
     color: #2c3e50;
@@ -66,19 +91,20 @@
     td {
       color: #7f8c8d;
     }
+
     .action-buttons {
       display: flex;
       gap: 5px;
-      
+
       button {
-        padding: 4px 2px;
-        height: 2.5em;
-        font-size: 12px;
+        margin-right: 10px;
+        padding: 10px 20px;
         border: none;
-        border-radius: 3px;
+        border-radius: 4px;
         cursor: pointer;
+        font-weight: 500;
         
-        &.btn-edit {
+        &.btn-primary {
           background-color: #3498db;
           color: white;
           
@@ -87,13 +113,12 @@
           }
         }
         
-        &.btn-delete {
-          background-color: #e74c3c;
+        &.btn-secondary {
+          background-color: #95a5a6;
           color: white;
-          padding: 0 10px;
           
           &:hover {
-            background-color: #c0392b;
+            background-color: #7f8c8d;
           }
         }
       }

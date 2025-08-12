@@ -10,6 +10,7 @@ import { UserAdminResponse, UserSimplyResponse } from "../../models/users/simple
 import { FamilyResponse } from "../../models/families/family-response.model";
 import { UpdateUserFromAdminRequest } from "../../models/admin/update-user-from-admin-request.model";
 import { RegisterUserRequest } from "../../models/auth/register-user-request.model";
+import { CreateFamilyRequest, UpdateFamilyRequest } from "../../models/families/create-family-request.model";
 
 @Injectable({
     providedIn: 'root'
@@ -74,6 +75,34 @@ export class AdminService {
 
         console.log(id);
         const path: string = `${this.apiUrl}api/admin/users/delete/`+id;
+        return this.httpClient.delete<void>(path);
+    }
+
+    createFamily(userData: CreateFamilyRequest): Observable<FamilyResponse> {
+        if (!this.isAdmin()) {
+            throw new Error('You are not authorized to access this resource');
+        }
+
+        const response = this.httpClient.post<FamilyResponse>(`${this.apiUrl}api/admin/families/create`, userData);
+        console.log(response);
+        return response;
+    }
+
+    updateFamily(userData: UpdateFamilyRequest) : Observable<void> {
+        if (!this.isAdmin()) {
+            throw new Error('You are not authorized to access this resource');
+        }
+
+        console.log(userData);
+        return this.httpClient.put<void>(`${this.apiUrl}api/admin/families/update`, userData);
+    }
+
+    deleteFamily(id: string) : Observable<void> {
+        if (!this.isAdmin()) {
+            throw new Error('You are not authorized to access this resource');
+        }
+
+        const path: string = `${this.apiUrl}api/admin/families/delete/`+id;
         return this.httpClient.delete<void>(path);
     }
 }
