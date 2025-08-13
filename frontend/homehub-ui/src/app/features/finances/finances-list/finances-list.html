@@ -14,11 +14,16 @@
     </div>
 
     @if (loading()) {
-    <p>Зареждане...</p>
+      <app-smart-loader 
+        [loading]="loading()" 
+        [message]="'Зареждане...'" 
+        [minDuration]="300" />
     }
     @else {
     @if (hasError()) {
-    <app-error-message [errorMessage]="errorMessage()" (close)="closeError()" />
+      <app-error-message 
+        [errorMessage]="errorMessage()" 
+        (close)="closeError()" />
     }
 
     @if (isNotEmpty()) {

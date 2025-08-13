@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { PageNavigation } from "../../../shared/page-navigation/page-navigation";
 import { AuthService } from '../../../core/services/auth.service';
 import { ErrorMessage } from "../../../shared/error-message/error-message";
+import { SmartLoader } from "../../../shared/smart-loader/smart-loader";
 
 interface FinanceRecord {
   id: number;
@@ -17,7 +18,7 @@ interface FinanceRecord {
 
 @Component({
   selector: 'app-finances-list',
-  imports: [CommonModule, RouterLink, PageNavigation, ErrorMessage],
+  imports: [CommonModule, RouterLink, PageNavigation, ErrorMessage, SmartLoader],
   templateUrl: './finances-list.html',
   styleUrl: './finances-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
