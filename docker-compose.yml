@@ -31,8 +31,8 @@ services:
       - 15000:8080
       - 15001:8081
     environment:
-    - ASPNETCORE_ENVIRONMENT=Development
-    - SUPABASE_TOKEN=${SUPABASE_TOKEN}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SUPABASE_TOKEN=${SUPABASE_TOKEN}
     networks:
       - homehub_network
 
@@ -42,9 +42,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "15420:4200"
-    volumes:
-      - ./frontend/homehub-ui:/app
-      - /app/node_modules
     networks:
       - homehub_network
     depends_on:

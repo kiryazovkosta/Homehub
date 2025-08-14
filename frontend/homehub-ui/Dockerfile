@@ -11,6 +11,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# Copy the rest of the application source code
+COPY . .
+
 # Expose Angular dev server port
 EXPOSE 4200
 

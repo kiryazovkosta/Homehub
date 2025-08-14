@@ -122,6 +122,18 @@ public static class WebApplicationBuilderExtensions
             .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
             .AddDefaultTokenProviders();
 
+        builder.Services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequiredLength = 4;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.SignIn.RequireConfirmedEmail = false;
+        });
+
         builder.Services.Configure<JwtAuthOptions>(builder.Configuration.GetSection("Jwt"));
 
         JwtAuthOptions? jwtAuthOptions = builder.Configuration.GetSection("Jwt").Get<JwtAuthOptions>() ?? throw new Exception("Invalid or non exists jwt section!");
