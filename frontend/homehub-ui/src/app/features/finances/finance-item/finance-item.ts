@@ -7,11 +7,16 @@ import { FinanceResponse } from '../../../models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ErrorMessage } from "../../../shared/error-message/error-message";
 import { ConfirmDialog } from "../../../shared/confirm-dialog/confirm-dialog";
+import { FinanceSignPipe } from "../../../core/pipes/finance-sign-pipe";
+import { FinanceCssClassPipe } from "../../../core/pipes/finance-css-class-pipe";
+import { SliceTextPipe } from "../../../core/pipes/slice-text-pipe";
+import { FinanceStatusTextPipe } from "../../../core/pipes/finance-status-text-pipe";
+import { FinanceStatusClassPipe } from "../../../core/pipes/finance-status-class-pipe";
 
 @Component({
   selector: 'app-finance-item',
   standalone: true,
-  imports: [CommonModule, RouterModule, ErrorMessage, ConfirmDialog],
+  imports: [CommonModule, RouterModule, ErrorMessage, ConfirmDialog, FinanceSignPipe, FinanceCssClassPipe, SliceTextPipe, FinanceStatusTextPipe, FinanceStatusClassPipe],
   templateUrl: './finance-item.html',
   styleUrl: './finance-item.scss'
 })
@@ -66,18 +71,6 @@ export class FinanceItem {
 
   setDeleteMode(): void {
     this.delete.set(true);
-  }
-
-  getTypeClass(item: number): string {
-    return item === 1 ? 'income' : 'expense';
-  }
-
-  getTypeValue(item: number): string {
-    return item === 1 ? 'Приход' : 'Разход';
-  }
-
-  getTypeSign(item: number): string {
-    return item === 1 ? '+' : '-';
   }
 
   isBeforeOrAfterToday(date: string | Date | null | undefined): number {

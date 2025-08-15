@@ -32,8 +32,8 @@
       <div class="finance-card">
         <div class="card-header">
           <h3>{{ item.title }}</h3>
-          <span class="type-badge" [ngClass]="getTypeClass(item.type)">
-            {{ getTypeValue(item.type) }}
+          <span class="type-badge" [ngClass]="item.type | financeCssClass">
+            {{ item.type | financeType | uppercase }}
           </span>
         </div>
 
@@ -42,12 +42,12 @@
           <div class="finance-details">
             <div class="detail-item">
               <span class="label">Тип:</span>
-              <span class="value">{{ getTypeValue(item.type) }}</span>
+              <span class="value">{{ item.type | financeType }}</span>
             </div>
             <div class="detail-item">
               <span class="label">Сума:</span>
-              <span class="amount" [ngClass]="getTypeClass(item.type)">
-                {{ getTypeSign(item.type) }} {{ item.amount | number:'1.2-2' }} лв.
+              <span class="amount" [ngClass]="item.type | financeCssClass">
+                {{  item.type | financeSign }} {{ item.amount | number:'1.2-2' }} лв.
               </span>
             </div>
           </div>

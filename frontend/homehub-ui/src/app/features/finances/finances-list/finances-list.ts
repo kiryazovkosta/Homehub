@@ -9,6 +9,7 @@ import { PageNavigation } from "../../../shared/page-navigation/page-navigation"
 import { AuthService } from '../../../core/services/auth.service';
 import { ErrorMessage } from "../../../shared/error-message/error-message";
 import { SmartLoader } from "../../../shared/smart-loader/smart-loader";
+import { FinanceSignPipe, FinanceTypePipe, FinanceCssClassPipe } from "../../../core/pipes";
 
 interface FinanceRecord {
   id: number;
@@ -20,10 +21,17 @@ interface FinanceRecord {
 
 @Component({
   selector: 'app-finances-list',
-  imports: [CommonModule, RouterLink, PageNavigation, ErrorMessage, SmartLoader],
+  imports: [
+    CommonModule, 
+    RouterLink, 
+    PageNavigation, 
+    ErrorMessage, 
+    SmartLoader, 
+    FinanceSignPipe, 
+    FinanceTypePipe,
+    FinanceCssClassPipe ],
   templateUrl: './finances-list.html',
-  styleUrl: './finances-list.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './finances-list.scss'
 })
 export class FinancesList {
   private readonly authService: AuthService = inject(AuthService);
@@ -101,18 +109,6 @@ export class FinancesList {
     if (this.page() > 1) {
       this.page.set(this.page() - 1);
     }
-  }
-
-  getTypeClass(item: number): string {
-    return item === 1 ? 'income' : 'expense';
-  }
-
-  getTypeValue(item: number): string {
-    return item === 1 ? 'Приход' : 'Разход';
-  }
-
-  getTypeSign(item: number): string {
-    return item === 1 ? '+' : '-';
   }
 
   updatePagination(pageIndex: number): void {

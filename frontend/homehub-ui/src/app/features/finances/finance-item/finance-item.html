@@ -27,7 +27,7 @@
             <div class="detail-header">
               <div class="detail-title">
                   <h3>{{ financeRecord()?.title }}</h3>
-                  <span class="type-badge" [ngClass]="getTypeClass(financeRecord()?.type ?? 1)">{{ financeRecord()?.typeValue }}</span>
+                  <span class="type-badge" [ngClass]="(financeRecord()?.type ?? 1) | financeCssClass">{{ financeRecord()?.typeValue }}</span>
               </div>
               @if (isCreator(financeRecord()?.userId ?? '')) {
                 <div class="detail-actions">
@@ -66,7 +66,7 @@
               <div class="detail-grid">
                 <div class="detail-item">
                   <span class="label">ID на записа:</span>
-                  <span class="value">{{ financeRecord()?.id?.slice(0, 15) }}</span>
+                  <span class="value">{{ (financeRecord()?.id || '') | sliceText:15 }}</span>
                 </div>
 
                 <div class="detail-item">
@@ -83,7 +83,7 @@
                   <span class="label">Сума:</span>
                   <span class="amount"
                     [ngClass]="{'positive': financeRecord()?.type === 1, 'negative': financeRecord()?.type === 2}">
-                    {{ getTypeSign(financeRecord()?.type ?? 1) }} {{ financeRecord()?.amount | number:'1.2-2' }} лв.
+                    {{ (financeRecord()?.type ?? 1) | financeSign }} {{ financeRecord()?.amount | number:'1.2-2' }} лв.
                   </span>
                 </div>
 
@@ -104,19 +104,9 @@
 
                 <div class="detail-item">
                   <span class="label">Статус:</span>
-                  <span class="status-badge" [ngClass]="{
-                    'past-status': isBeforeOrAfterToday(financeRecord()?.date) === -1,
-                    'current-status': isBeforeOrAfterToday(financeRecord()?.date) === 0,
-                    'active-status': isBeforeOrAfterToday(financeRecord()?.date) === 1
-                  }">
+                  <span class="status-badge" [ngClass]="financeRecord()?.date | financeStatusClass:isBeforeOrAfterToday">
                     <span class="status-text">
-                      @if (isBeforeOrAfterToday(financeRecord()?.date) === -1) {
-                      Изминала
-                      } @else if (isBeforeOrAfterToday(financeRecord()?.date) === 0) {
-                      Текуща
-                      } @else {
-                      Активна
-                      }
+                      {{ financeRecord()?.date | financeStatusText:isBeforeOrAfterToday }}
                     </span>
                   </span>
                 </div>
@@ -127,7 +117,7 @@
                 <div class="category-details">
                   <div class="category-item">
                     <span class="label">ID на категория:</span>
-                    <span class="value">{{ financeRecord()?.category?.id?.slice(0, 15) }}</span>
+                    <span class="value">{{ (financeRecord()?.category?.id || '') | sliceText:15 }}</span>
                   </div>
                   <div class="category-item">
                     <span class="label">Име на категория:</span>
