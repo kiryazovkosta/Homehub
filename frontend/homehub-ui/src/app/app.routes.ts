@@ -9,6 +9,7 @@ export const routes: Routes = [
     { path: 'services', loadComponent: () => import('./features').then(m => m.FunctionalitiesList) },
     { path: 'login', loadComponent: () => import('./auth').then(m => m.Login), canActivate: [guestGuard] },
     { path: 'register', loadComponent: () => import('./auth').then(m => m.Register), canActivate: [guestGuard] },
+    { path: 'recover-password', loadComponent: () => import('./auth').then(m => m.RecoverPassword), canActivate: [guestGuard] },
     { path: 'profile', loadComponent: () => import('./auth').then(m => m.UserProfile), canActivate: [authGuard] },
     { path: 'family', loadComponent: () => import('./features').then(m => m.Family), canActivate: [authGuard] },
     { path: 'finances', loadComponent: () => import('./features').then(m => m.FinancesList), canActivate: [authGuard] },

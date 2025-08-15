@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 [ApiController]
 [Route("/api/auth")]
@@ -25,6 +26,7 @@ public sealed class AuthController(
     IOptions<JwtAuthOptions> jwtOptions) : ControllerBase
 {
     private readonly JwtAuthOptions _jwtAuthOptions = jwtOptions.Value; 
+
     
     [HttpPost("register")]
     public async Task<ActionResult<AccessTokensResponse>> Register(RegisterUserRequest request)
@@ -159,5 +161,60 @@ public sealed class AuthController(
         refreshToken.ExpiresAtUtc = DateTime.UtcNow.AddDays(_jwtAuthOptions.RefreshTokenExpirationDays);
         await identityDbContext.SaveChangesAsync();
         return Ok(accessToken);
+    }
+
+    [HttpPut("recover-password")]
+    public async Task<ActionResult> RecoverPassword(RecoverPasswordRequest request)
+    {
+        IdentityUser? identityUser = await userManager.FindByEmailAsync(request.Email);
+        if (identityUser is null)
+        {
+            return Problem(
+                detail: "1.Неуспешен опит за смяна на паролата. Моля опитайте отново.",
+                statusCode: StatusCodes.Status400BadRequest);
+        }
+
+        if (await userManager.IsInRoleAsync(identityUser, Roles.Administrator))
+        {
+            return Problem(
+                detail: "2.Неуспешен опит за смяна на паролата. Моля опитайте отново.",
+                statusCode: StatusCodes.Status400BadRequest);
+        }
+
+        User? user = await applicationDbContext.Users
+            .FirstOrDefaultAsync(u => u.IdentityId == identityUser.Id);
+        if (user is null)
+        {
+            return Problem(
+                detail: "3.Неуспешен опит за смяна на паролата. Моля опитайте отново.",
+                statusCode: StatusCodes.Status400BadRequest);
+        }
+
+        if (user.Email != request.Email || 
+            user.FirstName != request.FirstName || 
+            user.LastName != request.LastName)
+        {
+            return Problem(
+                detail: "4.Неуспешен опит за смяна на паролата. Моля опитайте отново.",
+                statusCode: StatusCodes.Status400BadRequest);
+        }
+
+        if (request.Password != request.ConfirmPassword)
+        {
+            return Problem(
+                detail: "5.Неуспешен опит за смяна на паролата. Моля опитайте отново.",
+                statusCode: StatusCodes.Status400BadRequest);
+        }
+
+        var token = await userManager.GeneratePasswordResetTokenAsync(identityUser);
+        var identityResult = await userManager.ResetPasswordAsync(identityUser, token, request.Password);
+        if (!identityResult.Succeeded)
+        {
+            return Problem(
+                detail: "6.Възникна проблем при обновяването на потребителя",
+                statusCode: StatusCodes.Status400BadRequest);
+        }
+        
+        return Ok(new { request.Email });
     }
 }

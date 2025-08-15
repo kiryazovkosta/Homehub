@@ -7,9 +7,10 @@ import { Observable, of } from "rxjs";
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 import { AccessTokenResponse } from "../../models/auth/access-token-response.model";
-import { authBaseUrl, loginEndpoint, refreshEndpoint, registerEndpoint, accessTokenKey, refreshTokenKey } from "../../constants/auth-constants";
+import { authBaseUrl, loginEndpoint, refreshEndpoint, registerEndpoint, accessTokenKey, refreshTokenKey, recoverPasswordEndpoint } from "../../constants/auth-constants";
 import { RegisterUserRequest, FamilyRole, familyRoleLabels } from "../../models/auth/register-user-request.model";
 import { CustomJwtPayload } from "../../models/auth/custom-jwt-payload.model";
+import { RecoverPasswordRequest, RecoverPasswordResponse } from "../../models/auth/recover-password-request.model";
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +19,7 @@ export class AuthService {
     private readonly loginUrl = `${authBaseUrl}${loginEndpoint}`;
     private readonly registerUrl = `${authBaseUrl}${registerEndpoint}`;
     private readonly refreshTokenUrl = `${authBaseUrl}${refreshEndpoint}`;
+    private readonly recoverPasswordUrl = `${authBaseUrl}${recoverPasswordEndpoint}`;
 
     private httpClient: HttpClient = inject(HttpClient);
 
@@ -149,6 +151,10 @@ export class AuthService {
     getFamilyRoles(): Observable<{ value: number, label: string }[]> {
         const roles = Object.entries(familyRoleLabels).map(([value, label]) => ({ value: Number(value), label }));
         return of(roles);
+    }
+
+    recoverPassword(request: RecoverPasswordRequest): Observable<RecoverPasswordResponse> {
+        return this.httpClient.put<RecoverPasswordResponse>(this.recoverPasswordUrl, request);
     }
 
     private isTokenValid(token: string) {

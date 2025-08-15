@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using HomeHub.Api.Entities;
+﻿using HomeHub.Api.Entities;
 using HomeHub.Api.Services;
 
 namespace HomeHub.Api.Controllers;
