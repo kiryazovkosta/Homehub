@@ -2,22 +2,26 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatGridListModule} from '@angular/material/grid-list';
 import { MatButtonModule} from '@angular/material/button';
 import { PageEvent, MatPaginatorModule} from '@angular/material/paginator';
-
 import { InventoriesQueryParameters, InventoriesService } from '../../../core/services/inventories.services';
 import { AuthService } from '../../../core/services/auth.service';
 import { InventoryListResponse, PaginationListResponse } from '../../../models';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SmartLoader } from "../../../shared/smart-loader/smart-loader";
+
+import { timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-inventories-list',
   imports: [
     CommonModule,
     RouterLink,
-    MatGridListModule, 
-    MatButtonModule, 
-    MatPaginatorModule
-  ],
+    MatGridListModule,
+    MatButtonModule,
+    MatPaginatorModule,
+    SmartLoader
+],
   templateUrl: './inventories-list.html',
   styleUrl: './inventories-list.scss'
 })
@@ -48,11 +52,15 @@ export class InventoriesList {
   readonly userid = this.authService.getUserId();
 
   constructor() {
-    effect(() => {
+    effect((onCleanup) => {
       this.loading.set(true);
       this.errorMessage.set(null);
-  
-      this.inventoriesService.getInventories(this.queryParameters()).subscribe({
+
+      const params = this.queryParameters();
+
+      const sub = timer(600).pipe(
+        switchMap(() => this.inventoriesService.getInventories(params))
+      ).subscribe({
         next: (response: PaginationListResponse<InventoryListResponse>) => {
           this.items.set(response.items);
           this.totalCount.set(response.totalCount);
@@ -68,6 +76,7 @@ export class InventoriesList {
           this.errorMessage.set("Възникна проблем при извличането на данните!");
         }
       });
+      onCleanup(() => sub.unsubscribe());
     });
   }
 

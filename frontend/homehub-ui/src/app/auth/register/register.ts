@@ -10,10 +10,11 @@ import { ErrorMessage } from "../../shared/error-message/error-message";
 import { FamiliesResponse, FamilyItemResponse } from '../../models/families/families-response.model';
 import { FamilyService } from '../../core/services';
 import { familyRoleLabels } from '../../models/auth/register-user-request.model';
+import { SmartLoader } from "../../shared/smart-loader/smart-loader";
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, CommonModule, ErrorMessage],
+  imports: [ReactiveFormsModule, CommonModule, ErrorMessage, SmartLoader],
   templateUrl: './register.html',
   styleUrls: ['./register.scss']
 })

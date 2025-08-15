@@ -15,7 +15,7 @@
                 <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
                         <label for="login-email">Имейл адрес</label>
-                        <input type="email" id="login-email" formControlName="email"
+                        <input type="email" id="login-email" formControlName="email" autocomplete="username"
                             [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
                         @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
                             @if (loginForm.get('email')?.errors?.['required']) {
@@ -28,7 +28,7 @@
                     </div>
                     <div class="form-group">
                         <label for="login-password">Парола</label>
-                        <input type="password" id="login-password" formControlName="password"
+                        <input type="password" id="login-password" formControlName="password" autocomplete="current-password"
                             [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
                         @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
                             <div class="validator-error-message">

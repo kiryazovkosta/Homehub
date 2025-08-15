@@ -12,6 +12,13 @@
             </div>
         </div>
 
+        @if (loading()) {
+        <app-smart-loader 
+            [loading]="loading()" 
+            [message]="'Зареждане...'" 
+            [minDuration]="300" />
+        }
+        @else {
         <mat-grid-list cols="{{colsItems()}}" gutterSize="16px" rowHeight="1:1.2">
             @for (inventory of items(); track inventory.id) {
                 <mat-grid-tile>
@@ -39,6 +46,8 @@
             }
             
         </mat-grid-list>
+        }
+
 
         <div class="parinator">
             <mat-paginator [length]="totalCount()" [pageSize]="pageSize()" [pageIndex]="queryParameters().page -1" (page)="onPageChange($event)"  >

@@ -1,3 +1,69 @@
+mat-card {
+    width: 100%;
+    max-width: 1400px; // Match or slightly less than .form-container if you want padding
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.form-field {
+    width: 100%;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.form-section {
+    padding: 1rem 0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    position: relative;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: rem;
+
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: -0.5px;
+    }
+
+    p {
+        font-size: 1.1rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.form-container {
+    max-width: 1400px; // or the same as your mat-card/container
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
 img {
     width: 40px;
     height: 40px;
@@ -44,4 +110,8 @@ img {
             display: block;
         }
     }
+}
+
+mat-card-actions {
+    justify-content: center;
 }

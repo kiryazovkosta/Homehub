@@ -6,6 +6,7 @@ import { baseUrl, financesUrl } from "../../constants/api-constants";
 import { EnumMemberResponse } from "../../models/common/enum-member-response.model";
 import { CreateFinanceRequest, UpdateFinanceRequest } from "../../models/finances/create-finance-request.model";
 import { Observable } from "rxjs";
+import { delay } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'

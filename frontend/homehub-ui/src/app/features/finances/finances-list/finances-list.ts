@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, inject, signal, effect, computed, ChangeDetectionStrategy } from '@angular/core';
+import { timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { FinancesService } from '../../../core/services';
 import { FinanceListResponse, PaginationListResponse } from '../../../models';
 import { RouterLink } from '@angular/router';
@@ -53,7 +55,9 @@ export class FinancesList {
       const currentPage = this.page();
       const currentPageSize = this.pageSize();
 
-      this.financesService.getFinances({ page: currentPage, pageSize: currentPageSize }).subscribe({
+      timer(1000).pipe(
+        switchMap(() => this.financesService.getFinances({ page: currentPage, pageSize: currentPageSize }))
+      ).subscribe({
         next: (response: PaginationListResponse<FinanceListResponse>) => {
           this.items.set(response.items);
           this.totalCount.set(response.totalCount);

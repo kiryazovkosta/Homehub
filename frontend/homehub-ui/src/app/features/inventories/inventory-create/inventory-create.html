@@ -1,170 +1,195 @@
-<p>inventory-create works!</p>
+<section id="create-inventory" class="form-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="gradient-text">Създаване нова наличност</h2>
+            <p>Използвайте тази форма за създаване на нова наличност</p>
+        </div>
+        <div class="form-container">
+            <form [formGroup]="createInventoryForm" (ngSubmit)="submit()">
+                <mat-card>
+                    <mat-card-content>
+                        <!-- Name -->
+                        <div class="form-group">
+                            <mat-form-field class="form-field" appearance="outline">
+                                <mat-label>Наименование</mat-label>
+                                <input matInput formControlName="name" required>
+                                @if (createInventoryForm.controls['name'].touched &&
+                                createInventoryForm.controls['name'].invalid) {
+                                <mat-error>
+                                    @if (createInventoryForm.controls['name'].errors?.['required']) {
+                                    <span>Наименованието е задължително.</span>
+                                    }
+                                    @if (createInventoryForm.controls['name'].errors?.['minlength']) {
+                                    <span>Наименованието трябва да е поне 2 символа.</span>
+                                    }
+                                    @if (createInventoryForm.controls['name'].errors?.['maxlength']) {
+                                    <span>Наименованието трябва да е по-малко от 64 символа.</span>
+                                    }
+                                </mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
 
-<form [formGroup]="createInventoryForm" (ngSubmit)="submit()">
-    <mat-card>
-        <mat-card-title>Създаване нова наличност</mat-card-title>
-        <mat-card-subtitle>Използвайте тази форма за създаване на нова наличност</mat-card-subtitle>
-        <mat-card-content>
+                        <!-- Description -->
+                        <div class="form-group">
+                            <mat-form-field class="form-field" appearance="outline">
+                                <mat-label>Описание</mat-label>
+                                <textarea cols="60" rows="10" matInput formControlName="description"
+                                    required></textarea>
+                                @if (createInventoryForm.controls['description'].touched &&
+                                createInventoryForm.controls['description'].invalid) {
+                                <mat-error>
+                                    @if (createInventoryForm.controls['description'].errors?.['required']) {
+                                    <span>Описанието е задължително.</span>
+                                    }
+                                    @if (createInventoryForm.controls['description'].errors?.['minlength']) {
+                                    <span>Описанието трябва да е поне 5 символа.</span>
+                                    }
+                                    @if (createInventoryForm.controls['description'].errors?.['maxlength']) {
+                                    <span>Описанието трябва да е по-малко от 255 символа.</span>
+                                    }
+                                </mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
 
-            <mat-form-field class="form-field" appearance="outline">
-                <mat-label>Наименование</mat-label>
-                <input matInput formControlName="name" required>
-                @if (createInventoryForm.controls['name'].touched && createInventoryForm.controls['name'].invalid) {
-                <mat-error>
-                    @if (createInventoryForm.controls['name'].errors?.['required']) {
-                    <span>Наименованието е задължително.</span>
-                    }
-                    @if (createInventoryForm.controls['name'].errors?.['minlength']) {
-                    <span>Наименованието трябва да е поне 2 символа.</span>
-                    }
-                    @if (createInventoryForm.controls['name'].errors?.['maxlength']) {
-                    <span>Наименованието трябва да е по-малко от 64 символа.</span>
-                    }
-                </mat-error>
-                }
-            </mat-form-field>
+                        <!-- Category and Location -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <mat-form-field class="form-field" appearance="outline">
+                                    <mat-label>Категория</mat-label>
+                                    <mat-select formControlName="categoryId" required>
+                                        <mat-option disabled selected>Изберете категория</mat-option>
+                                        @if (categories() && categories()!.length > 0) {
+                                        @for (category of categories(); track category.id) {
+                                        <mat-option [value]="category.id">{{ category.name }}</mat-option>
+                                        }
+                                        } @else {
+                                        <mat-option disabled>Зареждане на категории...</mat-option>
+                                        }
+                                    </mat-select>
+                                    @if (createInventoryForm.controls['categoryId'].touched &&
+                                    createInventoryForm.controls['categoryId'].invalid) {
+                                    <mat-error>
+                                        @if (createInventoryForm.controls['categoryId'].errors?.['required']) {
+                                        <span>Категорията е задължителна.</span>
+                                        }
+                                    </mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <mat-form-field class="form-field" appearance="outline">
+                                    <mat-label>Място за съхранение</mat-label>
+                                    <mat-select formControlName="locationId" required>
+                                        <mat-option disabled selected>Изберете място за съхранение</mat-option>
+                                        @if (locations() && locations()!.length > 0) {
+                                        @for (location of locations(); track location.id) {
+                                        <mat-option [value]="location.id">{{ location.name }}</mat-option>
+                                        }
+                                        } @else {
+                                        <mat-option disabled>Зареждане на места за съхранение...</mat-option>
+                                        }
+                                    </mat-select>
+                                    @if (createInventoryForm.controls['locationId'].touched &&
+                                    createInventoryForm.controls['locationId'].invalid) {
+                                    <mat-error>
+                                        @if (createInventoryForm.controls['locationId'].errors?.['required']) {
+                                        <span>Мястото за съхранение е задължително.</span>
+                                        }
+                                    </mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+                        </div>
 
-            <mat-form-field class="form-field" appearance="outline">
-                <mat-label>Описание</mat-label>
-                <textarea cols="60" rows="10" matInput formControlName="description" required></textarea>
-                @if (createInventoryForm.controls['description'].touched && createInventoryForm.controls['description'].invalid) {
-                    <mat-error>
-                        @if (createInventoryForm.controls['description'].errors?.['required']) {
-                        <span>Описанието е задължително.</span>
-                        }
-                        @if (createInventoryForm.controls['description'].errors?.['minlength']) {
-                        <span>Описанието трябва да е поне 5 символа.</span>
-                        }
-                        @if (createInventoryForm.controls['description'].errors?.['maxlength']) {
-                        <span>Описанието трябва да е по-малко от 255 символа.</span>
-                        }
-                    </mat-error>
-                }
-            </mat-form-field>
+                        <!-- Quantity and Threshold -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <mat-form-field class="form-field" appearance="outline">
+                                    <mat-label>Количество</mat-label>
+                                    <input type="number" matInput formControlName="quantity" required>
+                                    @if (createInventoryForm.controls['quantity'].touched &&
+                                    createInventoryForm.controls['quantity'].invalid) {
+                                    <mat-error>
+                                        @if (createInventoryForm.controls['quantity'].errors?.['required']) {
+                                        <span>Количеството е задължително.</span>
+                                        }
+                                        @if (createInventoryForm.controls['quantity'].errors?.['min']) {
+                                        <span>Количеството трябва да е поне 1.</span>
+                                        }
+                                    </mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <mat-form-field class="form-field" appearance="outline">
+                                    <mat-label>Минимално количество</mat-label>
+                                    <input type="number" matInput formControlName="threshold" required>
+                                    @if (createInventoryForm.controls['threshold'].touched &&
+                                    createInventoryForm.controls['threshold'].invalid) {
+                                    <mat-error>
+                                        @if (createInventoryForm.controls['threshold'].errors?.['required']) {
+                                        <span>Минималното количество е задължително.</span>
+                                        }
+                                        @if (createInventoryForm.controls['threshold'].errors?.['min']) {
+                                        <span>Минималното количество трябва да е поне 0.</span>
+                                        }
+                                    </mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Image -->
+                        <div class="form-group">
+                            <div class="form-field">
+                                <input type="file" id="imageFile" accept="image/*" (change)="onFileSelected($event)"
+                                    required>
+                                @if (createInventoryForm.controls['imageFile'].touched &&
+                                createInventoryForm.controls['imageFile'].invalid) {
+                                <div class="error-message">
+                                    @if (createInventoryForm.controls['imageFile'].errors?.['required']) {
+                                    <span>Изображението е задължително.</span>
+                                    }
+                                    @if (createInventoryForm.controls['imageFile'].errors?.['invalidFile']) {
+                                    <span>Невалиден файл.</span>
+                                    }
+                                    @if (createInventoryForm.controls['imageFile'].errors?.['invalidFileType']) {
+                                    <span>Файлът трябва да е изображение.</span>
+                                    }
+                                    @if (createInventoryForm.controls['imageFile'].errors?.['fileTooLarge']) {
+                                    <span>Файлът е твърде голям. Максималният размер е 1MB.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+
+                            @if (selectedFile()) {
+                            <div class="file-preview">
+                                <p>Избран файл: {{ selectedFile()?.name }}</p>
+                                <img [src]="imageUrl()" alt="Preview"
+                                    style="width: 200px; height: 200px; border-radius: 8px; align-self: center;">
+                            </div>
+                            }
+                        </div>
+                    </mat-card-content>
+
+                    <mat-card-actions>
+                        <!-- Actions -->
+                        <div class="form-group">
+                            <button mat-button class="btn-save" type="submit" [disabled]="createInventoryForm.invalid">
+                                <span>Добави</span>
+                            </button>
+                            <button mat-button class="btn-cancel" routerLink="/inventories">
+                                <span>Отказ</span>
+                            </button>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </form>
+        </div>
 
 
-            <mat-form-field class="form-field" appearance="outline">
-                <mat-label>Категория</mat-label>
-                <mat-select formControlName="categoryId" required>
-                    <mat-option disabled selected>Изберете категория</mat-option>
-                    @if (categories() && categories()!.length > 0) {
-                        @for (category of categories(); track category.id) {
-                            <mat-option [value]="category.id">{{ category.name }}</mat-option>
-                        }
-                    } @else {
-                        <mat-option disabled>Зареждане на категории...</mat-option>
-                    }
-                </mat-select>
-                @if (createInventoryForm.controls['categoryId'].touched && createInventoryForm.controls['categoryId'].invalid) {
-                <mat-error>
-                    @if (createInventoryForm.controls['categoryId'].errors?.['required']) {
-                    <span>Категорията е задължителна.</span>
-                    }
-                </mat-error>
-                }
-            </mat-form-field>
-
-            <mat-form-field class="form-field" appearance="outline">
-                <mat-label>Място за съхранение</mat-label>
-                <mat-select formControlName="locationId" required>
-                    <mat-option disabled selected>Изберете място за съхранение</mat-option>
-                    @if (locations() && locations()!.length > 0) {
-                        @for (location of locations(); track location.id) {
-                            <mat-option [value]="location.id">{{ location.name }}</mat-option>
-                        }
-                    } @else {
-                        <mat-option disabled>Зареждане на места за съхранение...</mat-option>
-                    }
-                </mat-select>
-                @if (createInventoryForm.controls['locationId'].touched && createInventoryForm.controls['locationId'].invalid) {
-                <mat-error>
-                    @if (createInventoryForm.controls['locationId'].errors?.['required']) {
-                    <span>Мястото за съхранение е задължително.</span>
-                    }
-                </mat-error>
-                }
-            </mat-form-field>
-
-
-
-            <mat-form-field class="form-field" appearance="outline">
-                <mat-label>Количество</mat-label>
-                <input type="number" matInput formControlName="quantity" required>
-                @if (createInventoryForm.controls['quantity'].touched && createInventoryForm.controls['quantity'].invalid) {
-                <mat-error>
-                    @if (createInventoryForm.controls['quantity'].errors?.['required']) {
-                    <span>Количеството е задължително.</span>
-                    }
-                    @if (createInventoryForm.controls['quantity'].errors?.['min']) {
-                    <span>Количеството трябва да е поне 1.</span>
-                    }
-                </mat-error>
-                }
-            </mat-form-field>
-
-            <mat-form-field class="form-field" appearance="outline">
-                <mat-label>Минимално количество</mat-label>
-                <input type="number" matInput formControlName="threshold" required>
-                @if (createInventoryForm.controls['threshold'].touched && createInventoryForm.controls['threshold'].invalid) {
-                <mat-error>
-                    @if (createInventoryForm.controls['threshold'].errors?.['required']) {
-                    <span>Минималното количество е задължително.</span>
-                    }
-                    @if (createInventoryForm.controls['threshold'].errors?.['min']) {
-                    <span>Минималното количество трябва да е поне 0.</span>
-                    }
-                </mat-error>
-                }
-            </mat-form-field>
-
-            <div class="form-field">
-                <label for="imageFile">Изображение</label>
-                <input type="file" id="imageFile" accept="image/*" (change)="onFileSelected($event)" required>
-                @if (createInventoryForm.controls['imageFile'].touched && createInventoryForm.controls['imageFile'].invalid) {
-                <div class="error-message">
-                    @if (createInventoryForm.controls['imageFile'].errors?.['required']) {
-                    <span>Изображението е задължително.</span>
-                    }
-                    @if (createInventoryForm.controls['imageFile'].errors?.['invalidFile']) {
-                    <span>Невалиден файл.</span>
-                    }
-                    @if (createInventoryForm.controls['imageFile'].errors?.['invalidFileType']) {
-                    <span>Файлът трябва да е изображение.</span>
-                    }
-                    @if (createInventoryForm.controls['imageFile'].errors?.['fileTooLarge']) {
-                    <span>Файлът е твърде голям. Максималният размер е 1MB.</span>
-                    }
-                </div>
-                }
-            </div>
-
-            @if (selectedFile()) {
-            <div class="file-preview">
-                <p>Избран файл: {{ selectedFile()?.name }}</p>
-                <img [src]="imageUrl()" 
-                     alt="Preview" 
-                     style="width: 300px; height: 300px; border-radius: 8px;">
-            </div>
-            }
-
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-button class="btn-save" type="submit" [disabled]="createInventoryForm.invalid">
-                <span>Добави</span>
-            </button>
-            <button mat-button class="btn-cancel" routerLink="/inventories">
-                <span>Отказ</span>
-            </button>
-        </mat-card-actions>
-    </mat-card>
-</form>
-
-<!--
-name: ['', [Validators.required, Validators.minLength(2)]],
-description: ['', [Validators.required, Validators.minLength(5)]],
-categoryId: ['', [Validators.required]],
-locationId: ['', [Validators.required]],
-quantity: ['', [Validators.required, Validators.min(1)]],
-threshold: ['', [Validators.required, Validators.min(0)]],
-imageUrl: ['', [Validators.required]]
--->
+    </div>
+</section>
