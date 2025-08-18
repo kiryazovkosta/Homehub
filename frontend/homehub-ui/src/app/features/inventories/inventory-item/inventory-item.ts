@@ -1,14 +1,11 @@
 import { Component, signal, OnInit, effect, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InventoriesService } from '../../../core/services/inventories.services';
-import { CategorySimpleResponse, InventoryResponse, LocationResponse } from '../../../models';
-import { ErrorMessage } from "../../../shared/error-message/error-message";
-import { processError } from '../../../utils/error.utils';
-import { ConfirmDialog } from "../../../shared/confirm-dialog/confirm-dialog";
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { LocationsService } from '../../../core/services';
-import { ImagesServices } from '../../../core/services/images.service';
-import { SupabaseResponse } from '../../../models/common/supabase-response.model';
+
+import { CategorySimpleResponse, InventoryResponse, LocationResponse, SupabaseResponse } from '../../../models';
+import { ErrorMessage, ConfirmDialog } from "../../../shared";
+import { processError } from '../../../utils';
+import { InventoriesService, LocationsService , ImagesServices } from '../../../core/services';
 
 @Component({
   selector: 'app-inventory-item',

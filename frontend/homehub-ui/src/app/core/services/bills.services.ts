@@ -8,7 +8,7 @@ import { BillsListCollectionResponse, BillResponse } from "../../models";
 @Injectable({
     providedIn: 'root'
 })
-export class LocationsService {
+export class BillsService {
     private readonly apiUrl = `${baseUrl}${billsUrl}`;
 
     constructor(private httpClient: HttpClient){}

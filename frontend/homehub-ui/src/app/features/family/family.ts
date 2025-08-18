@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, HostListener, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
+
 import { FamilyService } from '../../core/services';
-import { FamilyWithUsersResponse } from '../../models/families/family-with-users-response.model';
-import { UserSimplyResponse } from '../../models/users/simple-user-response.model';
+
+import { FamilyWithUsersResponse, UserSimplyResponse } from '../../models';
 
 @Component({
   selector: 'app-family',

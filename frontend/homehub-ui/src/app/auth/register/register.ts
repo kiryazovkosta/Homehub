@@ -1,16 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RegisterUserRequest, FamilyRole } from '../../models/auth/register-user-request.model';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/services/auth.service';
-import { ImagesServices } from '../../core/services/images.service';
-import { SupabaseResponse } from '../../models/common/supabase-response.model';
 import { Router } from '@angular/router';
-import { ErrorMessage } from "../../shared/error-message/error-message";
-import { FamiliesResponse, FamilyItemResponse } from '../../models/families/families-response.model';
-import { FamilyService } from '../../core/services';
-import { familyRoleLabels } from '../../models/auth/register-user-request.model';
-import { SmartLoader } from "../../shared/smart-loader/smart-loader";
+
+import { AuthService, ImagesServices, FamilyService } from '../../core/services';
+import { SupabaseResponse, FamiliesResponse, FamilyItemResponse, familyRoleLabels, RegisterUserRequest, FamilyRole } from '../../models';
+import { ErrorMessage, SmartLoader } from "../../shared";
 
 @Component({
   selector: 'app-register',

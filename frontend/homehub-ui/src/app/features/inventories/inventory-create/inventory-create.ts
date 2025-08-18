@@ -9,13 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
-import { ImagesServices } from '../../../core/services/images.service';
-import { SupabaseResponse } from '../../../models/common/supabase-response.model';
-import { CategorySimpleResponse, LocationResponse } from '../../../models';
-import { InventoriesService } from '../../../core/services/inventories.services';
-import { LocationsService } from '../../../core/services';
-import { processError } from '../../../utils/error.utils';
-import { InventoryRequest } from '../../../models/inventories/create-inventory-request.model';
+
+import { SupabaseResponse, CategorySimpleResponse, LocationResponse, InventoryRequest } from '../../../models';
+import { InventoriesService, LocationsService, ImagesServices } from '../../../core/services';
+import { processError } from '../../../utils';
 
 @Component({
   selector: 'app-inventory-create',

@@ -1,9 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { baseUrl, userProfileUrl, usersUrl } from "../../constants/api-constants";
 import { Observable } from "rxjs";
-import { UserProfileResponse } from "../../models/users/user-profile.model";
-import { UpdateUserRequest } from "../../models/users/update-user-request.model";
+
+import { baseUrl, userProfileUrl, usersUrl } from "../../constants/api-constants";
+import { UserProfileResponse, UpdateUserRequest } from "../../models";
 
 @Injectable({
     providedIn: 'root'

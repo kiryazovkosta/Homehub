@@ -1,16 +1,18 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AdminService } from '../../../core/services/admin.service';
-import { UserAdminResponse } from '../../../models/users/simple-user-response.model';
-import { PaginationListResponse } from '../../../models';
-import { familyRoleLabels } from '../../../models/auth/register-user-request.model';
-import { FamiliesResponse, FamilyItemResponse } from '../../../models/families/families-response.model';
-import { FamilyService } from '../../../core/services/family.service';
-import { UpdateUserFromAdminRequest } from '../../../models/admin/update-user-from-admin-request.model';
-import { ConfirmDialog } from "../../../shared/confirm-dialog/confirm-dialog";
-import { ErrorMessage } from "../../../shared/error-message/error-message";
-import { PageNavigation } from "../../../shared/page-navigation/page-navigation";
-import { AddUser } from "../add-user/add-user";
+
+import { AdminService, FamilyService } from '../../../core/services';
+import { ConfirmDialog, ErrorMessage, PageNavigation } from "../../../shared";
+import { AddUser } from '../add-user/add-user';
+
+import { 
+  UserAdminResponse, 
+  PaginationListResponse, 
+  familyRoleLabels, 
+  FamiliesResponse, 
+  FamilyItemResponse, 
+  UpdateUserFromAdminRequest 
+} from '../../../models';
 
 @Component({
   selector: 'app-admin-users',

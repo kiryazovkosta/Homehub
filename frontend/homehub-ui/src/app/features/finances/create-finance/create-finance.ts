@@ -1,9 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { FinancesService } from '../../../core/services';
 import { CategorySimpleResponse, EnumMemberResponse } from '../../../models';
-import { ErrorMessage } from "../../../shared/error-message/error-message";
+import { ErrorMessage } from "../../../shared";
 
 @Component({
   selector: 'app-create-finance',
@@ -63,6 +64,7 @@ export class CreateFinance {
     console.log(this.createFinanceForm.value);
 
     if (this.createFinanceForm.valid) {
+      console.log(this.createFinanceForm.value);
       this.loading.set(true);
       this.errorMessage.set(null);
       this.financesService.create(this.createFinanceForm.value).subscribe({

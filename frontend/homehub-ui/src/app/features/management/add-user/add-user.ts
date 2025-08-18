@@ -1,14 +1,18 @@
-import { Component, EventEmitter, inject, output, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RegisterUserRequest, FamilyRole, familyRoleLabels } from '../../../models/auth/register-user-request.model';
 import { CommonModule } from '@angular/common';
-import { AdminService } from '../../../core/services/admin.service';
-import { ImagesServices } from '../../../core/services/images.service';
-import { SupabaseResponse } from '../../../models/common/supabase-response.model';
-import { ErrorMessage } from "../../../shared/error-message/error-message";
-import { FamiliesResponse, FamilyItemResponse } from '../../../models/families/families-response.model';
-import { FamilyService } from '../../../core/services';
-import { UserSimplyResponse } from '../../../models/users/simple-user-response.model';
+
+import { 
+  RegisterUserRequest, 
+  FamilyRole, 
+  familyRoleLabels, 
+  SupabaseResponse, 
+  FamiliesResponse, 
+  FamilyItemResponse, 
+  UserSimplyResponse 
+} from '../../../models';
+import { AdminService, ImagesServices, FamilyService } from '../../../core/services';
+import { ErrorMessage } from "../../../shared";
 
 @Component({
   selector: 'app-add-user',

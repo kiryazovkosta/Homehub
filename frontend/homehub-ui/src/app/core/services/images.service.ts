@@ -1,8 +1,9 @@
 import { inject, Injectable } from "@angular/core";
-import { baseUrl, supabaseUrl } from "../../constants/api-constants";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { SupabaseResponse } from "../../models/common/supabase-response.model";
+
+import { baseUrl, supabaseUrl } from "../../constants/api-constants";
+import { SupabaseResponse } from "../../models";
 
 
 @Injectable({

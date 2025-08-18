@@ -2,15 +2,25 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { computed, inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { baseUrl, adminDashboardUrl, adminUsersUrl, adminFamiliesUrl, adminUpdateUserUrl, adminDeleteUserUrl } from "../../constants/api-constants";
 import { AuthService } from "./auth.service";
-import { DashboardResponse } from "../../models/admin/dashboard-response.model";
-import { PaginationListResponse } from "../../models";
-import { UserAdminResponse, UserSimplyResponse } from "../../models/users/simple-user-response.model";
-import { FamilyResponse } from "../../models/families/family-response.model";
-import { UpdateUserFromAdminRequest } from "../../models/admin/update-user-from-admin-request.model";
-import { RegisterUserRequest } from "../../models/auth/register-user-request.model";
-import { CreateFamilyRequest, UpdateFamilyRequest } from "../../models/families/create-family-request.model";
+import { 
+    baseUrl, 
+    adminDashboardUrl, 
+    adminUsersUrl, 
+    adminFamiliesUrl, 
+    adminUpdateUserUrl 
+} from "../../constants/api-constants";
+import { 
+    DashboardResponse, 
+    PaginationListResponse, 
+    UserAdminResponse, 
+    UserSimplyResponse, 
+    FamilyResponse, 
+    UpdateUserFromAdminRequest, 
+    RegisterUserRequest, 
+    CreateFamilyRequest, 
+    UpdateFamilyRequest 
+} from "../../models";
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +35,7 @@ export class AdminService {
 
     getDashboard(): Observable<DashboardResponse> {
         if (!this.isAdmin()) {
-            throw new Error('You are not authorized to access this resource');
+            throw new Error('Не се оторизирани за този ресурс.');
         }
 
         return this.httpClient.get<DashboardResponse>(`${this.apiUrl}${adminDashboardUrl}`);
@@ -33,7 +43,7 @@ export class AdminService {
 
     getUsers(pagination: { page:number, pageSize: number }): Observable<PaginationListResponse<UserAdminResponse>> {
         if (!this.isAdmin()) {
-            throw new Error('You are not authorized to access this resource');
+            throw new Error('Не се оторизирани за този ресурс.');
         }
 
         return this.httpClient.get<PaginationListResponse<UserAdminResponse>>(`${this.apiUrl}${adminUsersUrl}`, { params: pagination });
@@ -41,7 +51,7 @@ export class AdminService {
 
     getFamilies(): Observable<PaginationListResponse<FamilyResponse>> {
         if (!this.isAdmin()) {
-            throw new Error('You are not authorized to access this resource');
+            throw new Error('Не се оторизирани за този ресурс.');
         }
 
         return this.httpClient.get<PaginationListResponse<FamilyResponse>>(`${this.apiUrl}${adminFamiliesUrl}`);
@@ -49,7 +59,7 @@ export class AdminService {
 
     registerUser(userData: RegisterUserRequest): Observable<UserSimplyResponse> {
         if (!this.isAdmin()) {
-            throw new Error('You are not authorized to access this resource');
+            throw new Error('Не се оторизирани за този ресурс.');
         }
 
         const response = this.httpClient.post<UserSimplyResponse>(`${this.apiUrl}api/admin/users/register`, userData);
@@ -59,7 +69,7 @@ export class AdminService {
 
     updateUser(userData: UpdateUserFromAdminRequest) : Observable<string> {
         if (!this.isAdmin()) {
-            throw new Error('You are not authorized to access this resource');
+            throw new Error('Не се оторизирани за този ресурс.');
         }
 
         console.log(userData);
@@ -70,7 +80,7 @@ export class AdminService {
 
     deleteUser(id: string) : Observable<void> {
         if (!this.isAdmin()) {
-            throw new Error('You are not authorized to access this resource');
+            throw new Error('Не се оторизирани за този ресурс.');
         }
 
         console.log(id);
@@ -90,7 +100,7 @@ export class AdminService {
 
     updateFamily(userData: UpdateFamilyRequest) : Observable<void> {
         if (!this.isAdmin()) {
-            throw new Error('You are not authorized to access this resource');
+            throw new Error('Не се оторизирани за този ресурс.');
         }
 
         console.log(userData);
@@ -99,7 +109,7 @@ export class AdminService {
 
     deleteFamily(id: string) : Observable<void> {
         if (!this.isAdmin()) {
-            throw new Error('You are not authorized to access this resource');
+            throw new Error('Не се оторизирани за този ресурс.');
         }
 
         const path: string = `${this.apiUrl}api/admin/families/delete/`+id;

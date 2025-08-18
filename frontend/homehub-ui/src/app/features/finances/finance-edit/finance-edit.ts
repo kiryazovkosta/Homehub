@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { CategorySimpleResponse, EnumMemberResponse, FinanceResponse } from '../../../models';
-import { FinancesService } from '../../../core/services';
-import { ErrorMessage } from "../../../shared/error-message/error-message";
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService, FinancesService } from '../../../core/services';
+import { ErrorMessage } from "../../../shared";
 
 @Component({
   selector: 'app-finance-edit',

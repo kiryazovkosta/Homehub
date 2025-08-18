@@ -1,22 +1,33 @@
 import { Component, signal, inject, input, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../core/services/auth.service';
-import { FinancesService } from '../../../core/services';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { FinanceResponse } from '../../../models';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ErrorMessage } from "../../../shared/error-message/error-message";
-import { ConfirmDialog } from "../../../shared/confirm-dialog/confirm-dialog";
-import { FinanceSignPipe } from "../../../core/pipes/finance-sign-pipe";
-import { FinanceCssClassPipe } from "../../../core/pipes/finance-css-class-pipe";
-import { SliceTextPipe } from "../../../core/pipes/slice-text-pipe";
-import { FinanceStatusTextPipe } from "../../../core/pipes/finance-status-text-pipe";
-import { FinanceStatusClassPipe } from "../../../core/pipes/finance-status-class-pipe";
+
+import { AuthService, FinancesService } from '../../../core/services';
+import { FinanceResponse } from '../../../models';
+import { ErrorMessage, ConfirmDialog } from "../../../shared";
+import { 
+  FinanceSignPipe, 
+  FinanceCssClassPipe, 
+  SliceTextPipe, 
+  FinanceStatusTextPipe, 
+  FinanceStatusClassPipe 
+} from "../../../core/pipes";
 
 @Component({
   selector: 'app-finance-item',
   standalone: true,
-  imports: [CommonModule, RouterModule, ErrorMessage, ConfirmDialog, FinanceSignPipe, FinanceCssClassPipe, SliceTextPipe, FinanceStatusTextPipe, FinanceStatusClassPipe],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    ErrorMessage, 
+    ConfirmDialog, 
+    FinanceSignPipe, 
+    FinanceCssClassPipe, 
+    SliceTextPipe, 
+    FinanceStatusTextPipe, 
+    FinanceStatusClassPipe
+  ],
   templateUrl: './finance-item.html',
   styleUrl: './finance-item.scss'
 })

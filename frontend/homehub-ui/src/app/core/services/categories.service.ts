@@ -8,7 +8,7 @@ import { baseUrl, categoriesUrl } from "../../constants/api-constants";
 @Injectable({
     providedIn: 'root'
 })
-export class LocationsService {
+export class CategoriesService {
     private readonly apiUrl = `${baseUrl}${categoriesUrl}`;
 
     constructor(private httpClient: HttpClient){

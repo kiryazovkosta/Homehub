@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { guestGuard, authGuard, roleGuard } from './core/guards';
-import { NotFound } from './features/not-found/not-found';
+import { NotFound } from './features';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/about', pathMatch: 'full' },

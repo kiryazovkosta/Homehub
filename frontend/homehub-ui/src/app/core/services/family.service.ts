@@ -3,8 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { baseUrl, familiesUrl, familyUrl } from "../../constants/api-constants";
-import { FamilyWithUsersResponse } from "../../models/families/family-with-users-response.model";
-import { FamiliesResponse } from "../../models/families/families-response.model";
+import { FamilyWithUsersResponse, FamiliesResponse } from "../../models";
 
 @Injectable({
     providedIn: 'root'

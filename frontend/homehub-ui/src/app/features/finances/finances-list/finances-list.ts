@@ -2,22 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, inject, signal, effect, computed, ChangeDetectionStrategy } from '@angular/core';
 import { timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { FinancesService } from '../../../core/services';
-import { FinanceListResponse, PaginationListResponse } from '../../../models';
 import { RouterLink } from '@angular/router';
-import { PageNavigation } from "../../../shared/page-navigation/page-navigation";
-import { AuthService } from '../../../core/services/auth.service';
-import { ErrorMessage } from "../../../shared/error-message/error-message";
-import { SmartLoader } from "../../../shared/smart-loader/smart-loader";
-import { FinanceSignPipe, FinanceTypePipe, FinanceCssClassPipe } from "../../../core/pipes";
 
-interface FinanceRecord {
-  id: number;
-  title: string;
-  type: 'income' | 'expense';
-  description: string;
-  amount: number;
-}
+import { AuthService, FinancesService } from '../../../core/services';
+import { FinanceListResponse, PaginationListResponse } from '../../../models';
+import { ErrorMessage, SmartLoader, PageNavigation } from "../../../shared";
+import { FinanceSignPipe, FinanceTypePipe, FinanceCssClassPipe } from "../../../core/pipes";
 
 @Component({
   selector: 'app-finances-list',

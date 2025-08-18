@@ -1,10 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
-import { SmartLoader } from "../../shared/smart-loader/smart-loader";
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ErrorMessage } from "../../shared/error-message/error-message";
-import { AuthService } from '../../core/services/auth.service';
+import { SmartLoader, ErrorMessage } from "../../shared";
+import { AuthService } from '../../core/services';
 import { HttpErrorResponse } from '@angular/common/http';
-import { processError } from '../../utils/error.utils';
+import { processError } from '../../utils';
 import { Router } from '@angular/router';
 
 @Component({

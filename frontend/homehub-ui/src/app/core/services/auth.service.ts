@@ -1,16 +1,29 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { LoginUserRequest } from "../../models/auth/login-user-request.model";
 import { HttpClient } from "@angular/common/http";
 import { tap, catchError, map } from "rxjs/operators";
 import { Observable, of } from "rxjs";
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
-import { AccessTokenResponse } from "../../models/auth/access-token-response.model";
-import { authBaseUrl, loginEndpoint, refreshEndpoint, registerEndpoint, accessTokenKey, refreshTokenKey, recoverPasswordEndpoint } from "../../constants/auth-constants";
-import { RegisterUserRequest, FamilyRole, familyRoleLabels } from "../../models/auth/register-user-request.model";
-import { CustomJwtPayload } from "../../models/auth/custom-jwt-payload.model";
-import { RecoverPasswordRequest, RecoverPasswordResponse } from "../../models/auth/recover-password-request.model";
+import { 
+    authBaseUrl, 
+    loginEndpoint, 
+    refreshEndpoint, 
+    registerEndpoint, 
+    accessTokenKey, 
+    refreshTokenKey, 
+    recoverPasswordEndpoint 
+} from "../../constants/auth-constants";
+import { 
+    RegisterUserRequest, 
+    familyRoleLabels,
+    CustomJwtPayload,
+    RecoverPasswordRequest, 
+    RecoverPasswordResponse,
+    LoginUserRequest,
+    AccessTokenResponse 
+} from "../../models";
+import { userProfileUrl } from "../../constants/api-constants";
 
 @Injectable({
     providedIn: 'root'
@@ -133,7 +146,8 @@ export class AuthService {
 
         if (token && this.isTokenValid(token)) {
             const decoded = jwtDecode<CustomJwtPayload>(token);
-            return `u_${decoded?.sub}`;
+            console.log(decoded);
+            return decoded?.nameid;
         }
 
         return undefined;

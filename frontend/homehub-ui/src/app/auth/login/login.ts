@@ -1,9 +1,9 @@
 import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../core/services';
 import { Router, RouterLink } from '@angular/router';
-import { ErrorMessage } from "../../shared/error-message/error-message";
+import { ErrorMessage } from "../../shared";
 
 @Component({
   selector: 'app-login',

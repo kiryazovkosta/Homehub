@@ -1,6 +1,7 @@
 import { Component, HostListener, inject } from '@angular/core';
-import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
+
+import { AuthService } from '../../../core/services';
 
 @Component({
   selector: 'app-header-section',

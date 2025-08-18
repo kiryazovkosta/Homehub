@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 [ApiController]
 [Route("/api/auth")]
@@ -89,7 +88,7 @@ public sealed class AuthController(
 
         await applicationDbContext.SaveChangesAsync();
 
-        TokenRequest tokenRequest = new(user.IdentityId, user.Email, [Roles.Member]);
+        TokenRequest tokenRequest = new(user.IdentityId, user.Email, user.Id, [Roles.Member]);
         AccessTokensResponse accessToken = tokenProvider.GenerateTokens(tokenRequest);
 
         var refreshToken = new RefreshToken
@@ -117,9 +116,15 @@ public sealed class AuthController(
             return Unauthorized();
         }
 
+        User? user = await applicationDbContext.Users.FirstOrDefaultAsync(u => u.IdentityId == identityUser.Id);
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+
         IList<string> roles =  await userManager.GetRolesAsync(identityUser);
 
-        TokenRequest tokenRequest = new(identityUser.Id, request.Email, roles);
+        TokenRequest tokenRequest = new(identityUser.Id, request.Email, user.Id, roles);
         AccessTokensResponse accessToken = tokenProvider.GenerateTokens(tokenRequest);
 
         var refreshToken = new RefreshToken
@@ -152,9 +157,15 @@ public sealed class AuthController(
             return Unauthorized();
         }
 
+        User? user = await applicationDbContext.Users.FirstOrDefaultAsync(u => u.IdentityId == refreshToken.UserId);
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+
         IList<string> roles = await userManager.GetRolesAsync(refreshToken.User);
 
-        TokenRequest tokenRequest = new(refreshToken.User.Id, refreshToken.User.Email!, roles);
+        TokenRequest tokenRequest = new(refreshToken.User.Id, refreshToken.User.Email!, user.Id, roles);
         AccessTokensResponse accessToken = tokenProvider.GenerateTokens(tokenRequest);
         
         refreshToken.Token = accessToken.RefreshToken;

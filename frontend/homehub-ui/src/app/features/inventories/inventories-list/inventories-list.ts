@@ -1,16 +1,18 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
 import { MatGridListModule} from '@angular/material/grid-list';
 import { MatButtonModule} from '@angular/material/button';
 import { PageEvent, MatPaginatorModule} from '@angular/material/paginator';
-import { InventoriesQueryParameters, InventoriesService } from '../../../core/services/inventories.services';
-import { AuthService } from '../../../core/services/auth.service';
-import { InventoryListResponse, PaginationListResponse } from '../../../models';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { SmartLoader } from "../../../shared/smart-loader/smart-loader";
 
-import { timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { AuthService, InventoriesQueryParameters, InventoriesService } from '../../../core/services';
+import { InventoryListResponse, PaginationListResponse } from '../../../models';
+import { SmartLoader } from "../../../shared";
+
+
 
 @Component({
   selector: 'app-inventories-list',

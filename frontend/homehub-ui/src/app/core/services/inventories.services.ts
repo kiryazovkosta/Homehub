@@ -2,9 +2,14 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { CategorySimpleResponse, FinanceResponse, InventoryListResponse, InventoryResponse, PaginationListResponse } from "../../models";
 import { baseUrl, inventoriesUrl } from "../../constants/api-constants";
-import { InventoryRequest } from "../../models/inventories/create-inventory-request.model";
+import { 
+    CategorySimpleResponse, 
+    InventoryListResponse, 
+    InventoryResponse, 
+    PaginationListResponse, 
+    InventoryRequest 
+} from "../../models";
 
 export interface InventoriesQueryParameters {
     page: number;

@@ -2,8 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { TasksListCollectionResponse, TaskResponse } from "../../models";
 import { baseUrl, tasksUrl } from "../../constants/api-constants";
+import { TasksListCollectionResponse, TaskResponse } from "../../models";
 
 @Injectable({
     providedIn: 'root'

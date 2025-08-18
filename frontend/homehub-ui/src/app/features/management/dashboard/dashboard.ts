@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
-import { DashboardResponse } from '../../../models/admin/dashboard-response.model';
-import { AdminService } from '../../../core/services/admin.service';
+
+import { DashboardResponse } from '../../../models';
+import { AdminService } from '../../../core/services';
 
 @Component({
   selector: 'app-dashboard',

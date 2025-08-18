@@ -1,12 +1,17 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-
-import { FinanceResponse, PaginationListResponse, FinanceListResponse, CategorySimpleResponse } from "../../models";
-import { baseUrl, financesUrl } from "../../constants/api-constants";
-import { EnumMemberResponse } from "../../models/common/enum-member-response.model";
-import { CreateFinanceRequest, UpdateFinanceRequest } from "../../models/finances/create-finance-request.model";
 import { Observable } from "rxjs";
-import { delay } from 'rxjs/operators';
+
+import { baseUrl, financesUrl } from "../../constants/api-constants";
+import { 
+    FinanceResponse, 
+    PaginationListResponse, 
+    FinanceListResponse, 
+    CategorySimpleResponse,
+    EnumMemberResponse, 
+    CreateFinanceRequest, 
+    UpdateFinanceRequest 
+} from "../../models";
 
 @Injectable({
     providedIn: 'root'

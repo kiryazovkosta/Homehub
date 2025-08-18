@@ -1,11 +1,9 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { AdminService } from '../../../core/services/admin.service';
-import { FamilyResponse } from '../../../models/families/family-response.model';
-import { PaginationListResponse } from '../../../models';
-import { ConfirmDialog } from "../../../shared/confirm-dialog/confirm-dialog";
-import { ErrorMessage } from "../../../shared/error-message/error-message";
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CreateFamilyRequest, UpdateFamilyRequest } from '../../../models/families/create-family-request.model';
+
+import { AdminService } from '../../../core/services';
+import { FamilyResponse, PaginationListResponse, UpdateFamilyRequest } from '../../../models';
+import { ConfirmDialog, ErrorMessage } from "../../../shared";
 
 @Component({
   selector: 'app-families',

@@ -1,9 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, ViewChildren, QueryList, ElementRef, AfterViewInit, OnDestroy, inject, signal, effect } from '@angular/core';
+import { 
+  Component, 
+  HostListener, 
+  ViewChildren, 
+  QueryList, 
+  ElementRef, 
+  AfterViewInit, 
+  OnDestroy, 
+  inject, 
+  signal, 
+  effect 
+} from '@angular/core';
 
 import { FunctionalitiesService } from '../../../core/services';
 import { FunctionalityListResponse, PaginationListResponse } from '../../../models';
-import { ErrorMessage } from "../../../shared/error-message/error-message";
+import { ErrorMessage } from "../../../shared";
 
 @Component({
   selector: 'app-functionalities-list',

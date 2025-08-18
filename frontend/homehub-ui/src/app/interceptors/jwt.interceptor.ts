@@ -1,8 +1,9 @@
 import { HttpInterceptorFn, HttpRequest } from "@angular/common/http";
 import { HttpHandlerFn } from "@angular/common/http";
-import { AuthService } from "../core/services/auth.service";
 import { inject } from "@angular/core";
 import { switchMap, catchError } from 'rxjs/operators';
+
+import { AuthService } from "../core/services";
 
 export const jwtInterceptor: HttpInterceptorFn = (request, next: HttpHandlerFn) => {
     const authService = inject(AuthService);
