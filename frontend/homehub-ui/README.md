@@ -1,59 +1,32 @@
+
 # HomehubUi
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.3.
+HomehubUi е Angular приложение за управление на домакински и семейни дейности с различни нива на достъп. Основните функционалности са:
 
-## Development server
+## Основни функционалности
 
-To start a local development server, run:
+- **Аутентикация и регистрация** – Вход, регистрация, възстановяване на парола. Достъпно само за гости.
+- **Потребителски профил** – Преглед и редакция на лични данни.
+- **Семейство** – Преглед на членовете на семейството и техните роли (напр. Баща, Майка, Дете и др.).
+- **Финанси** – Списък, създаване, редакция и преглед на финансови записи (приходи/разходи).
+- **Инвентар** – Управление на инвентарни артикули (добавяне, редакция, преглед).
+- **Контактна форма** – Изпращане на съобщения и заявки към администрация.
+- **Управление (само за администратори)** – Достъп до административен панел с:
+	- Табло с обобщена информация
+	- Управление на семейства
+	- Управление на потребители
 
-```bash
-ng serve
-```
+## Нива на достъп
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Гост (неавтентициран потребител):**
+	- Достъп до: Вход, регистрация, възстановяване на парола, публична информация.
+- **Обикновен потребител:**
+	- Достъп до: Профил, семейство, финанси, инвентар, контактна форма.
+- **Администратор:**
+	- Достъп до: Всички потребителски функционалности + административен панел (управление на семейства и потребители).
 
-## Code scaffolding
+## Технологии
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Angular 20+
+- RxJS, Angular Signals
+- Адаптивен дизайн
