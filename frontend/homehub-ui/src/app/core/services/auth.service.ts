@@ -3,10 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { tap, catchError, map } from "rxjs/operators";
 import { Observable, of } from "rxjs";
 
-import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 import { 
-    authBaseUrl, 
     loginEndpoint, 
     refreshEndpoint, 
     registerEndpoint, 
@@ -23,16 +22,19 @@ import {
     LoginUserRequest,
     AccessTokenResponse 
 } from "../../models";
-import { userProfileUrl } from "../../constants/api-constants";
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private readonly loginUrl = `${authBaseUrl}${loginEndpoint}`;
-    private readonly registerUrl = `${authBaseUrl}${registerEndpoint}`;
-    private readonly refreshTokenUrl = `${authBaseUrl}${refreshEndpoint}`;
-    private readonly recoverPasswordUrl = `${authBaseUrl}${recoverPasswordEndpoint}`;
+    private readonly apiAddress = environment.apiAddress;
+
+    private readonly loginUrl = `${this.apiAddress}${loginEndpoint}`;
+    private readonly registerUrl = `${this.apiAddress}${registerEndpoint}`;
+    private readonly refreshTokenUrl = `${this.apiAddress}${refreshEndpoint}`;
+    private readonly recoverPasswordUrl = `${this.apiAddress}${recoverPasswordEndpoint}`;
 
     private httpClient: HttpClient = inject(HttpClient);
 
@@ -64,6 +66,8 @@ export class AuthService {
     }
 
     login(loginRequest: LoginUserRequest): Observable<boolean> {
+        console.log(environment.production);
+        console.log(environment.apiAddress);
         return this.httpClient.post<AccessTokenResponse>(this.loginUrl, loginRequest).pipe(
             tap(tokens => {
                 this.saveTokens(tokens);

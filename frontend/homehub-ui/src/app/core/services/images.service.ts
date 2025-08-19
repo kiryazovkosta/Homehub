@@ -2,15 +2,18 @@ import { inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 
-import { baseUrl, supabaseUrl } from "../../constants/api-constants";
+import { supabaseUrl } from "../../constants/api-constants";
 import { SupabaseResponse } from "../../models";
 
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ImagesServices {
-    private readonly apiUrl: string = `${baseUrl}${supabaseUrl}`;
+    private readonly apiAddress = environment.apiAddress;
+
+    private readonly apiUrl: string = `${this.apiAddress}${supabaseUrl}`;
 
     private httpClient: HttpClient = inject(HttpClient);
 

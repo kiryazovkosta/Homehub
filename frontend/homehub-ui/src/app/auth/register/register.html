@@ -40,7 +40,7 @@
           </div>
           <div class="form-group">
             <label for="register-lastName">Фамилия</label>
-            <input type="text" id="register-lastName" formControlName="lastName"
+            <input type="text" id="register-lastName" formControlName="lastName" autocomplete="additional-name"
               [class.error]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
             @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
               <div class="validator-error-message">
@@ -61,7 +61,7 @@
         <div class="form-row">
           <div class="form-group">
             <label for="register-password">Парола</label>
-            <input type="password" id="register-password" formControlName="password"
+            <input type="password" id="register-password" formControlName="password" autocomplete="new-password"
               [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
               (input)="checkPasswordMatch()">
             @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
@@ -80,7 +80,7 @@
           </div>
           <div class="form-group">
             <label for="register-confirm">Повтори парола</label>
-            <input type="password" id="register-confirm" formControlName="confirmPassword"
+            <input type="password" id="register-confirm" formControlName="confirmPassword" autocomplete="new-password"
               [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
               [class.success]="passwordsMatch() && registerForm.get('confirmPassword')?.value"
               (input)="checkPasswordMatch()">

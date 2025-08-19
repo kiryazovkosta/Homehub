@@ -2,14 +2,18 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { baseUrl, billsUrl } from "../../constants/api-constants";
+import { billsUrl } from "../../constants/api-constants";
 import { BillsListCollectionResponse, BillResponse } from "../../models";
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BillsService {
-    private readonly apiUrl = `${baseUrl}${billsUrl}`;
+    private readonly apiAddress = environment.apiAddress;
+
+    private readonly apiUrl = `${this.apiAddress}${billsUrl}`;
 
     constructor(private httpClient: HttpClient){}
 

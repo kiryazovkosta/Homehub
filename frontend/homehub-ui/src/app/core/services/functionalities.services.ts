@@ -2,15 +2,19 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { baseUrl, functionalitiesUrl } from "../../constants/api-constants";
+import { functionalitiesUrl } from "../../constants/api-constants";
 import { FunctionalityListResponse, PaginationListResponse } from "../../models";
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class FunctionalitiesService {
-    private readonly apiUrl = `${baseUrl}${functionalitiesUrl}`
+    private readonly apiAddress = environment.apiAddress;
+
+    private readonly apiUrl = `${this.apiAddress}${functionalitiesUrl}`
 
     private httpClient: HttpClient = inject(HttpClient);
 

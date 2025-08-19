@@ -3,13 +3,19 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { LocationResponse } from "../../models";
-import { baseUrl, locationsUrl } from "../../constants/api-constants";
+import { locationsUrl } from "../../constants/api-constants";
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class LocationsService {
-    private readonly apiUrl = baseUrl + locationsUrl;
+    private readonly apiAddress = environment.apiAddress;
+
+    private readonly apiUrl = `${this.apiAddress}${locationsUrl}`;
+
+    
 
     constructor(private httpClient: HttpClient){
     }

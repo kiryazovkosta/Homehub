@@ -4,13 +4,6 @@ import { Observable } from "rxjs";
 
 import { AuthService } from "./auth.service";
 import { 
-    baseUrl, 
-    adminDashboardUrl, 
-    adminUsersUrl, 
-    adminFamiliesUrl, 
-    adminUpdateUserUrl 
-} from "../../constants/api-constants";
-import { 
     DashboardResponse, 
     PaginationListResponse, 
     UserAdminResponse, 
@@ -21,12 +14,36 @@ import {
     CreateFamilyRequest, 
     UpdateFamilyRequest 
 } from "../../models";
+import {
+    adminDashboardUrl, 
+    adminUsersUrl, 
+    adminCreateUserUrl,
+    adminUpdateUserUrl,
+    adminDeleteUserUrl,
+    adminFamiliesUrl, 
+    adminCreateFamilyUrl,
+    adminUpdateFamilyUrl,
+    adminDeleteFamilyUrl
+} from "../../constants/api-constants";
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AdminService {
-    private readonly apiUrl = `${baseUrl}`;
+    private readonly apiAddress = environment.apiAddress;
+
+    private readonly dashboardUrl = `${this.apiAddress}${adminDashboardUrl}`;
+    private readonly usersUrl = `${this.apiAddress}${adminUsersUrl}`;
+    private readonly userCreateUrl = `${this.apiAddress}${adminCreateUserUrl}`;
+    private readonly userUpdateUrl = `${this.apiAddress}${adminUpdateUserUrl}`;
+    private readonly userDeleteUrl = `${this.apiAddress}${adminDeleteUserUrl}`;
+
+    private readonly familiesUrl = `${this.apiAddress}${adminFamiliesUrl}`;
+    private readonly familyCreateUrl = `${this.apiAddress}${adminCreateFamilyUrl}`;
+    private readonly familyUpdateUrl = `${this.apiAddress}${adminUpdateFamilyUrl}`;
+    private readonly familyDeleteUrl = `${this.apiAddress}${adminDeleteFamilyUrl}`;
 
     private readonly authService: AuthService = inject(AuthService);
     private readonly httpClient: HttpClient = inject(HttpClient);
@@ -34,86 +51,59 @@ export class AdminService {
     private readonly isAdmin = computed(() => this.authService.isAdmin());
 
     getDashboard(): Observable<DashboardResponse> {
-        if (!this.isAdmin()) {
-            throw new Error('Не се оторизирани за този ресурс.');
-        }
-
-        return this.httpClient.get<DashboardResponse>(`${this.apiUrl}${adminDashboardUrl}`);
+        this.validatePermisions();
+        return this.httpClient.get<DashboardResponse>(this.dashboardUrl);
     }
 
     getUsers(pagination: { page:number, pageSize: number }): Observable<PaginationListResponse<UserAdminResponse>> {
-        if (!this.isAdmin()) {
-            throw new Error('Не се оторизирани за този ресурс.');
-        }
-
-        return this.httpClient.get<PaginationListResponse<UserAdminResponse>>(`${this.apiUrl}${adminUsersUrl}`, { params: pagination });
+        this.validatePermisions();
+        return this.httpClient.get<PaginationListResponse<UserAdminResponse>>(this.usersUrl, { params: pagination });
     }
 
     getFamilies(): Observable<PaginationListResponse<FamilyResponse>> {
-        if (!this.isAdmin()) {
-            throw new Error('Не се оторизирани за този ресурс.');
-        }
-
-        return this.httpClient.get<PaginationListResponse<FamilyResponse>>(`${this.apiUrl}${adminFamiliesUrl}`);
+        this.validatePermisions();
+        return this.httpClient.get<PaginationListResponse<FamilyResponse>>(this.familiesUrl);
     }
 
     registerUser(userData: RegisterUserRequest): Observable<UserSimplyResponse> {
-        if (!this.isAdmin()) {
-            throw new Error('Не се оторизирани за този ресурс.');
-        }
-
-        const response = this.httpClient.post<UserSimplyResponse>(`${this.apiUrl}api/admin/users/register`, userData);
-        console.log(response);
-        return response;
+        this.validatePermisions();
+        return this.httpClient.post<UserSimplyResponse>(this.userCreateUrl, userData);
     }
 
     updateUser(userData: UpdateUserFromAdminRequest) : Observable<string> {
-        if (!this.isAdmin()) {
-            throw new Error('Не се оторизирани за този ресурс.');
-        }
-
-        console.log(userData);
-        return this.httpClient.put(`${this.apiUrl}${adminUpdateUserUrl}`, userData, { 
+        this.validatePermisions();
+        return this.httpClient.put(this.userUpdateUrl, userData, { 
             responseType: 'text' 
         });
     }
 
     deleteUser(id: string) : Observable<void> {
-        if (!this.isAdmin()) {
-            throw new Error('Не се оторизирани за този ресурс.');
-        }
-
-        console.log(id);
-        const path: string = `${this.apiUrl}api/admin/users/delete/`+id;
+        this.validatePermisions();
+        const path: string = `${this.userDeleteUrl}`+id;
         return this.httpClient.delete<void>(path);
     }
 
     createFamily(userData: CreateFamilyRequest): Observable<FamilyResponse> {
-        if (!this.isAdmin()) {
-            throw new Error('You are not authorized to access this resource');
-        }
-
-        const response = this.httpClient.post<FamilyResponse>(`${this.apiUrl}api/admin/families/create`, userData);
-        console.log(response);
-        return response;
+        this.validatePermisions();
+        return this.httpClient.post<FamilyResponse>(this.familyCreateUrl, userData);
     }
 
     updateFamily(userData: UpdateFamilyRequest) : Observable<void> {
-        if (!this.isAdmin()) {
-            throw new Error('Не се оторизирани за този ресурс.');
-        }
-
-        console.log(userData);
-        return this.httpClient.put<void>(`${this.apiUrl}api/admin/families/update`, userData);
+        this.validatePermisions();
+        return this.httpClient.put<void>(this.familyUpdateUrl, userData);
     }
 
     deleteFamily(id: string) : Observable<void> {
+        this.validatePermisions();
+        const path: string = this.familyDeleteUrl + id;
+        return this.httpClient.delete<void>(path);
+    }
+
+    // Create an interseptor to check that request contains management
+    private validatePermisions(): void {
         if (!this.isAdmin()) {
             throw new Error('Не се оторизирани за този ресурс.');
         }
-
-        const path: string = `${this.apiUrl}api/admin/families/delete/`+id;
-        return this.httpClient.delete<void>(path);
     }
 }
 

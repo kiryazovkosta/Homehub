@@ -1,0 +1,12 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "homehub-ui": {
+      "appLocation": ".",
+      "outputLocation": "dist/homehub-ui/browser",
+      "appBuildCommand": "ng build --configuration=production",
+      "run": "npm start",
+      "appDevserverUrl": "http://localhost:4200"
+    }
+  }
+}

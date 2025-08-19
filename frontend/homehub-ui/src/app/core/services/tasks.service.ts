@@ -2,14 +2,18 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { baseUrl, tasksUrl } from "../../constants/api-constants";
+import { tasksUrl } from "../../constants/api-constants";
 import { TasksListCollectionResponse, TaskResponse } from "../../models";
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TasksService {
-    private readonly apiUrl: string = `${baseUrl}${tasksUrl}`;
+    private readonly apiAddress = environment.apiAddress;
+
+    private readonly apiUrl: string = `${this.apiAddress}${tasksUrl}`;
 
     constructor(private httpClient: HttpClient){}
 

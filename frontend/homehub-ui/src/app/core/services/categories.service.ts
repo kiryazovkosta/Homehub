@@ -3,18 +3,22 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { CategoryResponse } from "../../models";
-import { baseUrl, categoriesUrl } from "../../constants/api-constants";
+import { categoriesUrl } from "../../constants/api-constants";
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CategoriesService {
-    private readonly apiUrl = `${baseUrl}${categoriesUrl}`;
+    private readonly apiAddress = environment.apiAddress;
+
+    private readonly apiUrl = `${this.apiAddress}${categoriesUrl}`;
 
     constructor(private httpClient: HttpClient){
     }
 
-    getLocations(): Observable<CategoryResponse[]> {
+    getCategories(): Observable<CategoryResponse[]> {
         return this.httpClient.get<CategoryResponse[]>(this.apiUrl);
     }
 }
