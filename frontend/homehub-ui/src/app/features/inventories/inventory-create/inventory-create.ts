@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
@@ -18,6 +18,8 @@ import { AppState } from '../../../core/store';
 import { Observable } from 'rxjs';
 import { selectLocations } from '../../../core/store/locations/location.selectors';
 import * as LocationsActions from '../../../core/store/locations/location.actions';
+import { selectInventoryCategories } from '../../../core/store/categories';
+import * as CategoriesActions from '../../../core/store/categories';
 
 @Component({
   selector: 'app-inventory-create',
@@ -35,7 +37,7 @@ import * as LocationsActions from '../../../core/store/locations/location.action
   templateUrl: './inventory-create.html',
   styleUrl: './inventory-create.scss'
 })
-export class InventoryCreate {
+export class InventoryCreate implements OnDestroy {
   private readonly imagesService: ImagesServices = inject(ImagesServices);
   private readonly inventoriesService: InventoriesService = inject(InventoriesService);
   //private readonly locationsService: LocationsService = inject(LocationsService);
@@ -53,6 +55,7 @@ export class InventoryCreate {
   categories = signal<CategorySimpleResponse[] | null>(null);
   //locations = signal<LocationResponse[] | null>(null);
 
+  categories$: Observable<CategorySimpleResponse[]>;
   locations$: Observable<LocationResponse[]>;
 
   constructor() {
@@ -66,12 +69,15 @@ export class InventoryCreate {
       imageFile: [null, [Validators.required, this.fileValidator]]
     })
 
+    this.categories$ = this.store.select(selectInventoryCategories);
     this.locations$ = this.store.select(selectLocations);
 
-    this.loadCategories();
-    //this.loadLocations();
-
+    this.store.dispatch(CategoriesActions.loadInventoryCategories());
     this.store.dispatch(LocationsActions.loadLocations());
+  }
+  ngOnDestroy(): void {
+    this.store.dispatch(CategoriesActions.loadInventoryCategoriesReset());
+    this.store.dispatch(LocationsActions.loadLocationsReset());
   }
 
   onFileSelected(event: any) {
@@ -154,12 +160,12 @@ export class InventoryCreate {
     return null;
   }
 
-  private loadCategories() {
-    this.inventoriesService.getCategories().subscribe({
-      next: (categoriesResponse: CategorySimpleResponse[]) => this.categories.set(categoriesResponse),
-      error: () => this.categories.set([]),
-    });
-  }
+  //private loadCategories() {
+  //  this.inventoriesService.getCategories().subscribe({
+  //    next: (categoriesResponse: CategorySimpleResponse[]) => this.categories.set(categoriesResponse),
+  //    error: () => this.categories.set([]),
+  //  });
+  //}
 
   //private loadLocations() {
   //  this.locationsService.getLocations().subscribe({

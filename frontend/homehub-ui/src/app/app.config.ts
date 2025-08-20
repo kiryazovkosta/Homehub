@@ -8,11 +8,13 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './interceptors/jwt.interceptor';
 import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+
 import { 
   reducers,
-  LocationsEffects 
+  LocationsEffects,
+  CategoriesEffects
 } from './core/store';
-import { provideEffects } from '@ngrx/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,7 +30,8 @@ export const appConfig: ApplicationConfig = {
     ),
     provideStore(reducers),
     provideEffects([
-      LocationsEffects
+      LocationsEffects,
+      CategoriesEffects
     ])
   ]
 };

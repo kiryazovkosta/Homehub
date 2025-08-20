@@ -60,8 +60,8 @@
                                     <mat-label>Категория</mat-label>
                                     <mat-select formControlName="categoryId" required>
                                         <mat-option disabled selected>Изберете категория</mat-option>
-                                        @if (categories() && categories()!.length > 0) {
-                                        @for (category of categories(); track category.id) {
+                                        @if ((categories$ | async) && (categories$ | async)!.length > 0) {
+                                        @for (category of categories$ | async; track category.id) {
                                         <mat-option [value]="category.id">{{ category.name }}</mat-option>
                                         }
                                         } @else {
