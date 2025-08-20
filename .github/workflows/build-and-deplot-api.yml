@@ -12,7 +12,7 @@ env:
     AZURE_WEBAPP_PACKAGE_PATH: './backend/homehub-api/bin/Release/net9.0/publish'
     DOTNET_VERSION: "9.x"
     WORKING_DIRECTORY: './backend/homehub-api'
-    SOLUTION_PATH: './backend/homehub-api/Homehub.sln'
+    SOLUTION_PATH: './Homehub.sln'
     API_PROJECT_PATH: './backend/homehub-api/Homehub.Api'
     PUBLISH_DIR: "./publish"
 
