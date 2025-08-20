@@ -53,7 +53,7 @@ export class FinancesList {
       const currentPage = this.page();
       const currentPageSize = this.pageSize();
 
-      timer(1000).pipe(
+      timer(500).pipe(
         switchMap(() => this.financesService.getFinances({ page: currentPage, pageSize: currentPageSize }))
       ).subscribe({
         next: (response: PaginationListResponse<FinanceListResponse>) => {

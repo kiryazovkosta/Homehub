@@ -60,7 +60,7 @@ export class InventoriesList {
 
       const params = this.queryParameters();
 
-      const sub = timer(600).pipe(
+      const sub = timer(500).pipe(
         switchMap(() => this.inventoriesService.getInventories(params))
       ).subscribe({
         next: (response: PaginationListResponse<InventoryListResponse>) => {
