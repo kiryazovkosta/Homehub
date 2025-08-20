@@ -11,8 +11,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 
 import { SupabaseResponse, CategorySimpleResponse, LocationResponse, InventoryRequest } from '../../../models';
-import { InventoriesService, LocationsService, ImagesServices } from '../../../core/services';
+import { InventoriesService, ImagesServices } from '../../../core/services';
 import { processError } from '../../../utils';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../core/store';
+import { Observable } from 'rxjs';
+import { selectLocations } from '../../../core/store/locations/location.selectors';
+import * as LocationsActions from '../../../core/store/locations/location.actions';
 
 @Component({
   selector: 'app-inventory-create',
@@ -33,8 +38,9 @@ import { processError } from '../../../utils';
 export class InventoryCreate {
   private readonly imagesService: ImagesServices = inject(ImagesServices);
   private readonly inventoriesService: InventoriesService = inject(InventoriesService);
-  private readonly locationsService: LocationsService = inject(LocationsService);
+  //private readonly locationsService: LocationsService = inject(LocationsService);
   private router: Router = inject(Router);
+  private store: Store<AppState> = inject(Store<AppState>);
   
   protected formBuilder: FormBuilder = inject(FormBuilder);
   protected createInventoryForm: FormGroup;
@@ -45,7 +51,9 @@ export class InventoryCreate {
   imageUrl = signal<string|null>(null);
 
   categories = signal<CategorySimpleResponse[] | null>(null);
-  locations = signal<LocationResponse[] | null>(null);
+  //locations = signal<LocationResponse[] | null>(null);
+
+  locations$: Observable<LocationResponse[]>;
 
   constructor() {
     this.createInventoryForm = this.formBuilder.group({
@@ -57,8 +65,13 @@ export class InventoryCreate {
       threshold: ['', [Validators.required, Validators.min(0)]],
       imageFile: [null, [Validators.required, this.fileValidator]]
     })
+
+    this.locations$ = this.store.select(selectLocations);
+
     this.loadCategories();
-    this.loadLocations();
+    //this.loadLocations();
+
+    this.store.dispatch(LocationsActions.loadLocations());
   }
 
   onFileSelected(event: any) {
@@ -119,7 +132,7 @@ export class InventoryCreate {
   }
 
   private fileValidator(control: AbstractControl): ValidationErrors | null {
-    console.log(control.value);
+    //console.log(control.value);
 
     const file = control.value;
     if (!file) {
@@ -148,10 +161,10 @@ export class InventoryCreate {
     });
   }
 
-  private loadLocations() {
-    this.locationsService.getLocations().subscribe({
-      next: (locationsResponse: LocationResponse[]) => this.locations.set(locationsResponse),
-      error: () => this.locations.set([]),
-    });
-  }
+  //private loadLocations() {
+  //  this.locationsService.getLocations().subscribe({
+  //    next: (locationsResponse: LocationResponse[]) => this.locations.set(locationsResponse),
+  //    error: () => this.locations.set([]),
+  //  });
+  //}
 }

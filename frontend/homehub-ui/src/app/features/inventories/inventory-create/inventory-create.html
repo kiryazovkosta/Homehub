@@ -83,8 +83,8 @@
                                     <mat-label>Място за съхранение</mat-label>
                                     <mat-select formControlName="locationId" required>
                                         <mat-option disabled selected>Изберете място за съхранение</mat-option>
-                                        @if (locations() && locations()!.length > 0) {
-                                        @for (location of locations(); track location.id) {
+                                        @if ((locations$ | async) && (locations$ | async)!.length > 0) {
+                                        @for (location of locations$ |async; track location.id) {
                                         <mat-option [value]="location.id">{{ location.name }}</mat-option>
                                         }
                                         } @else {

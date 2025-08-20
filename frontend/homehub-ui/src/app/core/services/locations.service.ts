@@ -15,8 +15,6 @@ export class LocationsService {
 
     private readonly apiUrl = `${this.apiAddress}${locationsUrl}`;
 
-    
-
     constructor(private httpClient: HttpClient){
     }
 
