@@ -16,8 +16,8 @@
 
 Потребители (множество роли и достъпи)
 
-## Деплойната
-https://zealous-mushroom-0f2f7ea03.2.azurestaticapps.net/about
+## Системата е достъпна на адрес
+https://zealous-mushroom-0f2f7ea03.2.azurestaticapps.net
 
 ## Снимки от системата
 
