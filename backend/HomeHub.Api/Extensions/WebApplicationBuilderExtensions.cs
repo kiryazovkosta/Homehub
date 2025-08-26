@@ -54,10 +54,24 @@ public static class WebApplicationBuilderExtensions
 
     public static WebApplicationBuilder AddDatabase(this WebApplicationBuilder builder)
     {
+        string connectionString;
+
+        if (builder.Environment.IsProduction())
+        {
+            connectionString = Environment.GetEnvironmentVariable("Homehub_ConnectionString")
+                               ?? throw new InvalidOperationException("Homehub_ConnectionString environment variable is required in Production");
+        }
+        else
+        {
+            connectionString = builder.Configuration.GetConnectionString(Databases.HomeHub)
+                               ?? throw new InvalidOperationException($"Connection string '{Databases.HomeHub}' not found");
+        }
+
+
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options
                 .UseNpgsql(
-                    builder.Configuration.GetConnectionString(Databases.HomeHub),
+                    connectionString,
                     npgsqlOptions => npgsqlOptions
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Application))
                 .UseSnakeCaseNamingConvention());
@@ -65,7 +79,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
             options
                 .UseNpgsql(
-                    builder.Configuration.GetConnectionString(Databases.HomeHub),
+                    connectionString,
                     npgsqlOptions => npgsqlOptions
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Identity))
                 .UseSnakeCaseNamingConvention()
@@ -124,13 +138,13 @@ public static class WebApplicationBuilderExtensions
 
         builder.Services.Configure<IdentityOptions>(options =>
         {
-            options.Password.RequiredLength = 4;
-            options.Password.RequireDigit = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequireUppercase = false;
-            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Password.RequiredLength = 8;
+            options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireUppercase = true;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+            options.Lockout.MaxFailedAccessAttempts = 3;
             options.SignIn.RequireConfirmedEmail = false;
         });
 
