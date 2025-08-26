@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Renderer2, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 export class BackToTop {
   isVisible = false;
   isPulse = false;
+
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
 
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
@@ -40,11 +42,11 @@ export class BackToTop {
 
   scrollToTop(): void {
     // Анимация при клик
-    const button = document.getElementById('back-to-top');
+    const button = this.elementRef.nativeElement.querySelector('#back-to-top');
     if (button) {
-      button.style.transform = 'scale(0.9)';
+      this.renderer.setStyle(button, 'transform', 'scale(0.9)');
       setTimeout(() => {
-        button.style.transform = '';
+        this.renderer.removeStyle(button, 'transform');
       }, 150);
     }
 
