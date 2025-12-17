@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-not-found',
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './not-found.html',
   styleUrl: './not-found.scss'
 })

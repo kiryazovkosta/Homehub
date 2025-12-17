@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, HostListener, inject, signal } from '@angular/core';
 
 import { FamilyService } from '../../core/services';
@@ -7,7 +7,7 @@ import { FamilyWithUsersResponse, UserSimplyResponse } from '../../models';
 
 @Component({
   selector: 'app-family',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './family.html',
   styleUrls: ['./family.scss']
 })

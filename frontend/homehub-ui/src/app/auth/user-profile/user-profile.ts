@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { switchMap } from 'rxjs';
 
 import { UsersService } from '../../core/services';
@@ -9,7 +9,7 @@ import { familyRoleLabels, UpdateUserRequest, UserProfileResponse } from '../../
 
 @Component({
   selector: 'app-user-profile',
-  imports: [ReactiveFormsModule, CommonModule, ErrorMessage],
+  imports: [ReactiveFormsModule, ErrorMessage],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

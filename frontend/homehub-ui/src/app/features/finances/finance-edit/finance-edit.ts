@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { ErrorMessage } from "../../../shared";
 @Component({
   selector: 'app-finance-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ErrorMessage],
+  imports: [ReactiveFormsModule, ErrorMessage],
   templateUrl: './finance-edit.html',
   styleUrl: './finance-edit.scss'
 })

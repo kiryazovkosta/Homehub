@@ -1,6 +1,6 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 
 import { 
   RegisterUserRequest, 
@@ -16,7 +16,7 @@ import { ErrorMessage } from "../../../shared";
 
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule, CommonModule, ErrorMessage],
+  imports: [ReactiveFormsModule, ErrorMessage],
   templateUrl: './add-user.html',
   styleUrl: './add-user.scss'
 })

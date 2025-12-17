@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 
 import { AuthService, ImagesServices, FamilyService } from '../../core/services';
@@ -9,7 +9,7 @@ import { ErrorMessage, SmartLoader } from "../../shared";
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, CommonModule, ErrorMessage, SmartLoader],
+  imports: [ReactiveFormsModule, ErrorMessage, SmartLoader],
   templateUrl: './register.html',
   styleUrls: ['./register.scss']
 })

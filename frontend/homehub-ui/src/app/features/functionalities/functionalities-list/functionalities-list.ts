@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { 
   Component, 
   HostListener, 
@@ -18,7 +18,7 @@ import { ErrorMessage } from "../../../shared";
 
 @Component({
   selector: 'app-functionalities-list',
-  imports: [CommonModule, ErrorMessage],
+  imports: [ErrorMessage],
   templateUrl: './functionalities-list.html',
   styleUrl: './functionalities-list.scss',
 })

@@ -1,13 +1,13 @@
 import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { AuthService } from '../../core/services';
 import { Router, RouterLink } from '@angular/router';
 import { ErrorMessage } from "../../shared";
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, ErrorMessage, RouterLink],
+  imports: [ReactiveFormsModule, ErrorMessage, RouterLink],
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

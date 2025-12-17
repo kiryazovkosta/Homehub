@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, computed, effect, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-page-navigation',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './page-navigation.html',
   styleUrl: './page-navigation.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

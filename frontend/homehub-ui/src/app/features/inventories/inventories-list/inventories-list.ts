@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterLink } from '@angular/router';
 import { timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -17,7 +17,6 @@ import { SmartLoader } from "../../../shared";
 @Component({
   selector: 'app-inventories-list',
   imports: [
-    CommonModule,
     RouterLink,
     MatGridListModule,
     MatButtonModule,
