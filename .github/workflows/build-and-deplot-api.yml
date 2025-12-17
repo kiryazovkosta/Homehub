@@ -6,15 +6,15 @@ on:
         branches:
             - main
         paths:
-            - "backend/homehub-api/**"
+            - "backend/HomeHub.Api/**"
 env:
     AZURE_WEBAPP_NAME: homehub-api
-    AZURE_WEBAPP_PACKAGE_PATH: './backend/homehub-api/Homehub.Api/publish'
-    DOTNET_VERSION: "9.x"
-    WORKING_DIRECTORY: './backend/homehub-api'
-    SOLUTION_PATH: 'Homehub.sln'
-    API_PROJECT_PATH: 'Homehub.Api'
-    PUBLISH_DIR: './Homehub.Api/publish'
+    AZURE_WEBAPP_PACKAGE_PATH: './backend/HomeHub.Api/publish'
+    DOTNET_VERSION: "10.x"
+    WORKING_DIRECTORY: './backend/HomeHub.Api'
+    SOLUTION_PATH: '../../Homehub.sln'
+    API_PROJECT_PATH: 'HomeHub.Api.csproj'
+    PUBLISH_DIR: './publish'
 
 jobs:
     build-and-test:
