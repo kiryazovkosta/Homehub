@@ -72,6 +72,9 @@ jobs:
             - name: Install EF Core CLI
               run: dotnet tool install --global dotnet-ef
 
+            - name: Restore dependencies
+              run: dotnet restore ${{ env.SOLUTION_PATH }}
+
             - name: Create migration bundle
               run: |
                 dotnet ef migrations bundle --startup-project ${{ env.API_PROJECT_PATH }} --project ${{ env.API_PROJECT_PATH }} --context ApplicationDbContext --output app-bundle.exe
